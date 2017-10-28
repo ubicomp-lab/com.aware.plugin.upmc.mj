@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/when_last_time"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <DatePicker
+            android:id="@+id/last_date_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <TimePicker
+            android:id="@+id/last_time_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/last_date_mj"
+            android:layout_centerHorizontal="true"
+            android:timePickerMode="spinner" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/last_time_mj"
+            android:text="@string/what_did_mj_use"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <CheckBox
+            android:id="@+id/check_joint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/textView3"
+            android:text="@string/joint"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/check_pipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/check_joint"
+            android:layout_alignStart="@+id/check_joint"
+            android:layout_below="@+id/check_joint"
+            android:text="@string/pipe"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/check_bong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/check_joint"
+            android:layout_alignStart="@+id/check_joint"
+            android:layout_below="@+id/check_pipe"
+            android:text="@string/bong"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/check_blunt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/check_joint"
+            android:layout_alignStart="@+id/check_joint"
+            android:layout_below="@+id/check_bong"
+            android:text="@string/blunt"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <LinearLayout
+            android:id="@+id/other_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/check_joint"
+            android:layout_below="@+id/check_blunt"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/check_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/check_joint"
+                android:layout_alignStart="@+id/check_joint"
+                android:layout_below="@+id/check_blunt"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <EditText
+                android:id="@+id/check_other_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/other" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/how_much_header"
+            android:layout_below="@+id/other_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/how_much"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
+
+        <EditText
+            android:id="@+id/how_much_mj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/how_much_header"
+            android:ems="10"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/initiated_submit_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/how_much_mj"
+            android:layout_marginTop="16dp"
+            android:background="@color/primary"
+            android:text="@string/btn_submit" />
+
+        <Button
+            android:id="@+id/initiated_cancel_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/initiated_submit_3"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_cancel" />
+
+    </RelativeLayout>
+</ScrollView>
