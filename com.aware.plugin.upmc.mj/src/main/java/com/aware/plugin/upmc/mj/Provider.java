@@ -24,7 +24,7 @@ public class Provider extends ContentProvider {
 
     public static String AUTHORITY = "com.aware.plugin.upmc.mj.provider.mj"; //change to package.provider.your_plugin_name
 
-    public static final int DATABASE_VERSION = 3; //increase this if you make changes to the database structure, i.e., rename columns, etc.
+    public static final int DATABASE_VERSION = 4; //increase this if you make changes to the database structure, i.e., rename columns, etc.
     public static final String DATABASE_NAME = "plugin_upmc_mj.db"; //the database filename, use plugin_xxx for plugins.
 
     //Add here your database table names, as many as you need
@@ -52,8 +52,8 @@ public class Provider extends ContentProvider {
      */
     public static final class UPMC_MJ_Data implements AWAREColumns {
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + DB_TBL_UPMC_MJ);
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.aware.plugin.upmc.com.aware.plugin.upmc.mj.provider.upmc_mj_data"; //modify me
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.aware.plugin.upmc.com.aware.plugin.upmc.mj.provider.upmc_mj_data"; //modify me
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.aware.plugin.upmc.mj.provider.mj.upmc_mj_data"; //modify me
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.aware.plugin.upmc.mj.provider.mj.upmc_mj_data"; //modify me
 
         public static final String QUESTION_TYPE = "question_type";
         public static final String QUESTION_ANSWERS = "question_answers";
