@@ -1,9 +1,12 @@
 package com.aware.plugin.upmc.mj;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +28,13 @@ public class Plugin extends Aware_Plugin {
     public static final String ACTION_MJ_FINGERPRINT = "ACTION_MJ_FINGERPRINT";
     public static final String UPMC_CHANNEL_ID = "UPMC_CHANNEL_ID";
     public static final int UPMC_NOTIFICATIONS = 424242;
+
+    /**
+     * Shown in the lock screen for self-reports
+     */
+    public static final int UPMC_PERSISTENT_NOTIFICATION = 123456789;
+
+    public static final String ACTION_MJ_NOTIFICATION_EXPIRED = "ACTION_MJ_NOTIFICATION_EXPIRED";
 
     @Override
     public void onCreate() {
@@ -49,6 +59,26 @@ public class Plugin extends Aware_Plugin {
             mChannel.enableVibration(true);
             mNotificationManager.createNotificationChannel(mChannel);
         }
+
+        /**
+         * Create persistent notification to do self-reports
+         */
+        Intent selfReport = new Intent(this, MJ_Survey.class);
+        PendingIntent onTapSelf = PendingIntent.getActivity(this, 0, selfReport, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+        builder.setSmallIcon(R.drawable.ic_action_esm)
+                .setContentTitle("UPMC MJ - Self-Report")
+                .setContentText("Self-report MJ")
+                .setOnlyAlertOnce(true)
+                .setOngoing(true)
+                .setContentIntent(onTapSelf);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            builder.setChannelId(UPMC_CHANNEL_ID);
+
+        notificationManager.notify(UPMC_PERSISTENT_NOTIFICATION, builder.build());
     }
 
     //This function gets called every 5 minutes by AWARE to make sure this plugin is still running.
@@ -125,11 +155,20 @@ public class Plugin extends Aware_Plugin {
         mBuilder.setSmallIcon(R.drawable.ic_action_esm)
                 .setContentTitle(title)
                 .setContentText(description)
+                .setOnlyAlertOnce(true)
+                .setAutoCancel(true)
                 .setContentIntent(onClick);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             mBuilder.setChannelId(UPMC_CHANNEL_ID);
 
         mNotificationManager.notify(UPMC_NOTIFICATIONS, mBuilder.build());
+
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+        Intent expiredBroadcast = new Intent(this, MJNotificationObserver.class);
+        expiredBroadcast.setAction(ACTION_MJ_NOTIFICATION_EXPIRED);
+        PendingIntent alarmPending = PendingIntent.getBroadcast(this, 0, expiredBroadcast, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (30 * 60 * 1000), alarmPending); //expire the notification after 30 minutes
     }
 
     @Override
@@ -150,5 +189,18 @@ public class Plugin extends Aware_Plugin {
 
         //Stop AWARE instance in plugin
         Aware.stopAWARE(this);
+    }
+
+    /**
+     * Broadcast receiver that will remove the UPMC survey notification once it expired
+     */
+    public class MJNotificationObserver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equalsIgnoreCase(ACTION_MJ_NOTIFICATION_EXPIRED)) {
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(UPMC_NOTIFICATIONS);
+            }
+        }
     }
 }

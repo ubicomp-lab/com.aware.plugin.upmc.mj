@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
+import com.aware.ESM;
 import com.aware.plugin.upmc.mj.Plugin;
 import com.aware.plugin.upmc.mj.Provider;
 import com.aware.plugin.upmc.mj.R;
@@ -60,11 +61,14 @@ public class MJ_Survey extends AppCompatActivity {
         super.onResume();
 
         ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
+        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_FINE_LOCATION);
         REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CALL_LOG);
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CONTACTS);
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_SMS);
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_PHONE_STATE);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.RECORD_AUDIO);
 
         boolean permissions_ok = true;
         for (String p : REQUIRED_PERMISSIONS) {
@@ -80,11 +84,14 @@ public class MJ_Survey extends AppCompatActivity {
 
                 Aware.joinStudy(this, "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
 
-                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SIGNIFICANT_MOTION, true);
-                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ESM, true);
-
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
+
+                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SIGNIFICANT_MOTION, true); //to make accelerometer logging less verbose.
+
+                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_BATTERY, true);
+
+                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ESM, true); //in case we want to push ESMs from dashboard side
 
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_APPLICATIONS, true);
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_NOTIFICATIONS, true);
@@ -92,10 +99,13 @@ public class MJ_Survey extends AppCompatActivity {
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_LIGHT, true);
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.THRESHOLD_LIGHT, 5);
 
-                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_BATTERY, true);
+                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_COMMUNICATION_EVENTS, true);
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_CALLS, true);
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_MESSAGES, true);
+
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SCREEN, true);
+
+                Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_NETWORK_EVENTS, true);
 
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_WIFI_ONLY, true);
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_FALLBACK_NETWORK, 6);
@@ -103,6 +113,24 @@ public class MJ_Survey extends AppCompatActivity {
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_CLEAN_OLD_DATA, 1);
                 Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_SILENT, true);
 
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.STATUS_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, true);
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.FREQUENCY_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, 300);
+                Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.device_usage.Settings.STATUS_PLUGIN_DEVICE_USAGE, true);
+                Aware.startPlugin(getApplicationContext(), "com.aware.plugin.device_usage");
+
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.STATUS_GOOGLE_FUSED_LOCATION, true);
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.FREQUENCY_GOOGLE_FUSED_LOCATION, 300);
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.MAX_FREQUENCY_GOOGLE_FUSED_LOCATION, 300);
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.ACCURACY_GOOGLE_FUSED_LOCATION, 102);
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.FALLBACK_LOCATION_TIMEOUT, 20);
+                Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.LOCATION_SENSITIVITY, 5);
+                Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
+
+                Aware.startPlugin(getApplicationContext(), "com.aware.plugin.fitbit");
+
+                //last one to be started is the app itself (which is on itself a plugin too)
                 Aware.startPlugin(getApplicationContext(), "com.aware.plugin.upmc.mj");
 
                 //Ask accessibility to be activated
@@ -780,6 +808,8 @@ public class MJ_Survey extends AppCompatActivity {
         data.put(Provider.UPMC_MJ_Data.QUESTION_ANSWERS, fingerprint.toString());
 
         getContentResolver().insert(Provider.UPMC_MJ_Data.CONTENT_URI, data);
+
+        if (!canceled) sendBroadcast(new Intent(ESM.ACTION_AWARE_ESM_QUEUE_COMPLETE));
     }
 
     /**
@@ -806,6 +836,8 @@ public class MJ_Survey extends AppCompatActivity {
         data.put(Provider.UPMC_MJ_Data.QUESTION_ANSWERS, evening.toString());
 
         getContentResolver().insert(Provider.UPMC_MJ_Data.CONTENT_URI, data);
+
+        if (!canceled) sendBroadcast(new Intent(ESM.ACTION_AWARE_ESM_QUEUE_COMPLETE));
     }
 
     /**
@@ -832,5 +864,7 @@ public class MJ_Survey extends AppCompatActivity {
         data.put(Provider.UPMC_MJ_Data.QUESTION_ANSWERS, morning.toString());
 
         getContentResolver().insert(Provider.UPMC_MJ_Data.CONTENT_URI, data);
+
+        if (!canceled) sendBroadcast(new Intent(ESM.ACTION_AWARE_ESM_QUEUE_COMPLETE));
     }
 }

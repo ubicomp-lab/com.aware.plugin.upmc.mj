@@ -24,6 +24,14 @@ android {
         }
     }
 
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi'
+        }
+    }
+
     lintOptions {
         abortOnError false
     }
@@ -48,9 +56,23 @@ configurations.all {
 }
 
 dependencies {
-    api "com.github.denzilferreira:aware-client:$aware_libs"
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //AWARE dependencies
     implementation "org.eclipse.paho:org.eclipse.paho.client.mqttv3:$mqtt_libs"
     implementation "com.koushikdutta.ion:ion:$ion_libs"
     implementation "com.android.support:appcompat-v7:$support_libs"
     implementation "com.android.support:gridlayout-v7:$support_libs"
+
+    //AWARE core library
+    api 'com.github.denzilferreira:aware-client:development-SNAPSHOT'
+
+    //bundled plugins
+    implementation 'com.github.denzilferreira:com.aware.plugin.google.activity_recognition:development-SNAPSHOT'
+    implementation 'com.github.denzilferreira:com.aware.plugin.device_usage:development-SNAPSHOT'
+    implementation 'com.github.denzilferreira:com.aware.plugin.google.fused_location:development-SNAPSHOT'
+    implementation 'com.github.denzilferreira:com.aware.plugin.fitbit:development-SNAPSHOT'
+    implementation 'com.github.denzilferreira:com.aware.plugin.studentlife.audio_final:development-SNAPSHOT' //conversations
+
 }
