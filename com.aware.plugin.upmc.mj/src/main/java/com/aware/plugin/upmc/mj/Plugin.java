@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -116,7 +117,7 @@ public class Plugin extends Aware_Plugin {
             Intent mj_survey = new Intent(this, MJ_Survey.class);
             mj_survey.setAction(Plugin.ACTION_MJ_MORNING);
             PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification("UPMC MJ - Morning", "Good morning! Tap to answer survey.", onClick);
+            showNotification("UPMC MJ - Morning", "Good morning! Tap to answer survey.", onClick, 5);
         }
 
         /**
@@ -126,7 +127,7 @@ public class Plugin extends Aware_Plugin {
             Intent mj_survey = new Intent(this, MJ_Survey.class);
             mj_survey.setAction(Plugin.ACTION_MJ_EVENING);
             PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification("UPMC MJ - Evening", "Good evening! Tap to answer survey.", onClick);
+            showNotification("UPMC MJ - Evening", "Good evening! Tap to answer survey.", onClick, 6);
         }
 
         /**
@@ -136,7 +137,7 @@ public class Plugin extends Aware_Plugin {
             Intent mj_survey = new Intent(this, MJ_Survey.class);
             mj_survey.setAction(Plugin.ACTION_MJ_FINGERPRINT);
             PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification("UPMC MJ - Check up", "Just checking how you are doing. Tap to answer survey.", onClick);
+            showNotification("UPMC MJ - Check up", "Just checking how you are doing. Tap to answer survey.", onClick, 0);
         }
 
         return START_STICKY;
@@ -149,7 +150,7 @@ public class Plugin extends Aware_Plugin {
      * @param description
      * @param onClick
      */
-    private void showNotification(String title, String description, PendingIntent onClick) {
+    private void showNotification(String title, String description, PendingIntent onClick, int expires_hours) {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
         mBuilder.setSmallIcon(R.drawable.ic_action_esm)
@@ -164,11 +165,14 @@ public class Plugin extends Aware_Plugin {
 
         mNotificationManager.notify(UPMC_NOTIFICATIONS, mBuilder.build());
 
-        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-        Intent expiredBroadcast = new Intent(this, MJNotificationObserver.class);
-        expiredBroadcast.setAction(ACTION_MJ_NOTIFICATION_EXPIRED);
-        PendingIntent alarmPending = PendingIntent.getBroadcast(this, 0, expiredBroadcast, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (30 * 60 * 1000), alarmPending); //expire the notification after 30 minutes
+        if (expires_hours > 0) {
+            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+            Intent expiredBroadcast = new Intent(this, MJNotificationObserver.class);
+            expiredBroadcast.setAction(ACTION_MJ_NOTIFICATION_EXPIRED);
+            expiredBroadcast.putExtra("type", (expires_hours == 5) ? "morning" : "evening");
+            PendingIntent alarmPending = PendingIntent.getBroadcast(this, 0, expiredBroadcast, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (expires_hours * 60 * 60 * 1000), alarmPending); //expire the notification after x hours.
+        }
     }
 
     @Override
@@ -200,6 +204,15 @@ public class Plugin extends Aware_Plugin {
             if (intent.getAction().equalsIgnoreCase(ACTION_MJ_NOTIFICATION_EXPIRED)) {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
                 notificationManager.cancel(UPMC_NOTIFICATIONS);
+
+                if (intent.hasExtra("type")) {
+                    ContentValues data = new ContentValues();
+                    data.put(Provider.UPMC_MJ_Data.TIMESTAMP, System.currentTimeMillis());
+                    data.put(Provider.UPMC_MJ_Data.DEVICE_ID, Aware.getSetting(context, Aware_Preferences.DEVICE_ID));
+                    data.put(Provider.UPMC_MJ_Data.QUESTION_TYPE, intent.getStringExtra("type") + "-expired");
+                    data.put(Provider.UPMC_MJ_Data.QUESTION_ANSWERS, "NA");
+                    context.getContentResolver().insert(Provider.UPMC_MJ_Data.CONTENT_URI, data);
+                }
             }
         }
     }

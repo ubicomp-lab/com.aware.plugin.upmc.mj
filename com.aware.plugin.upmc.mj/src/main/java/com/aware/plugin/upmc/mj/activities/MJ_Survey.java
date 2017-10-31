@@ -1,6 +1,7 @@
 package com.aware.plugin.upmc.mj.activities;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -189,6 +190,10 @@ public class MJ_Survey extends AppCompatActivity {
                 }
 
                 if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
+
+                    //clear notification
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    notificationManager.cancel(Plugin.UPMC_NOTIFICATIONS);
 
                     morning = new JSONObject();
 
@@ -399,6 +404,10 @@ public class MJ_Survey extends AppCompatActivity {
                     });
 
                 } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
+
+                    //clear notification
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    notificationManager.cancel(Plugin.UPMC_NOTIFICATIONS);
 
                     evening = new JSONObject();
 
@@ -612,6 +621,10 @@ public class MJ_Survey extends AppCompatActivity {
                         }
                     });
                 } else {
+
+                    //clear notification
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    notificationManager.cancel(Plugin.UPMC_NOTIFICATIONS);
 
                     fingerprint = new JSONObject();
 
