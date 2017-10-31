@@ -128,6 +128,7 @@ public class MJ_Survey extends AppCompatActivity {
                 Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.LOCATION_SENSITIVITY, 5);
                 Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
 
+                Aware.startPlugin(getApplicationContext(), "com.aware.plugin.studentlife.audio_final");
                 Aware.startPlugin(getApplicationContext(), "com.aware.plugin.fitbit");
 
                 //last one to be started is the app itself (which is on itself a plugin too)

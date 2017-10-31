@@ -68,6 +68,13 @@ dependencies {
     //AWARE core library
     api 'com.github.denzilferreira:aware-client:development-SNAPSHOT'
 
+    //plugins' dependencies...
+    implementation 'com.github.scribejava:scribejava-apis:4.2.0'
+    implementation 'net.danlew:android.joda:2.9.5.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation "com.google.android.gms:play-services-location:$google_libs"
+
+
     //bundled plugins
     implementation 'com.github.denzilferreira:com.aware.plugin.google.activity_recognition:development-SNAPSHOT'
     implementation 'com.github.denzilferreira:com.aware.plugin.device_usage:development-SNAPSHOT'
