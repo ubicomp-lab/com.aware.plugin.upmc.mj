@@ -194,7 +194,7 @@ public class Plugin extends Aware_Plugin {
     /**
      * Broadcast receiver that will remove the UPMC survey notification once it expired
      */
-    public class MJNotificationObserver extends BroadcastReceiver {
+    static public class MJNotificationObserver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase(ACTION_MJ_NOTIFICATION_EXPIRED)) {
