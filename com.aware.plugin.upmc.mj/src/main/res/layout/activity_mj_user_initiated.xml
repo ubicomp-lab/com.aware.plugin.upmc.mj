@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/ui_mj_start_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/when_did_mj_start"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <DatePicker
+            android:id="@+id/u1_start_date_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_mj_start_header"
+            android:layout_centerHorizontal="true"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <TimePicker
+            android:id="@+id/ui_start_time_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/u1_start_date_mj"
+            android:layout_centerHorizontal="true"
+            android:timePickerMode="spinner" />
+
+        <TextView
+            android:id="@+id/ui_textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_start_time_mj"
+            android:paddingTop="15dp"
+            android:text="@string/what_else_used"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <CheckBox
+            android:id="@+id/ui_checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_textView7"
+            android:text="@string/alcohol" />
+
+        <CheckBox
+            android:id="@+id/ui_checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_checkBox1"
+            android:text="@string/tobacco" />
+
+        <CheckBox
+            android:id="@+id/ui_checkBox3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_checkBox2"
+            android:text="@string/caffeine" />
+
+        <LinearLayout
+            android:id="@+id/ui_other_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_checkBox3"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ui_check_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ui_check_other_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/other" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/ui_textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_other_container"
+            android:text="@string/rate_craving"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <SeekBar
+            android:id="@+id/ui_rate_craving"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/ui_textView4"
+            android:max="10"
+            android:progress="-1" />
+
+
+        <TextView
+            android:id="@+id/ui_feeling_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_rate_craving"
+            android:text="@string/how_high_are_you_feeling"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <SeekBar
+            android:id="@+id/ui_rate_how_high"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ui_feeling_header"
+            android:layout_alignStart="@+id/ui_feeling_header"
+            android:layout_below="@+id/ui_feeling_header"
+            android:max="10"
+            android:progress="-1" />
+
+        <TextView
+            android:id="@+id/ui_textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ui_rate_how_high"
+            android:layout_alignStart="@+id/ui_rate_how_high"
+            android:layout_below="@+id/ui_rate_how_high"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ui_textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/ui_rate_how_high"
+            android:layout_below="@+id/ui_rate_how_high"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+
+
+
+
+        <TextView
+            android:id="@+id/ui_textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_textView12"
+            android:text="@string/mj_social"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <RadioGroup
+            android:id="@+id/ui_social_context"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_textView24"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/ui_social_alone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="alone"
+                android:text="@string/alone" />
+
+            <RadioButton
+                android:id="@+id/ui_social_not_alone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="with_others"
+                android:text="@string/not_alone" />
+        </RadioGroup>
+
+
+
+        <Button
+            android:id="@+id/ui_initiated_submit_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_social_context"
+            android:layout_marginTop="16dp"
+            android:background="@color/primary"
+            android:text="@string/btn_submit" />
+
+        <Button
+            android:id="@+id/ui_initiated_cancel_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_initiated_submit_2"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_cancel" />
+
+
+
+    </RelativeLayout>
+</ScrollView>

@@ -40,6 +40,7 @@
     <string name="btn_no">No</string>
     <string name="btn_submit">Submit</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="when_did_mj_start">When did MJ use start ?</string>
 
     <string name="btn_schedule">Schedule</string>
 

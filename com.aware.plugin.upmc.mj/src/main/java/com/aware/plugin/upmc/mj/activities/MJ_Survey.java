@@ -12,6 +12,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,6 +27,7 @@ import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
 import com.aware.ESM;
+import com.aware.plugin.upmc.mj.Constants;
 import com.aware.plugin.upmc.mj.Plugin;
 import com.aware.plugin.upmc.mj.Provider;
 import com.aware.plugin.upmc.mj.R;
@@ -51,10 +53,15 @@ public class MJ_Survey extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("MJ_SURVEY", "onCreate()");
+
         if (!Aware.IS_CORE_RUNNING) {
             Intent aware = new Intent(this, Aware.class);
             startService(aware);
+            Log.d("MJ_SURVEY", "AWARE CORE INSTALLED");
+
         }
+        Log.d("MJ_SURVEY", "onCreate() ending");
     }
 
     @Override
@@ -190,6 +197,8 @@ public class MJ_Survey extends AppCompatActivity {
                 }
 
                 if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
+
+                    Log.d(Constants.TAG, "1 if");
 
                     //clear notification
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -404,6 +413,9 @@ public class MJ_Survey extends AppCompatActivity {
                     });
 
                 } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
+
+                    Log.d(Constants.TAG, "2 if");
+
 
                     //clear notification
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -621,36 +633,42 @@ public class MJ_Survey extends AppCompatActivity {
                         }
                     });
                 } else {
-
+                    Log.d(Constants.TAG, "3 if");
                     //clear notification
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     notificationManager.cancel(Plugin.UPMC_NOTIFICATIONS);
-
                     fingerprint = new JSONObject();
-
-                    setContentView(R.layout.activity_mj_initiated_last);
-
-                    final SeekBar rate_how_high = findViewById(R.id.rate_how_high);
-                    final CheckBox used_alcohol = findViewById(R.id.checkBox1);
-                    final CheckBox used_tobacco = findViewById(R.id.checkBox2);
-                    final CheckBox used_caffeine = findViewById(R.id.checkBox3);
-                    final CheckBox used_other = findViewById(R.id.check_other);
-                    final EditText used_other_dec = findViewById(R.id.check_other_input);
+                    setContentView(R.layout.activity_mj_user_initiated);
+                    final DatePicker mj_start_date = findViewById(R.id.u1_start_date_mj);
+                    final TimePicker mj_start_time = findViewById(R.id.ui_start_time_mj);
+                    final SeekBar rate_how_high = findViewById(R.id.ui_rate_how_high);
+                    final SeekBar rate_mj_craving = findViewById(R.id.ui_rate_craving);
+                    final CheckBox used_alcohol = findViewById(R.id.ui_checkBox1);
+                    final CheckBox used_tobacco = findViewById(R.id.ui_checkBox2);
+                    final CheckBox used_caffeine = findViewById(R.id.ui_checkBox3);
+                    final CheckBox used_other = findViewById(R.id.ui_check_other);
+                    final EditText used_other_dec = findViewById(R.id.ui_check_other_input);
                     used_other_dec.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             used_other.setChecked(true);
                         }
                     });
-                    final RadioGroup socialMJ = findViewById(R.id.social_context);
+                    final RadioGroup socialMJ = findViewById(R.id.ui_social_context);
 
-                    Button initiated_submit_2 = findViewById(R.id.initiated_submit_2);
+                    Button initiated_submit_2 = findViewById(R.id.ui_initiated_submit_2);
                     initiated_submit_2.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
-
+                        public void onClick(View view) {
+                                Log.d(Constants.TAG, "MJ_SURVEY:Ui survey");
                             try {
+                                updateFingerprint("mj_start_date", mj_start_date.getDayOfMonth() + "-" + mj_start_date.getMonth() + "-" + mj_start_date.getYear());
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                    updateFingerprint("last_time_mj", mj_start_time.getHour() + ":" + mj_start_time.getMinute());
+                                else
+                                    updateFingerprint("last_time_mj", mj_start_time.getCurrentHour() + ":" + mj_start_time.getCurrentMinute());
                                 updateFingerprint("rate_how_high", rate_how_high.getProgress());
+                                updateFingerprint("rate_mj_craving", rate_mj_craving.getProgress());
                                 updateFingerprint("used_alcohol", used_alcohol.isChecked());
                                 updateFingerprint("used_tobacco", used_tobacco.isChecked());
                                 updateFingerprint("used_caffeine", used_caffeine.isChecked());
@@ -660,125 +678,154 @@ public class MJ_Survey extends AppCompatActivity {
                                     updateFingerprint("social_context", findViewById(socialMJ.getCheckedRadioButtonId()).getTag().toString());
                                 else
                                     updateFingerprint("social_context", "NA");
+
+                                saveFingerprint(false);
+                                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+                                finish();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                            setContentView(R.layout.activity_mj_survey_marijuana_positive);
-
-                            final DatePicker lastDay = findViewById(R.id.last_date_mj);
-                            final TimePicker lastTime = findViewById(R.id.last_time_mj);
-
-                            final CheckBox joint = findViewById(R.id.check_joint);
-                            final CheckBox pipe = findViewById(R.id.check_pipe);
-                            final CheckBox bong = findViewById(R.id.check_bong);
-                            final CheckBox blunt = findViewById(R.id.check_blunt);
-                            final CheckBox other = findViewById(R.id.check_other);
-                            final EditText other_desc = findViewById(R.id.check_other_input);
-                            other_desc.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                    if (s.length() == 0) other.setChecked(false);
-                                    else other.setChecked(true);
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable s) {
-                                }
-                            });
-
-                            final EditText mj_amount = findViewById(R.id.how_much_mj);
-
-                            Button initiated_submit_3 = findViewById(R.id.initiated_submit_3);
-                            initiated_submit_3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                    try {
-                                        updateFingerprint("last_day_mj", lastDay.getDayOfMonth() + "-" + lastDay.getMonth() + "-" + lastDay.getYear());
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                                            updateFingerprint("last_time_mj", lastTime.getHour() + ":" + lastTime.getMinute());
-                                        else
-                                            updateFingerprint("last_time_mj", lastTime.getCurrentHour() + ":" + lastTime.getCurrentMinute());
-                                        updateFingerprint("used_joint", joint.isChecked());
-                                        updateFingerprint("used_pipe", pipe.isChecked());
-                                        updateFingerprint("used_bong", bong.isChecked());
-                                        updateFingerprint("used_blunt", blunt.isChecked());
-                                        updateFingerprint("used_other", other.isChecked());
-                                        updateFingerprint("other_desc", other_desc.getText().toString());
-                                        updateFingerprint("used_amount", mj_amount.getText().toString());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    setContentView(R.layout.activity_mj_initiated_ratings);
-
-                                    final SeekBar craving = findViewById(R.id.rate_craving);
-                                    final SeekBar relaxed = findViewById(R.id.rate_relaxed);
-                                    final SeekBar sluggish = findViewById(R.id.rate_sluggish);
-                                    final SeekBar fogging = findViewById(R.id.rate_foggy);
-                                    final SeekBar anxious = findViewById(R.id.rate_anxious);
-                                    final SeekBar sad = findViewById(R.id.rate_sad);
-
-                                    Button initiated_submit_1 = findViewById(R.id.initiated_submit_1);
-                                    initiated_submit_1.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            try {
-                                                updateFingerprint("rate_craving", craving.getProgress());
-                                                updateFingerprint("rate_relaxed", relaxed.getProgress());
-                                                updateFingerprint("rate_sluggish", sluggish.getProgress());
-                                                updateFingerprint("rate_foggy", fogging.getProgress());
-                                                updateFingerprint("rate_anxious", anxious.getProgress());
-                                                updateFingerprint("rate_sad", sad.getProgress());
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                            saveFingerprint(false);
-
-                                            Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
-
-                                            startMUSE();
-
-                                            finish();
-                                        }
-                                    });
-
-                                    Button cancel = findViewById(R.id.initiated_cancel_1);
-                                    cancel.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            saveFingerprint(true);
-                                            finish();
-                                        }
-                                    });
-                                }
-                            });
-
-                            Button cancel = findViewById(R.id.initiated_cancel_3);
-                            cancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    saveFingerprint(true);
-                                    finish();
-                                }
-                            });
                         }
                     });
 
-                    Button cancel = findViewById(R.id.initiated_cancel_2);
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            saveFingerprint(true);
-                            finish();
-                        }
-                    });
+
+
+
+
+//                        @Override
+//                        public void onClick(View v) {
+//
+//                            try {
+//                                updateFingerprint("rate_how_high", rate_how_high.getProgress());
+//                                updateFingerprint("used_alcohol", used_alcohol.isChecked());
+//                                updateFingerprint("used_tobacco", used_tobacco.isChecked());
+//                                updateFingerprint("used_caffeine", used_caffeine.isChecked());
+//                                updateFingerprint("used_other", used_other.isChecked());
+//                                updateFingerprint("used_other_desc", used_other_dec.getText().toString());
+//                                if (socialMJ.getCheckedRadioButtonId() != -1)
+//                                    updateFingerprint("social_context", findViewById(socialMJ.getCheckedRadioButtonId()).getTag().toString());
+//                                else
+//                                    updateFingerprint("social_context", "NA");
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            setContentView(R.layout.activity_mj_survey_marijuana_positive);
+//
+//                            final DatePicker lastDay = findViewById(R.id.last_date_mj);
+//                            final TimePicker lastTime = findViewById(R.id.last_time_mj);
+//
+//                            final CheckBox joint = findViewById(R.id.check_joint);
+//                            final CheckBox pipe = findViewById(R.id.check_pipe);
+//                            final CheckBox bong = findViewById(R.id.check_bong);
+//                            final CheckBox blunt = findViewById(R.id.check_blunt);
+//                            final CheckBox other = findViewById(R.id.check_other);
+//                            final EditText other_desc = findViewById(R.id.check_other_input);
+//                            other_desc.addTextChangedListener(new TextWatcher() {
+//                                @Override
+//                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                                }
+//
+//                                @Override
+//                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                                    if (s.length() == 0) other.setChecked(false);
+//                                    else other.setChecked(true);
+//                                }
+//
+//                                @Override
+//                                public void afterTextChanged(Editable s) {
+//                                }
+//                            });
+//
+//                            final EditText mj_amount = findViewById(R.id.how_much_mj);
+//
+//                            Button initiated_submit_3 = findViewById(R.id.initiated_submit_3);
+//                            initiated_submit_3.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//
+//                                    try {
+//                                        updateFingerprint("last_day_mj", lastDay.getDayOfMonth() + "-" + lastDay.getMonth() + "-" + lastDay.getYear());
+//                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                                            updateFingerprint("last_time_mj", lastTime.getHour() + ":" + lastTime.getMinute());
+//                                        else
+//                                            updateFingerprint("last_time_mj", lastTime.getCurrentHour() + ":" + lastTime.getCurrentMinute());
+//                                        updateFingerprint("used_joint", joint.isChecked());
+//                                        updateFingerprint("used_pipe", pipe.isChecked());
+//                                        updateFingerprint("used_bong", bong.isChecked());
+//                                        updateFingerprint("used_blunt", blunt.isChecked());
+//                                        updateFingerprint("used_other", other.isChecked());
+//                                        updateFingerprint("other_desc", other_desc.getText().toString());
+//                                        updateFingerprint("used_amount", mj_amount.getText().toString());
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//
+//                                    setContentView(R.layout.activity_mj_initiated_ratings);
+//
+//                                    final SeekBar craving = findViewById(R.id.rate_craving);
+//                                    final SeekBar relaxed = findViewById(R.id.rate_relaxed);
+//                                    final SeekBar sluggish = findViewById(R.id.rate_sluggish);
+//                                    final SeekBar fogging = findViewById(R.id.rate_foggy);
+//                                    final SeekBar anxious = findViewById(R.id.rate_anxious);
+//                                    final SeekBar sad = findViewById(R.id.rate_sad);
+//
+//                                    Button initiated_submit_1 = findViewById(R.id.initiated_submit_1);
+//                                    initiated_submit_1.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            try {
+//                                                updateFingerprint("rate_craving", craving.getProgress());
+//                                                updateFingerprint("rate_relaxed", relaxed.getProgress());
+//                                                updateFingerprint("rate_sluggish", sluggish.getProgress());
+//                                                updateFingerprint("rate_foggy", fogging.getProgress());
+//                                                updateFingerprint("rate_anxious", anxious.getProgress());
+//                                                updateFingerprint("rate_sad", sad.getProgress());
+//                                            } catch (JSONException e) {
+//                                                e.printStackTrace();
+//                                            }
+//
+//                                            saveFingerprint(false);
+//
+//                                            Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+//
+//                                            startMUSE();
+//
+//                                            finish();
+//                                        }
+//                                    });
+//
+//                                    Button cancel = findViewById(R.id.initiated_cancel_1);
+//                                    cancel.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            saveFingerprint(true);
+//                                            finish();
+//                                        }
+//                                    });
+//                                }
+//                            });
+//
+//                            Button cancel = findViewById(R.id.initiated_cancel_3);
+//                            cancel.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    saveFingerprint(true);
+//                                    finish();
+//                                }
+//                            });
+//                        }
+//                    });
+//
+//                    Button cancel = findViewById(R.id.initiated_cancel_2);
+//                    cancel.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            saveFingerprint(true);
+//                            finish();
+//                        }
+//                    });
                 }
             }
         } else {
