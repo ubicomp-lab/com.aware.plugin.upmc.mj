@@ -82,6 +82,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.aware.plugin.upmc.mj.activities.AlarmReceiver"/>
+
         <!-- AWARE sync adapter services -->
         <service
             android:name="com.aware.syncadapters.Accelerometer_Sync"

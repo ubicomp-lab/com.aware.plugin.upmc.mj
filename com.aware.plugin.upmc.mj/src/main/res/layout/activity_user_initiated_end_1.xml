@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/ui_mj_end_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/when_did_mj_end"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <DatePicker
+            android:id="@+id/ui_end_date_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_mj_end_header"
+            android:layout_centerHorizontal="true"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <TimePicker
+            android:id="@+id/ui_end_time_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_end_date_mj"
+            android:layout_centerHorizontal="true"
+            android:timePickerMode="spinner" />
+
+
+
+        <TextView
+            android:id="@+id/ui_textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_end_time_mj"
+            android:paddingTop="15dp"
+            android:text="@string/how_used"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_c1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_textView15"
+            android:text="@string/joint" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_c2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_mj_usage_c1"
+            android:text="@string/pipe" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_c3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_mj_usage_c2"
+            android:text="@string/bong" />
+        <CheckBox
+            android:id="@+id/ui_mj_usage_c4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_mj_usage_c3"
+            android:text="@string/blunt" />
+
+
+        <LinearLayout
+            android:id="@+id/ui_other_usage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_mj_usage_c4"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ui_check_other_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ui_check_other_usage_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/other" />
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/ui_textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_other_usage"
+            android:text="@string/rate_quantity"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <EditText
+            android:id="@+id/ui_rate_mj_quantity"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/ui_textView14"
+            android:hint="@string/how_much_hint"
+             />
+
+
+
+        <TextView
+            android:id="@+id/ui_end_textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_rate_mj_quantity"
+            android:paddingTop="15dp"
+            android:text="@string/what_else_used"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <CheckBox
+            android:id="@+id/ui_end_checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_end_textView7"
+            android:text="@string/alcohol" />
+
+        <CheckBox
+            android:id="@+id/ui_end_checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_end_checkBox1"
+            android:text="@string/tobacco" />
+
+        <CheckBox
+            android:id="@+id/ui_end_checkBox3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_end_checkBox2"
+            android:text="@string/caffeine" />
+
+        <LinearLayout
+            android:id="@+id/ui_end_other_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_end_checkBox3"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ui_end_check_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ui_end_check_other_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/other" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/ui_initiated_submit_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_end_other_container"
+            android:layout_marginTop="16dp"
+            android:background="@color/primary"
+            android:text="@string/btn_next" />
+
+        <Button
+            android:id="@+id/ui_initiated_cancel_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_initiated_submit_3"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_cancel" />
+
+
+
+    </RelativeLayout>
+</ScrollView>

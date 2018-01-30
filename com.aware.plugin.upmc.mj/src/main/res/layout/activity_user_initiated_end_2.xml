@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+
+        <TextView
+            android:id="@+id/ui_textView15_er"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:paddingTop="15dp"
+            android:text="@string/reason"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_r1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_textView15_er"
+            android:text="@string/cope" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_r2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_mj_usage_r1"
+            android:text="@string/social" />
+
+
+
+        <LinearLayout
+            android:id="@+id/ui_other_usage_r"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_mj_usage_r2"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ui_check_other_usage_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ui_check_other_input_usage_r"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/other" />
+
+        </LinearLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/ui_textView15_p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_other_usage_r"
+            android:text="@string/place"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_p1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_textView15_p"
+            android:text="@string/home1" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_p2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_mj_usage_p1"
+            android:text="@string/home2" />
+
+        <CheckBox
+            android:id="@+id/ui_mj_usage_p3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_mj_usage_p2"
+            android:text="@string/work" />
+        <CheckBox
+            android:id="@+id/ui_mj_usage_p4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_mj_usage_p3"
+            android:text="@string/school" />
+
+
+        <LinearLayout
+            android:id="@+id/ui_other_usage_p"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_mj_usage_p4"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ui_check_other_usage_p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ui_check_other_input_usage_p"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/other" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/ui_initiated_submit_2r"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_other_usage_p"
+            android:layout_marginTop="16dp"
+            android:background="@color/primary"
+            android:text="@string/btn_next" />
+
+        <Button
+            android:id="@+id/ui_initiated_cancel_2r"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ui_initiated_submit_2r"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_cancel" />
+
+
+
+    </RelativeLayout>
+</ScrollView>

@@ -30,6 +30,9 @@ public class Plugin extends Aware_Plugin {
     public static final String UPMC_CHANNEL_ID = "UPMC_CHANNEL_ID";
     public static final int UPMC_NOTIFICATIONS = 424242;
 
+    public static final String ACTION_USER_INIT_START = "action_user_init_start";
+    public static final String ACTION_USER_INIT_END = "action_user_init_end";
+
     /**
      * Shown in the lock screen for self-reports
      */

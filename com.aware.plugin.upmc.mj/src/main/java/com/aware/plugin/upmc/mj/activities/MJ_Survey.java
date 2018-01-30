@@ -1,8 +1,11 @@
 package com.aware.plugin.upmc.mj.activities;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -27,7 +30,6 @@ import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
 import com.aware.ESM;
-import com.aware.plugin.upmc.mj.Constants;
 import com.aware.plugin.upmc.mj.Plugin;
 import com.aware.plugin.upmc.mj.Provider;
 import com.aware.plugin.upmc.mj.R;
@@ -48,6 +50,9 @@ public class MJ_Survey extends AppCompatActivity {
     private JSONObject morning;
     private JSONObject evening;
     private JSONObject fingerprint;
+
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -412,7 +417,12 @@ public class MJ_Survey extends AppCompatActivity {
                         }
                     });
 
-                } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
+                }
+
+
+
+
+                else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
 
                     Log.d(Constants.TAG, "2 if");
 
@@ -632,7 +642,103 @@ public class MJ_Survey extends AppCompatActivity {
                             });
                         }
                     });
-                } else {
+                }
+                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_USER_INIT_END)) {
+                    Log.d(Constants.TAG,  "ACTION_USER_INIT_END");
+
+                } else
+                    {
+
+//                     setContentView(R.layout.activity_user_initiated_end_1);
+//                     final DatePicker mj_end_date = findViewById(R.id.ui_end_date_mj);
+//                     final TimePicker mj_end_time = findViewById(R.id.ui_end_time_mj);
+//                     final CheckBox used_joint = findViewById(R.id.ui_mj_usage_c1);
+//                     final CheckBox used_pipe = findViewById(R.id.ui_mj_usage_c2);
+//                     final CheckBox used_bong = findViewById(R.id.ui_mj_usage_c3);
+//                     final CheckBox used_blunt = findViewById(R.id.ui_mj_usage_c4);
+//                     final CheckBox used_other_way = findViewById(R.id.ui_check_other_usage);
+//                     final EditText other_way_input = findViewById(R.id.ui_check_other_usage_input);
+//                        used_other_way.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            used_other_way.setChecked(true);
+//                        }
+//                    });
+//
+//                    final EditText how_much_usage_e1 = findViewById(R.id.ui_rate_mj_quantity);
+//                    final CheckBox used_alcohol_e1  = findViewById(R.id.ui_end_checkBox1);
+//                    final CheckBox used_tobacco_e1 = findViewById(R.id.ui_end_checkBox2);
+//                    final CheckBox used_caffeine = findViewById(R.id.ui_end_checkBox3);
+//                    final CheckBox used_other_e1 = findViewById(R.id.ui_end_check_other);
+//                    final EditText used_other_dec_e1 = findViewById(R.id.ui_end_check_other_input);
+//                    used_other_dec_e1.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            used_other_e1.setChecked(true);
+//                        }
+//                    });
+//
+//                    final Button end1_submit_button = findViewById(R.id.ui_initiated_submit_3);
+//                    end1_submit_button.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//
+//                            try {
+//                                Log.d(Constants.TAG,  mj_end_date.getDayOfMonth() + "-" + mj_end_date.getMonth() + "-" + mj_end_date.getYear());
+//                                updateFingerprint("mj_end_date", mj_end_date.getDayOfMonth() + "-" + mj_end_date.getMonth() + "-" + mj_end_date.getYear());
+//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                                    updateFingerprint("mj_end_time", mj_end_time.getHour() + ":" + mj_end_time.getMinute());
+//                                else
+//                                    updateFingerprint("mj_end_time", mj_end_time.getCurrentHour() + ":" + mj_end_time.getCurrentMinute());
+//
+//                                updateFingerprint("used_joint",used_joint.isChecked());
+//                                updateFingerprint("used_pipe",used_pipe.isChecked());
+//                                updateFingerprint("used_bong",used_bong.isChecked());
+//                                updateFingerprint("used_blunt", used_blunt.isChecked());
+//                                if(used_other_way.isChecked()) {
+//
+//                                    final Button end1_cancel_button = findViewById(R.id.ui_initiated_cancel_3);
+//                                    end1_cancel_button.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View view) {
+//                                            try {
+//                                                updateFingerprint("used_other_way", other_way_input.getText());
+//                                            } catch (JSONException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                    });
+//
+//                                }
+//                                updateFingerprint("usage_quantity",how_much_usage_e1.getText());
+//                                updateFingerprint("used_alcohol", used_alcohol_e1.isChecked());
+//                                updateFingerprint("used_tobacco", used_tobacco_e1.isChecked());
+//                                updateFingerprint("used_caffeine", used_caffeine.isChecked());
+//                                if(used_other_e1.isChecked()) {
+//                                    updateFingerprint("used_other_substance", used_other_dec_e1.getText());
+//                                }
+//                                Log.d(Constants.TAG, "All fingerprints successful");
+//                                finish();
+//
+//                            }
+//                            catch (JSONException ex) {
+//                                ex.printStackTrace();
+//                            }
+//                        }
+//                    });
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
                     Log.d(Constants.TAG, "3 if");
                     //clear notification
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -681,6 +787,7 @@ public class MJ_Survey extends AppCompatActivity {
 
                                 saveFingerprint(false);
                                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+                                start3HrAlarm();
                                 finish();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -688,6 +795,8 @@ public class MJ_Survey extends AppCompatActivity {
 
                         }
                     });
+
+
 
 
 
@@ -836,6 +945,27 @@ public class MJ_Survey extends AppCompatActivity {
             startActivity(permissions);
         }
     }
+
+
+    private void start3HrAlarm() {
+        Log.d(Constants.TAG, "MJ_survey:start3HrAlarm");
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent_3hr = new Intent(this, AlarmReceiver.class);
+        alarmIntent_3hr.putExtra(Constants.ALARM_COMM, 2);
+        int interval = 60 * 1000; // change it to 3 hours
+
+//        int interval = 3 * 60 * 60 * 1000; // change it to 3 hours
+        PendingIntent alarmPendingIntent_3hr = PendingIntent.getBroadcast(this, 668, alarmIntent_3hr, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, alarmPendingIntent_3hr);
+        }
+        else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, alarmPendingIntent_3hr);
+        }
+
+
+    }
+
 
     //Launches the muse integration
     private void startMUSE() {
