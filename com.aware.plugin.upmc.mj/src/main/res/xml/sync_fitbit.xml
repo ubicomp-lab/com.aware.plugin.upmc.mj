@@ -5,4 +5,4 @@
     android:contentAuthority="com.aware.plugin.upmc.mj.provider.fitbit"
     android:isAlwaysSyncable="true"
     android:supportsUploading="true"
-    android:userVisible="true" />
+    android:userVisible="false" />

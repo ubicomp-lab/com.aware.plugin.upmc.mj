@@ -1,5 +1,6 @@
 package com.aware.plugin.upmc.mj;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,6 +18,9 @@ import com.aware.Aware;
 import com.aware.Aware_Preferences;
 import com.aware.plugin.upmc.mj.activities.MJ_Survey;
 import com.aware.utils.Aware_Plugin;
+import com.aware.utils.Scheduler;
+
+import org.json.JSONException;
 
 public class Plugin extends Aware_Plugin {
 
@@ -83,6 +87,17 @@ public class Plugin extends Aware_Plugin {
             builder.setChannelId(UPMC_CHANNEL_ID);
 
         notificationManager.notify(UPMC_PERSISTENT_NOTIFICATION, builder.build());
+
+        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CALL_LOG);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CONTACTS);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_SMS);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_PHONE_STATE);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.RECORD_AUDIO);
+
+        //Super class Aware_Plugin will handle check for permissions and set PERMISSIONS_OK to true inside onStartCommand. If we don't it keeps asking the permissions.
     }
 
     //This function gets called every 5 minutes by AWARE to make sure this plugin is still running.
@@ -109,40 +124,86 @@ public class Plugin extends Aware_Plugin {
                 );
             }
 
+            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_MORNING_MJ) == null) {
+                try {
+                    Scheduler.Schedule morning = new Scheduler.Schedule(Plugin.SCHEDULE_MORNING_MJ)
+                            .addHour(10)
+                            .addMinute(0)
+                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
+                            .setActionIntentAction(Plugin.ACTION_MJ_MORNING)
+                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
+
+                    Scheduler.saveSchedule(getApplicationContext(), morning);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_FINGERPRING_MJ) == null) {
+                try {
+                    Scheduler.Schedule afternoon = new Scheduler.Schedule(Plugin.SCHEDULE_FINGERPRING_MJ)
+                            .addHour(15)
+                            .addMinute(0)
+                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
+                            .setActionIntentAction(Plugin.ACTION_MJ_FINGERPRINT)
+                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
+
+                    Scheduler.saveSchedule(getApplicationContext(), afternoon);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_EVENING_MJ) == null) {
+                try {
+                    Scheduler.Schedule evening = new Scheduler.Schedule(Plugin.SCHEDULE_EVENING_MJ)
+                            .addHour(20)
+                            .addMinute(0)
+                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
+                            .setActionIntentAction(Plugin.ACTION_MJ_EVENING)
+                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
+
+                    Scheduler.saveSchedule(getApplicationContext(), evening);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            /**
+             * Survey in the morning. Called from the Scheduler
+             */
+            if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_MORNING)) {
+                Intent mj_survey = new Intent(this, MJ_Survey.class);
+                mj_survey.setAction(Plugin.ACTION_MJ_MORNING);
+                PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
+                showNotification("UPMC MJ - Morning", "Good morning! Tap to answer survey.", onClick, 5);
+            }
+
+            /**
+             * Survey in the evening. Called from the Scheduler
+             */
+            if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_EVENING)) {
+                Intent mj_survey = new Intent(this, MJ_Survey.class);
+                mj_survey.setAction(Plugin.ACTION_MJ_EVENING);
+                PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
+                showNotification("UPMC MJ - Evening", "Good evening! Tap to answer survey.", onClick, 6);
+            }
+
+            /**
+             * From lock-screen, on demand. Called from the Scheduler
+             */
+            if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_FINGERPRINT)) {
+                Intent mj_survey = new Intent(this, MJ_Survey.class);
+                mj_survey.setAction(Plugin.ACTION_MJ_FINGERPRINT);
+                PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
+                showNotification("UPMC MJ - Check up", "Just checking how you are doing. Tap to answer survey.", onClick, 0);
+            }
+
             //Initialise AWARE instance in plugin
             Aware.startAWARE(this);
         }
-
-        /**
-         * Survey in the morning. Called from the Scheduler
-         */
-        if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_MORNING)) {
-            Intent mj_survey = new Intent(this, MJ_Survey.class);
-            mj_survey.setAction(Plugin.ACTION_MJ_MORNING);
-            PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification("UPMC MJ - Morning", "Good morning! Tap to answer survey.", onClick, 5);
-        }
-
-        /**
-         * Survey in the evening. Called from the Scheduler
-         */
-        if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_EVENING)) {
-            Intent mj_survey = new Intent(this, MJ_Survey.class);
-            mj_survey.setAction(Plugin.ACTION_MJ_EVENING);
-            PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification("UPMC MJ - Evening", "Good evening! Tap to answer survey.", onClick, 6);
-        }
-
-        /**
-         * From lock-screen, on demand. Called from the Scheduler
-         */
-        if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_FINGERPRINT)) {
-            Intent mj_survey = new Intent(this, MJ_Survey.class);
-            mj_survey.setAction(Plugin.ACTION_MJ_FINGERPRINT);
-            PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-            showNotification("UPMC MJ - Check up", "Just checking how you are doing. Tap to answer survey.", onClick, 0);
-        }
-
         return START_STICKY;
     }
 

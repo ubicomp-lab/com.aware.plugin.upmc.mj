@@ -2,10 +2,12 @@ package com.aware.plugin.upmc.mj.activities;
 
 import android.Manifest;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,6 +28,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -35,7 +40,6 @@ import com.aware.plugin.upmc.mj.Plugin;
 import com.aware.plugin.upmc.mj.Provider;
 import com.aware.plugin.upmc.mj.R;
 import com.aware.ui.PermissionsHandler;
-import com.aware.utils.Scheduler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,9 +56,12 @@ public class MJ_Survey extends AppCompatActivity {
     private JSONObject evening;
     private JSONObject fingerprint;
 
+    private boolean permissions_ok = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Log.d(Constants.TAG, "onCreate()");
         ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
         REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -65,8 +72,6 @@ public class MJ_Survey extends AppCompatActivity {
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_SMS);
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_PHONE_STATE);
         REQUIRED_PERMISSIONS.add(Manifest.permission.RECORD_AUDIO);
-
-        boolean permissions_ok = true;
 
         for (String p : REQUIRED_PERMISSIONS) {
             if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
@@ -82,17 +87,21 @@ public class MJ_Survey extends AppCompatActivity {
             permissions.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(permissions);
             finish();
+        } else {
+            if (!Aware.IS_CORE_RUNNING) {
+                //This initialises the core framework, assigns Device ID if it doesn't exist yet, etc.
+                Intent aware = new Intent(getApplicationContext(), Aware.class);
+                startService(aware);
+            }
         }
     }
-
 
     private class AsyncJoin extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
 
-            Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
             Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
+
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SIGNIFICANT_MOTION, true); //to make accelerometer logging less verbose.
@@ -121,7 +130,6 @@ public class MJ_Survey extends AppCompatActivity {
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.ACCURACY_GOOGLE_FUSED_LOCATION, 102);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.FALLBACK_LOCATION_TIMEOUT, 20);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.LOCATION_SENSITIVITY, 5);
-            Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL, "raghu\'s samsung j3");
 
             Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
             Aware.startPlugin(getApplicationContext(), "com.aware.plugin.device_usage");
@@ -151,64 +159,71 @@ public class MJ_Survey extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_mj, menu);
+        for(int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            if (item.getTitle().toString().equalsIgnoreCase("Sync") && !Aware.isStudy(getApplicationContext())) {
+                item.setVisible(false);
+            }
+        }
+        return true;
+    }
+
+    @Override
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onResume();
+            return true;
+        }
+
+        String title = item.getTitle().toString();
+        if (title.equalsIgnoreCase("Participant")) {
+            View participantInfo = getLayoutInflater().inflate(R.layout.participant_info, null);
+            TextView uuid = participantInfo.findViewById(R.id.device_id);
+            uuid.setText("UUID: " + Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
+
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+            mBuilder.setTitle("AWARE Device ID");
+            mBuilder.setView(participantInfo);
+            mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            mBuilder.create().show();
+            return true;
+        }
+
+        if (title.equalsIgnoreCase("Sync")) {
+            sendBroadcast(new Intent(Aware.ACTION_AWARE_SYNC_DATA));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.d(Constants.TAG, "onResume");
 
-
-        if (Aware.isStudy(this)) {
-            Applications.isAccessibilityServiceActive(getApplicationContext());
-            Aware.isBatteryOptimizationIgnored(getApplicationContext(), "com.aware.plugin.upmc.mj");
+        if (!permissions_ok) {
+            return; //not done yet with permissions
         }
 
         if (!Aware.isStudy(getApplicationContext())) {
             new AsyncJoin().execute();
+
         } else {
-            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_MORNING_MJ) == null) {
-                try {
-                    Scheduler.Schedule morning = new Scheduler.Schedule(Plugin.SCHEDULE_MORNING_MJ)
-                            .addHour(10)
-                            .addMinute(0)
-                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
-                            .setActionIntentAction(Plugin.ACTION_MJ_MORNING)
-                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
+            Applications.isAccessibilityServiceActive(getApplicationContext());
+            Aware.isBatteryOptimizationIgnored(getApplicationContext(), "com.aware.plugin.upmc.mj");
 
-                    Scheduler.saveSchedule(getApplicationContext(), morning);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_FINGERPRING_MJ) == null) {
-                try {
-                    Scheduler.Schedule afternoon = new Scheduler.Schedule(Plugin.SCHEDULE_FINGERPRING_MJ)
-                            .addHour(15)
-                            .addMinute(0)
-                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
-                            .setActionIntentAction(Plugin.ACTION_MJ_FINGERPRINT)
-                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
-
-                    Scheduler.saveSchedule(getApplicationContext(), afternoon);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_EVENING_MJ) == null) {
-                try {
-                    Scheduler.Schedule evening = new Scheduler.Schedule(Plugin.SCHEDULE_EVENING_MJ)
-                            .addHour(20)
-                            .addMinute(0)
-                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
-                            .setActionIntentAction(Plugin.ACTION_MJ_EVENING)
-                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
-
-                    Scheduler.saveSchedule(getApplicationContext(), evening);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
 
             if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
@@ -1910,7 +1925,6 @@ public class MJ_Survey extends AppCompatActivity {
 
 
     }
-
 
     //Launches the muse integration
     private void startMUSE() {

@@ -5,4 +5,4 @@
     android:contentAuthority="com.aware.plugin.upmc.mj.provider.esm"
     android:isAlwaysSyncable="true"
     android:supportsUploading="true"
-    android:userVisible="true" />
+    android:userVisible="false" />
