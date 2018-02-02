@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -92,6 +93,7 @@ public class MJ_Survey extends AppCompatActivity {
                 //This initialises the core framework, assigns Device ID if it doesn't exist yet, etc.
                 Intent aware = new Intent(getApplicationContext(), Aware.class);
                 startService(aware);
+
             }
         }
     }
@@ -150,7 +152,6 @@ public class MJ_Survey extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.d(Constants.TAG, "Joined ok!");
             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
             Toast.makeText(getApplicationContext(), "Joined OK!", Toast.LENGTH_LONG).show();
@@ -216,7 +217,29 @@ public class MJ_Survey extends AppCompatActivity {
         }
 
         if (!Aware.isStudy(getApplicationContext())) {
-            new AsyncJoin().execute();
+            setContentView(R.layout.activity_mj_survey_main);
+            Button submitButton = findViewById(R.id.join_study);
+            final ProgressBar progressBar = findViewById(R.id.joining_study);
+            progressBar.setVisibility(View.INVISIBLE);
+            final EditText editText = findViewById(R.id.participant_label);
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(editText.getText().length()!=0) {
+                        Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL , editText.getText().toString(),Aware_Preferences.DEVICE_LABEL);
+                        progressBar.setVisibility(View.VISIBLE);
+                        new AsyncJoin().execute();
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please enter a valid label", Toast.LENGTH_LONG).show();
+                        Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
+                        Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
+                    }
+
+                }
+            });
+
 
         } else {
             Applications.isAccessibilityServiceActive(getApplicationContext());
@@ -1831,8 +1854,7 @@ public class MJ_Survey extends AppCompatActivity {
 
         final CheckBox loc_home = findViewById(R.id.ui_mj_usage_p1);
         final CheckBox loc_other_home = findViewById(R.id.ui_mj_usage_p2);
-        final CheckBox loc_work = findViewById(R.id.ui_mj_usage_p3);
-        final CheckBox loc_school = findViewById(R.id.ui_mj_usage_p4);
+        final CheckBox loc_school_work = findViewById(R.id.ui_mj_usage_p3);
         final EditText loc_other = findViewById(R.id.ui_check_other_input_usage_p);
         final CheckBox used_other_loc = findViewById(R.id.ui_check_other_usage_p);
         used_other_loc.setOnClickListener(new View.OnClickListener() {
@@ -1854,8 +1876,7 @@ public class MJ_Survey extends AppCompatActivity {
                     }
                     updateFingerprint("loc_home",  loc_home.isChecked());
                     updateFingerprint("loc_other_home", loc_other_home.isChecked());
-                    updateFingerprint("loc_work",  loc_work.isChecked());
-                    updateFingerprint("loc_school",  loc_school.isChecked());
+                    updateFingerprint("loc_work_school",  loc_school_work.isChecked());
                     if(used_other_loc.isChecked())
                         updateFingerprint("loc_other",  loc_other.getText());
 
@@ -1909,7 +1930,6 @@ public class MJ_Survey extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
                 Log.d(Constants.TAG, "" + fingerprint.toString());
                 saveFingerprint(false);
-                startMUSE();
                 finish();
             }
         });

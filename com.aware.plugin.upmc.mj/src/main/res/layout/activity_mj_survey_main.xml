@@ -13,15 +13,6 @@
         android:layout_centerVertical="true"
         android:text="Join" />
 
-    <Button
-        android:id="@+id/sync_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/join_study"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/join_study"
-        android:text="Sync" />
-
     <EditText
         android:id="@+id/participant_label"
         android:layout_width="wrap_content"
@@ -29,7 +20,7 @@
         android:layout_above="@+id/join_study"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="Participant label"
+        android:hint="Enter a Participant label"
         android:inputType="text" />
 
     <TextView

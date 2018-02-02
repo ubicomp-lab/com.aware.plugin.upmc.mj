@@ -100,21 +100,14 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ui_mj_usage_p2"
             android:text="@string/work" />
-        <CheckBox
-            android:id="@+id/ui_mj_usage_p4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_mj_usage_p3"
-            android:text="@string/school" />
+
 
 
         <LinearLayout
             android:id="@+id/ui_other_usage_p"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_mj_usage_p4"
+            android:layout_below="@+id/ui_mj_usage_p3"
             android:orientation="horizontal">
 
             <CheckBox

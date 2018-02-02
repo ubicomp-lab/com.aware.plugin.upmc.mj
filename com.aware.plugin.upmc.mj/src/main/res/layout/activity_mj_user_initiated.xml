@@ -115,10 +115,33 @@
 
 
         <TextView
+            android:id="@+id/ui_textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ui_rate_craving"
+            android:layout_alignStart="@+id/ui_rate_craving"
+            android:layout_below="@+id/ui_rate_craving"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ui_textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/ui_rate_craving"
+            android:layout_below="@+id/ui_rate_craving"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+
+
+        <TextView
             android:id="@+id/ui_feeling_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_rate_craving"
+            android:layout_below="@+id/ui_textView18"
             android:text="@string/how_high_are_you_feeling"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
