@@ -35,9 +35,37 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Intent mj_survey = new Intent(context, MJ_Survey.class);
         mj_survey.setAction(Plugin.ACTION_USER_INIT_END);
+        mj_survey.putExtra(Constants.EMA_SENT_KEY, System.currentTimeMillis());
         PendingIntent onClick = PendingIntent.getActivity(context, 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-        showNotification(context, "UPMC MJ - End of Use", "Finish your survey", onClick);
+        showNotification(context, "UPMC MJ - End of Use", "Finish your survey", onClick, 5);
 
+    }
+
+
+
+    private void showNotification(Context context, String title, String description, PendingIntent onClick, int expires_hours) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+        mBuilder.setSmallIcon(R.drawable.ic_action_esm)
+                .setContentTitle(title)
+                .setContentText(description)
+                .setOnlyAlertOnce(true)
+                .setAutoCancel(true)
+                .setContentIntent(onClick);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            mBuilder.setChannelId(UPMC_CHANNEL_ID);
+
+        mNotificationManager.notify(UPMC_NOTIFICATIONS, mBuilder.build());
+
+        if (expires_hours > 0) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent expiredBroadcast = new Intent(context, Plugin.MJNotificationObserver.class);
+            expiredBroadcast.setAction(ACTION_MJ_NOTIFICATION_EXPIRED);
+            expiredBroadcast.putExtra("type", "user_initiated");
+            PendingIntent alarmPending = PendingIntent.getBroadcast(context, 0, expiredBroadcast, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (expires_hours * 60 * 60 * 1000), alarmPending); //expire the notification after x hours.
+        }
     }
 
 

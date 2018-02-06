@@ -154,8 +154,13 @@ public class MJ_Survey extends AppCompatActivity {
             super.onPostExecute(aVoid);
             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
-            Toast.makeText(getApplicationContext(), "Joined OK!", Toast.LENGTH_LONG).show();
-            finish();
+            if(!Aware.isStudy(getApplicationContext()))
+                Toast.makeText(getApplicationContext(), "Join failed, please try again!", Toast.LENGTH_LONG).show();
+
+            else {
+                Toast.makeText(getApplicationContext(), "Joined OK!", Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
     }
 
@@ -687,7 +692,11 @@ public class MJ_Survey extends AppCompatActivity {
                 });
             } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_USER_INIT_END)) {
                 Log.d(Constants.TAG, "ACTION_USER_INIT_END");
-                showUISurvey1();
+                if(getIntent().hasExtra(Constants.EMA_SENT_KEY)) {
+                    long ema_asked_timestamp = getIntent().getLongExtra(Constants.EMA_SENT_KEY, -1);
+                    Log.d(Constants.TAG, "MJ_SURVEY " + ema_asked_timestamp);
+                    showUISurvey1( ema_asked_timestamp);
+                }
             } else {
 
                 // start 3 hour alarm part.
@@ -1755,7 +1764,7 @@ public class MJ_Survey extends AppCompatActivity {
 
     }
 
-    public void showUISurvey1() {
+    public void showUISurvey1(final long ema_asked_timestamp) {
         setContentView(R.layout.activity_user_initiated_end_1);
         fingerprint = new JSONObject();
         final DatePicker mj_end_date = findViewById(R.id.ui_end_date_mj);
@@ -1798,7 +1807,7 @@ public class MJ_Survey extends AppCompatActivity {
                         updateFingerprint("mj_end_time", mj_end_time.getHour() + ":" + mj_end_time.getMinute());
                     else
                         updateFingerprint("mj_end_time", mj_end_time.getCurrentHour() + ":" + mj_end_time.getCurrentMinute());
-
+                    updateFingerprint("ema_sent_timestamp", ema_asked_timestamp);
                     updateFingerprint("used_joint",used_joint.isChecked());
                     updateFingerprint("used_pipe",used_pipe.isChecked());
                     updateFingerprint("used_bong",used_bong.isChecked());
