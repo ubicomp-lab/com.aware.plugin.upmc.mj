@@ -5,10 +5,12 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -64,45 +66,13 @@ public class MJ_Survey extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Log.d(Constants.TAG, "onCreate()");
-        ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
-        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CALL_LOG);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CONTACTS);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_SMS);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_PHONE_STATE);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.RECORD_AUDIO);
 
-        for (String p : REQUIRED_PERMISSIONS) {
-            if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
-                permissions_ok = false;
-                break;
-            }
-        }
-
-        if (!permissions_ok) {
-            Intent permissions = new Intent(this, PermissionsHandler.class);
-            permissions.putExtra(PermissionsHandler.EXTRA_REQUIRED_PERMISSIONS, REQUIRED_PERMISSIONS);
-            permissions.putExtra(PermissionsHandler.EXTRA_REDIRECT_ACTIVITY, getPackageName() + "/" + getClass().getName());
-            permissions.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(permissions);
-            finish();
-        } else {
-            if (!Aware.IS_CORE_RUNNING) {
-                //This initialises the core framework, assigns Device ID if it doesn't exist yet, etc.
-                Intent aware = new Intent(getApplicationContext(), Aware.class);
-                startService(aware);
-
-            }
-        }
     }
 
     private class AsyncJoin extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
 
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
@@ -146,6 +116,10 @@ public class MJ_Survey extends AppCompatActivity {
             //Check doze whitelisting
             Aware.isBatteryOptimizationIgnored(getApplicationContext(), getPackageName());
             Log.d(Constants.TAG, "Joined study");
+
+
+
+
             return null;
         }
 
@@ -212,14 +186,117 @@ public class MJ_Survey extends AppCompatActivity {
 
     }
 
+
+    private JoinedStudy joinedObserver = new JoinedStudy();
+    private class JoinedStudy extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SIGNIFICANT_MOTION, true); //to make accelerometer logging less verbose.
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_BATTERY, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ESM, true); //in case we want to push ESMs from dashboard side
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_APPLICATIONS, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_NOTIFICATIONS, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_LIGHT, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.THRESHOLD_LIGHT, 5);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_COMMUNICATION_EVENTS, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_CALLS, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_MESSAGES, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SCREEN, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_NETWORK_EVENTS, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_WIFI_ONLY, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_FALLBACK_NETWORK, 6);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_WEBSERVICE, 30);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_CLEAN_OLD_DATA, 1);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_SILENT, true);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.STATUS_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, true);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.FREQUENCY_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, 300);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.device_usage.Settings.STATUS_PLUGIN_DEVICE_USAGE, true);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.STATUS_GOOGLE_FUSED_LOCATION, true);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.FREQUENCY_GOOGLE_FUSED_LOCATION, 300);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.MAX_FREQUENCY_GOOGLE_FUSED_LOCATION, 300);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.ACCURACY_GOOGLE_FUSED_LOCATION, 102);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.FALLBACK_LOCATION_TIMEOUT, 20);
+            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.LOCATION_SENSITIVITY, 5);
+
+            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.activity_recognition");
+            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.device_usage");
+            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.google.fused_location");
+            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.studentlife.audio_final");
+            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.fitbit");
+
+            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.upmc.mj");
+
+            //Check accessibility service
+            Applications.isAccessibilityServiceActive(getApplicationContext());
+            //Check doze whitelisting
+            Aware.isBatteryOptimizationIgnored(getApplicationContext(), getPackageName());
+            Log.d(Constants.TAG, "Joined study");
+
+            Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
+            Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
+            if(!Aware.isStudy(getApplicationContext()))
+                Toast.makeText(getApplicationContext(), "Join failed, please try again!", Toast.LENGTH_LONG).show();
+
+            else {
+                Toast.makeText(getApplicationContext(), "Joined OK!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(Constants.TAG, "onResume");
 
-        if (!permissions_ok) {
-            return; //not done yet with permissions
+
+
+
+        IntentFilter filter = new IntentFilter(Aware.ACTION_JOINED_STUDY);
+        registerReceiver(joinedObserver, filter);
+
+
+
+        ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
+        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CALL_LOG);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CONTACTS);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_SMS);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_PHONE_STATE);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.RECORD_AUDIO);
+
+        for (String p : REQUIRED_PERMISSIONS) {
+            if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
+                permissions_ok = false;
+                break;
+            }
         }
+
+        if (!permissions_ok) {
+            Intent permissions = new Intent(this, PermissionsHandler.class);
+            permissions.putExtra(PermissionsHandler.EXTRA_REQUIRED_PERMISSIONS, REQUIRED_PERMISSIONS);
+            permissions.putExtra(PermissionsHandler.EXTRA_REDIRECT_ACTIVITY, getPackageName() + "/" + getClass().getName());
+            permissions.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(permissions);
+            finish();
+        } else {
+            if (!Aware.IS_CORE_RUNNING) {
+                //This initialises the core framework, assigns Device ID if it doesn't exist yet, etc.
+                Intent aware = new Intent(getApplicationContext(), Aware.class);
+                startService(aware);
+
+            }
+        }
+
+
+
 
         if (!Aware.isStudy(getApplicationContext())) {
             setContentView(R.layout.activity_mj_survey_main);
@@ -233,7 +310,9 @@ public class MJ_Survey extends AppCompatActivity {
                     if(editText.getText().length()!=0) {
                         Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL , editText.getText().toString(),Aware_Preferences.DEVICE_LABEL);
                         progressBar.setVisibility(View.VISIBLE);
-                        new AsyncJoin().execute();
+                        //new AsyncJoin().execute();
+                        Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
+
 
                     }
                     else {
