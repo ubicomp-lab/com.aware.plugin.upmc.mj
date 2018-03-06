@@ -192,7 +192,7 @@ public class MJ_Survey extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            unregisterReceiver(joinedObserver);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SIGNIFICANT_MOTION, true); //to make accelerometer logging less verbose.
@@ -253,15 +253,6 @@ public class MJ_Survey extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(Constants.TAG, "onResume");
-
-
-
-
-        IntentFilter filter = new IntentFilter(Aware.ACTION_JOINED_STUDY);
-        registerReceiver(joinedObserver, filter);
-
-
-
         ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
         REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -296,8 +287,8 @@ public class MJ_Survey extends AppCompatActivity {
         }
 
 
-
-
+        IntentFilter filter = new IntentFilter(Aware.ACTION_JOINED_STUDY);
+        registerReceiver(joinedObserver, filter);
         if (!Aware.isStudy(getApplicationContext())) {
             setContentView(R.layout.activity_mj_survey_main);
             Button submitButton = findViewById(R.id.join_study);
