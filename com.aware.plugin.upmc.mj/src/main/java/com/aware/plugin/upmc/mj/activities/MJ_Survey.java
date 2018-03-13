@@ -194,53 +194,6 @@ public class MJ_Survey extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             unregisterReceiver(joinedObserver);
-
-            if (Scheduler.getSchedule(context, Plugin.SCHEDULE_MORNING_MJ) == null) {
-                try {
-                    Scheduler.Schedule morning = new Scheduler.Schedule(Plugin.SCHEDULE_MORNING_MJ)
-                            .addHour(10)
-                            .addMinute(0)
-                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
-                            .setActionIntentAction(Plugin.ACTION_MJ_MORNING)
-                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
-
-                    Scheduler.saveSchedule(getApplicationContext(), morning);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (Scheduler.getSchedule(context, Plugin.SCHEDULE_FINGERPRING_MJ) == null) {
-                try {
-                    Scheduler.Schedule afternoon = new Scheduler.Schedule(Plugin.SCHEDULE_FINGERPRING_MJ)
-                            .addHour(15)
-                            .addMinute(0)
-                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
-                            .setActionIntentAction(Plugin.ACTION_MJ_FINGERPRINT)
-                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
-
-                    Scheduler.saveSchedule(getApplicationContext(), afternoon);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (Scheduler.getSchedule(context, Plugin.SCHEDULE_EVENING_MJ) == null) {
-                try {
-                    Scheduler.Schedule evening = new Scheduler.Schedule(Plugin.SCHEDULE_EVENING_MJ)
-                            .addHour(20)
-                            .addMinute(0)
-                            .setActionType(Scheduler.ACTION_TYPE_SERVICE)
-                            .setActionIntentAction(Plugin.ACTION_MJ_EVENING)
-                            .setActionClass(getPackageName() + "/" + Plugin.class.getName());
-
-                    Scheduler.saveSchedule(getApplicationContext(), evening);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
             Aware.setSetting(getApplicationContext(), Aware_Preferences.DEBUG_FLAG, false); //enable logcat debug messages
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
@@ -1871,17 +1824,9 @@ public class MJ_Survey extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent_3hr = new Intent(this, AlarmReceiver.class);
         alarmIntent_3hr.putExtra(Constants.ALARM_COMM, 2);
-//        int interval = 60 * 1000; // change it to 3 hours
-
         int interval = 3 * 60 * 60 * 1000; // change it to 3 hours
         PendingIntent alarmPendingIntent_3hr = PendingIntent.getBroadcast(this, 668, alarmIntent_3hr, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, alarmPendingIntent_3hr);
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, alarmPendingIntent_3hr);
-        }
-
-
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, alarmPendingIntent_3hr);
     }
 
     public void showUISurvey1(final long ema_asked_timestamp) {

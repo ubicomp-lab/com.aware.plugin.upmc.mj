@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -31,6 +33,13 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d(Constants.TAG, "Alarm Received: " + intent.getIntExtra(Constants.ALARM_COMM, -1));
             LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.ALARM_LOCAL_RECEIVER_INTENT_FILTER));
         }
+
+
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "Wake Up");
+        wl.acquire(6000);
+        final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(3000);
 
 
         Intent mj_survey = new Intent(context, MJ_Survey.class);
