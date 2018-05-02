@@ -10,7 +10,7 @@ project.ext {
     target_sdk = (System.getenv("target_sdk") as Integer ?: 25)
     minimum_sdk = (System.getenv("minimum_sdk") as Integer ?: 19) //Android 4.0+
     build_tools = (System.getenv("build_tools") ?: "27.0.3")
-    aware_libs = (System.getenv("aware_libs") as String ?: "development-SNAPSHOT")
+    aware_libs = (System.getenv("aware_libs") as String ?: "master-SNAPSHOT")
 }
 
 buildscript {
