@@ -59,7 +59,7 @@ public class MJ_Survey extends AppCompatActivity {
     private JSONObject morning;
     private JSONObject evening;
     private JSONObject fingerprint;
-
+    private boolean isRegistered = false;
     private boolean permissions_ok = true;
 
     @Override
@@ -193,6 +193,7 @@ public class MJ_Survey extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            isRegistered = false;
             unregisterReceiver(joinedObserver);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.DEBUG_FLAG, false); //enable logcat debug messages
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
@@ -251,6 +252,14 @@ public class MJ_Survey extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        if(isRegistered)
+            unregisterReceiver(joinedObserver);
+        super.onDestroy();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -305,6 +314,8 @@ public class MJ_Survey extends AppCompatActivity {
                         Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL , editText.getText().toString(),Aware_Preferences.DEVICE_LABEL);
                         progressBar.setVisibility(View.VISIBLE);
                         //new AsyncJoin().execute();
+                        Log.d(Constants.TAG, "onResume: trying to join study");
+                        isRegistered = true;
                         Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
 
 
