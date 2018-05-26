@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
+import com.aware.plugin.upmc.mj.activities.Constants;
 import com.aware.plugin.upmc.mj.activities.MJ_Survey;
 import com.aware.utils.Aware_Plugin;
 import com.aware.utils.Scheduler;
@@ -71,7 +72,7 @@ public class Plugin extends Aware_Plugin {
         /**
          * Create persistent notification to do self-reports
          */
-        Intent selfReport = new Intent(this, MJ_Survey.class);
+        Intent selfReport = new Intent(this, MJ_Survey.class).setAction(Plugin.ACTION_MJ_MORNING);
         PendingIntent onTapSelf = PendingIntent.getActivity(this, 0, selfReport, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

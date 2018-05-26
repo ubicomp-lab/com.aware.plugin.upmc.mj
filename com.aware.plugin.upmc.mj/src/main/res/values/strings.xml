@@ -4,18 +4,20 @@
     <string name="morning_greeting">Good Morning! We\'re checking in to see how you\'re doing.</string>
     <string name="last_24_drinking">In the last 24 hours, how many DRINKS did you have?</string>
     <string name="last_24_smoking">In the last 24 hours, how many CIGARETTES did you have?</string>
-    <string name="last_24_marijuana">In the last 24 hours, did you use marijuana?</string>
+    <string name="last_24_marijuana">Have you used marijuana today?</string>
     <string name="hint_total_number">Total Number</string>
     <string name="when_last_time">When was the last time you used marijuana?</string>
-    <string name="what_did_mj_use">What did you use?</string>
-    <string name="how_much">How much?</string>
-    <string name="rate_craving">Rate your craving for MJ right now</string>
+    <string name="what_did_mj_use">How did you smoke it?</string>
+    <string name="how_much">How much did you smoke at that time?</string>
+    <string name="rate_craving">Rate your craving to smoke right now</string>
     <string name="rate_quantity">How much did you use?</string>
     <string name="how_are_you_feeling">How are you feeling right now?</string>
     <string name="how_high_are_you_feeling">How high are you feeling right now?</string>
     <string name="what_else_used">What else have you used in the past 3 hours?</string>
     <string name="how_used">How did you use MJ?</string>
     <string name="alcohol">Alcohol</string>
+    <string name="hits">hits</string>
+    <string name="grams">grams</string>
     <string name="tobacco">Tobacco</string>
     <string name="caffeine">Caffeine</string>
     <string name="mj_social">Are you using MJ alone or with others?</string>
@@ -34,9 +36,11 @@
     <string name="lbl_none">None</string>
     <string name="lbl_alot">A lot</string>
     <string name="joint">Joint</string>
+    <string name="bowl">Bowl</string>
     <string name="pipe">Pipe</string>
     <string name="bong">Bong</string>
     <string name="blunt">Blunt</string>
+    <string name="pen">Dab pen</string>
     <string name="other">Other</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
@@ -48,11 +52,13 @@
     <string name="btn_schedule">Schedule</string>
     <string name="morning_schedule">Morning schedule</string>
     <string name="evening_schedule">Evening schedule</string>
-
+    <string name="other_usage">Did you use tobacco or drink alcohol while smoking?</string>
     <string name="reason">Main reason for use?</string>
     <string name="cope">to cope</string>
     <string name="social">to be social</string>
-
+    <string name="used_tobacco">used tobacco</string>
+    <string name="used_none">none</string>
+    <string name="drank_alcohol">drank alcohol</string>
     <string name="how_much_hint">Type in a number</string>
 
     <string name="place">Place where used ?</string>

@@ -54,15 +54,18 @@
             android:text="@string/joint"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
+
         <CheckBox
-            android:id="@+id/check_pipe"
+            android:id="@+id/check_bowl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/check_joint"
             android:layout_alignStart="@+id/check_joint"
             android:layout_below="@+id/check_joint"
-            android:text="@string/pipe"
+            android:text="@string/bowl"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
 
         <CheckBox
             android:id="@+id/check_bong"
@@ -70,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/check_joint"
             android:layout_alignStart="@+id/check_joint"
-            android:layout_below="@+id/check_pipe"
+            android:layout_below="@+id/check_bowl"
             android:text="@string/bong"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -84,12 +87,22 @@
             android:text="@string/blunt"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
+        <CheckBox
+            android:id="@+id/check_pen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/check_joint"
+            android:layout_alignStart="@+id/check_joint"
+            android:layout_below="@+id/check_blunt"
+            android:text="@string/pen"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
         <LinearLayout
             android:id="@+id/other_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/check_joint"
-            android:layout_below="@+id/check_blunt"
+            android:layout_below="@+id/check_pen"
             android:orientation="horizontal">
 
             <CheckBox
@@ -122,8 +135,63 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/how_much_header"
+            android:hint="0.0"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
+
+        <CheckBox
+            android:id="@+id/grams"
+            android:text="@string/grams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/how_much_mj"
+            android:layout_alignStart="@+id/how_much_mj"
+            android:layout_below="@+id/how_much_mj"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/hits"
+            android:text="@string/hits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/how_much_mj"
+            android:layout_alignStart="@+id/how_much_mj"
+            android:layout_below="@+id/grams"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+        <TextView
+            android:id="@+id/other_usage"
+            android:layout_below="@+id/hits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/how_much"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
+
+        <CheckBox
+            android:id="@+id/used_tobacco"
+            android:text="@string/used_tobacco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/other_usage"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <CheckBox
+            android:id="@+id/drank_alcohol"
+            android:text="@string/drank_alcohol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/used_tobacco"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/used_none"
+            android:text="@string/used_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/drank_alcohol"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
 
         <Button
             android:id="@+id/initiated_submit_3"
@@ -131,7 +199,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/how_much_mj"
+            android:layout_below="@+id/used_none"
             android:layout_marginTop="16dp"
             android:background="@color/primary"
             android:text="@string/btn_submit" />
