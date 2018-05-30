@@ -22,7 +22,7 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <DatePicker
-            android:id="@+id/u1_start_date_mj"
+            android:id="@+id/mjs_user_start_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ui_mj_start_header"
@@ -31,10 +31,10 @@
             android:datePickerMode="spinner" />
 
         <TimePicker
-            android:id="@+id/ui_start_time_mj"
+            android:id="@+id/mjs_user_start_start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/u1_start_date_mj"
+            android:layout_below="@+id/mjs_user_start_start_date"
             android:layout_centerHorizontal="true"
             android:timePickerMode="spinner" />
 
@@ -42,13 +42,13 @@
             android:id="@+id/ui_textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_start_time_mj"
+            android:layout_below="@+id/mjs_user_start_start_time"
             android:paddingTop="15dp"
-            android:text="@string/what_else_used"
+            android:text="@string/what_else_used_past3"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <CheckBox
-            android:id="@+id/ui_checkBox1"
+            android:id="@+id/mjs_user_start_alcohol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -57,32 +57,32 @@
             android:text="@string/alcohol" />
 
         <CheckBox
-            android:id="@+id/ui_checkBox2"
+            android:id="@+id/mjs_user_start_tobacco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_checkBox1"
+            android:layout_below="@+id/mjs_user_start_alcohol"
             android:text="@string/tobacco" />
 
         <CheckBox
-            android:id="@+id/ui_checkBox3"
+            android:id="@+id/mjs_user_start_caffeine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_checkBox2"
+            android:layout_below="@+id/mjs_user_start_tobacco"
             android:text="@string/caffeine" />
 
         <LinearLayout
             android:id="@+id/ui_other_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_checkBox3"
+            android:layout_below="@+id/mjs_user_start_caffeine"
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/ui_check_other"
+                android:id="@+id/mjs_user_start_none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -104,7 +104,7 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <SeekBar
-            android:id="@+id/ui_rate_craving"
+            android:id="@+id/mjs_user_start_rate_craving"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,9 +118,9 @@
             android:id="@+id/ui_textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/ui_rate_craving"
-            android:layout_alignStart="@+id/ui_rate_craving"
-            android:layout_below="@+id/ui_rate_craving"
+            android:layout_alignLeft="@+id/mjs_user_start_rate_craving"
+            android:layout_alignStart="@+id/mjs_user_start_rate_craving"
+            android:layout_below="@+id/mjs_user_start_rate_craving"
             android:text="@string/lbl_none"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
@@ -129,8 +129,8 @@
             android:id="@+id/ui_textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/ui_rate_craving"
-            android:layout_below="@+id/ui_rate_craving"
+            android:layout_alignRight="@+id/mjs_user_start_rate_craving"
+            android:layout_below="@+id/mjs_user_start_rate_craving"
             android:text="@string/lbl_alot"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
@@ -146,7 +146,7 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <SeekBar
-            android:id="@+id/ui_rate_how_high"
+            android:id="@+id/mjs_user_start_rate_how_high"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,9 +160,9 @@
             android:id="@+id/ui_textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/ui_rate_how_high"
-            android:layout_alignStart="@+id/ui_rate_how_high"
-            android:layout_below="@+id/ui_rate_how_high"
+            android:layout_alignLeft="@+id/mjs_user_start_rate_how_high"
+            android:layout_alignStart="@+id/mjs_user_start_rate_how_high"
+            android:layout_below="@+id/mjs_user_start_rate_how_high"
             android:text="@string/lbl_none"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
@@ -171,8 +171,8 @@
             android:id="@+id/ui_textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/ui_rate_how_high"
-            android:layout_below="@+id/ui_rate_how_high"
+            android:layout_alignRight="@+id/mjs_user_start_rate_how_high"
+            android:layout_below="@+id/mjs_user_start_rate_how_high"
             android:text="@string/lbl_alot"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
@@ -190,21 +190,21 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <RadioGroup
-            android:id="@+id/ui_social_context"
+            android:id="@+id/mjs_user_start_social_context"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ui_textView24"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/ui_social_alone"
+                android:id="@+id/mjs_user_start_social_alone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="alone"
                 android:text="@string/alone" />
 
             <RadioButton
-                android:id="@+id/ui_social_not_alone"
+                android:id="@+id/mjs_user_start_social_others"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="with_others"
@@ -214,23 +214,23 @@
 
 
         <Button
-            android:id="@+id/ui_initiated_submit_2"
+            android:id="@+id/mjs_user_start_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_social_context"
+            android:layout_below="@+id/mjs_user_start_social_context"
             android:layout_marginTop="16dp"
             android:background="@color/primary"
             android:text="@string/btn_submit" />
 
         <Button
-            android:id="@+id/ui_initiated_cancel_2"
+            android:id="@+id/mjs_user_start_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_initiated_submit_2"
+            android:layout_below="@+id/mjs_user_start_submit"
             android:layout_marginTop="16dp"
             android:text="@string/btn_cancel" />
 

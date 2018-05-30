@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/rate_craving"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+
+        <SeekBar
+            android:id="@+id/mjs_morn2_rate_craving"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv1"
+            android:max="10"
+            android:progress="-1" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_tv1"
+            android:layout_alignStart="@+id/mjs_morn2_tv1"
+            android:layout_below="@+id/mjs_morn2_rate_craving"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/mjs_morn2_rate_craving"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv3"
+            android:paddingTop="20dp"
+            android:text="@string/last_24_drinking"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+
+        <EditText
+            android:id="@+id/mjs_morn2_last_24_total_drinks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv4"
+            android:ems="10"
+            android:hint="@string/hint_total_number"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_last_24_total_drinks"
+            android:paddingTop="20dp"
+            android:text="@string/last_24_smoking"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+        <EditText
+            android:id="@+id/mjs_morn2_last_24_total_cigarettes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv5"
+            android:ems="10"
+            android:hint="@string/hint_total_number"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_morn2_last_24_total_cigarettes"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/how_are_you_feeling"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_relaxed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv6"
+            android:text="@string/relaxed"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/mjs_morn2_rate_relaxed"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_relaxed"
+            android:layout_alignStart="@+id/mjs_morn2_relaxed"
+            android:layout_below="@+id/mjs_morn2_relaxed"
+            android:max="10"
+            android:progress="-1" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_tv6"
+            android:layout_alignStart="@+id/mjs_morn2_tv6"
+            android:layout_below="@+id/mjs_morn2_rate_relaxed"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/mjs_morn2_rate_relaxed"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_sluggish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv7"
+            android:text="@string/sluggish"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/mjs_morn2_rate_sluggish"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_relaxed"
+            android:layout_alignStart="@+id/mjs_morn2_relaxed"
+            android:layout_below="@+id/mjs_morn2_sluggish"
+            android:max="10"
+            android:progress="-1" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_tv6"
+            android:layout_alignStart="@+id/mjs_morn2_tv6"
+            android:layout_below="@+id/mjs_morn2_rate_sluggish"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/mjs_morn2_rate_sluggish"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_foggy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/mjs_morn2_tv9"
+            android:text="@string/foggy"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/mjs_morn2_rate_foggy"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_foggy"
+            android:layout_alignStart="@+id/mjs_morn2_foggy"
+            android:layout_below="@+id/mjs_morn2_foggy"
+            android:max="10"
+            android:progress="-1" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_rate_foggy"
+            android:layout_alignStart="@+id/mjs_morn2_rate_foggy"
+            android:layout_below="@+id/mjs_morn2_rate_foggy"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/mjs_morn2_rate_foggy"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_anxious"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv11"
+            android:text="@string/anxious"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/mjs_morn2_rate_anxious"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_anxious"
+            android:layout_alignStart="@+id/mjs_morn2_anxious"
+            android:layout_below="@+id/mjs_morn2_anxious"
+            android:max="10"
+            android:progress="-1" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_rate_anxious"
+            android:layout_alignStart="@+id/mjs_morn2_rate_anxious"
+            android:layout_below="@+id/mjs_morn2_rate_anxious"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/mjs_morn2_rate_anxious"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_sad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv12"
+            android:text="@string/sad"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/mjs_morn2_rate_sad"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_sad"
+            android:layout_alignStart="@+id/mjs_morn2_sad"
+            android:layout_below="@+id/mjs_morn2_sad"
+            android:max="10"
+            android:progress="-1" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_morn2_rate_sad"
+            android:layout_alignStart="@+id/mjs_morn2_rate_sad"
+            android:layout_below="@+id/mjs_morn2_rate_sad"
+            android:text="@string/lbl_none"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mjs_morn2_tv15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/mjs_morn2_rate_sad"
+            android:text="@string/lbl_alot"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/mjs_morn2_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_tv15"
+            android:layout_marginTop="16dp"
+            android:background="@color/primary"
+            android:text="@string/btn_submit" />
+
+        <Button
+            android:id="@+id/mjs_morn2_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_morn2_submit"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_cancel" />
+
+    </RelativeLayout>
+</ScrollView>

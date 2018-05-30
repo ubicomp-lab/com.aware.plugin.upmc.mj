@@ -5,12 +5,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="15dp"
         android:scrollbars="vertical">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/mjs_aftn1_a_tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -20,80 +20,80 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <DatePicker
-            android:id="@+id/last_date_mj"
+            android:id="@+id/mjs_aftn1_a_last_date_mj"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/mjs_aftn1_a_tv1"
             android:layout_centerHorizontal="true"
             android:calendarViewShown="false"
             android:datePickerMode="spinner" />
 
         <TimePicker
-            android:id="@+id/last_time_mj"
+            android:id="@+id/mjs_aftn1_a_last_time_mj"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/last_date_mj"
+            android:layout_below="@+id/mjs_aftn1_a_last_date_mj"
             android:layout_centerHorizontal="true"
             android:timePickerMode="spinner" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/mjs_aftn1_a_tv2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/last_time_mj"
+            android:layout_below="@+id/mjs_aftn1_a_last_time_mj"
             android:text="@string/what_did_mj_use"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <CheckBox
-            android:id="@+id/check_joint"
+            android:id="@+id/mjs_aftn1_a_check_joint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView3"
-            android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/textView3"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_tv2"
+            android:layout_alignStart="@+id/mjs_aftn1_a_tv2"
+            android:layout_below="@+id/mjs_aftn1_a_tv2"
             android:text="@string/joint"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
         <CheckBox
-            android:id="@+id/check_bowl"
+            android:id="@+id/mjs_aftn1_a_check_bowl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/check_joint"
-            android:layout_alignStart="@+id/check_joint"
-            android:layout_below="@+id/check_joint"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_aftn1_a_check_joint"
+            android:layout_below="@+id/mjs_aftn1_a_check_joint"
             android:text="@string/bowl"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
 
         <CheckBox
-            android:id="@+id/check_bong"
+            android:id="@+id/mjs_aftn1_a_check_bong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/check_joint"
-            android:layout_alignStart="@+id/check_joint"
-            android:layout_below="@+id/check_bowl"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_aftn1_a_check_joint"
+            android:layout_below="@+id/mjs_aftn1_a_check_bowl"
             android:text="@string/bong"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <CheckBox
-            android:id="@+id/check_blunt"
+            android:id="@+id/mjs_aftn1_a_check_blunt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/check_joint"
-            android:layout_alignStart="@+id/check_joint"
-            android:layout_below="@+id/check_bong"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_aftn1_a_check_joint"
+            android:layout_below="@+id/mjs_aftn1_a_check_bong"
             android:text="@string/blunt"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <CheckBox
-            android:id="@+id/check_pen"
+            android:id="@+id/mjs_aftn1_a_check_pen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/check_joint"
-            android:layout_alignStart="@+id/check_joint"
-            android:layout_below="@+id/check_blunt"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_aftn1_a_check_joint"
+            android:layout_below="@+id/mjs_aftn1_a_check_blunt"
             android:text="@string/pen"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -101,21 +101,18 @@
             android:id="@+id/other_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/check_joint"
-            android:layout_below="@+id/check_pen"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_check_joint"
+            android:layout_below="@+id/mjs_aftn1_a_check_pen"
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/check_other"
+                android:id="@+id/mjs_aftn1_a_check_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/check_joint"
-                android:layout_alignStart="@+id/check_joint"
-                android:layout_below="@+id/check_blunt"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <EditText
-                android:id="@+id/check_other_input"
+                android:id="@+id/mjs_aftn1_a_check_other_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/other" />
@@ -123,7 +120,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/how_much_header"
+            android:id="@+id/mjs_aftn1_a_tv3"
             android:layout_below="@+id/other_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,86 +128,94 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
 
         <EditText
-            android:id="@+id/how_much_mj"
+            android:id="@+id/mjs_aftn1_a_how_much_mj"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/how_much_header"
+            android:layout_below="@+id/mjs_aftn1_a_tv3"
             android:hint="0.0"
             android:ems="10"
             android:inputType="numberDecimal" />
 
         <CheckBox
-            android:id="@+id/grams"
+            android:id="@+id/mjs_aftn1_a_grams"
             android:text="@string/grams"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/how_much_mj"
-            android:layout_alignStart="@+id/how_much_mj"
-            android:layout_below="@+id/how_much_mj"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_how_much_mj"
+            android:layout_alignStart="@+id/mjs_aftn1_a_how_much_mj"
+            android:layout_below="@+id/mjs_aftn1_a_how_much_mj"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <CheckBox
-            android:id="@+id/hits"
+            android:id="@+id/mjs_aftn1_a_hits"
             android:text="@string/hits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/how_much_mj"
-            android:layout_alignStart="@+id/how_much_mj"
-            android:layout_below="@+id/grams"
+            android:layout_alignLeft="@+id/mjs_aftn1_a_how_much_mj"
+            android:layout_alignStart="@+id/mjs_aftn1_a_how_much_mj"
+            android:layout_below="@+id/mjs_aftn1_a_grams"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
         <TextView
-            android:id="@+id/other_usage"
-            android:layout_below="@+id/hits"
+            android:id="@+id/mjs_aftn1_a_tv4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/how_much"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
+            android:layout_below="@+id/mjs_aftn1_a_hits"
+            android:paddingTop="15dp"
+            android:text="@string/other_usage"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+
+
 
         <CheckBox
-            android:id="@+id/used_tobacco"
-            android:text="@string/used_tobacco"
+            android:id="@+id/mjs_aftn1_a_tobacco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/other_usage"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-        <CheckBox
-            android:id="@+id/drank_alcohol"
-            android:text="@string/drank_alcohol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/used_tobacco"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_aftn1_a_tv4"
+            android:text="@string/used_tobacco" />
+
 
         <CheckBox
-            android:id="@+id/used_none"
-            android:text="@string/used_none"
+            android:id="@+id/mjs_aftn1_a_alcohol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/drank_alcohol"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_aftn1_a_tobacco"
+            android:text="@string/drank_alcohol" />
 
 
+        <CheckBox
+            android:id="@+id/mjs_aftn1_a_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_aftn1_a_alcohol"
+            android:text="@string/used_none" />
 
         <Button
-            android:id="@+id/initiated_submit_3"
+            android:id="@+id/mjs_aftn1_a_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/used_none"
+            android:layout_below="@+id/mjs_aftn1_a_none"
             android:layout_marginTop="16dp"
             android:background="@color/primary"
             android:text="@string/btn_submit" />
 
         <Button
-            android:id="@+id/initiated_cancel_3"
+            android:id="@+id/mjs_aftn1_a_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/initiated_submit_3"
+            android:layout_below="@+id/mjs_aftn1_a_submit"
             android:layout_marginTop="16dp"
             android:text="@string/btn_cancel" />
 

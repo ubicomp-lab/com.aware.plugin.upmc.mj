@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:id="@+id/mjs_eve1_a_tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/when_last_time"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <DatePicker
+            android:id="@+id/mjs_eve1_a_last_date_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_eve1_a_tv1"
+            android:layout_centerHorizontal="true"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <TimePicker
+            android:id="@+id/mjs_eve1_a_last_time_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_eve1_a_last_date_mj"
+            android:layout_centerHorizontal="true"
+            android:timePickerMode="spinner" />
+
+        <TextView
+            android:id="@+id/mjs_eve1_a_tv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_eve1_a_last_time_mj"
+            android:text="@string/what_did_mj_use"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_check_joint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_tv2"
+            android:layout_alignStart="@+id/mjs_eve1_a_tv2"
+            android:layout_below="@+id/mjs_eve1_a_tv2"
+            android:text="@string/joint"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_check_bowl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_eve1_a_check_joint"
+            android:layout_below="@+id/mjs_eve1_a_check_joint"
+            android:text="@string/bowl"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_check_bong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_eve1_a_check_joint"
+            android:layout_below="@+id/mjs_eve1_a_check_bowl"
+            android:text="@string/bong"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_check_blunt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_eve1_a_check_joint"
+            android:layout_below="@+id/mjs_eve1_a_check_bong"
+            android:text="@string/blunt"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_check_pen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_check_joint"
+            android:layout_alignStart="@+id/mjs_eve1_a_check_joint"
+            android:layout_below="@+id/mjs_eve1_a_check_blunt"
+            android:text="@string/pen"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <LinearLayout
+            android:id="@+id/other_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_check_joint"
+            android:layout_below="@+id/mjs_eve1_a_check_pen"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/mjs_eve1_a_check_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <EditText
+                android:id="@+id/mjs_eve1_a_check_other_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/other" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/mjs_eve1_a_tv3"
+            android:layout_below="@+id/other_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/how_much"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
+
+        <EditText
+            android:id="@+id/mjs_eve1_a_how_much_mj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_eve1_a_tv3"
+            android:hint="0.0"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_grams"
+            android:text="@string/grams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_how_much_mj"
+            android:layout_alignStart="@+id/mjs_eve1_a_how_much_mj"
+            android:layout_below="@+id/mjs_eve1_a_how_much_mj"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_hits"
+            android:text="@string/hits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mjs_eve1_a_how_much_mj"
+            android:layout_alignStart="@+id/mjs_eve1_a_how_much_mj"
+            android:layout_below="@+id/mjs_eve1_a_grams"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+        <TextView
+            android:id="@+id/mjs_eve1_a_tv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_eve1_a_hits"
+            android:paddingTop="15dp"
+            android:text="@string/other_usage"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+
+
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_tobacco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_eve1_a_tv4"
+            android:text="@string/used_tobacco" />
+
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_alcohol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_eve1_a_tobacco"
+            android:text="@string/drank_alcohol" />
+
+
+        <CheckBox
+            android:id="@+id/mjs_eve1_a_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_eve1_a_alcohol"
+            android:text="@string/used_none" />
+
+        <Button
+            android:id="@+id/mjs_eve1_a_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_eve1_a_none"
+            android:layout_marginTop="16dp"
+            android:background="@color/primary"
+            android:text="@string/btn_submit" />
+
+        <Button
+            android:id="@+id/mjs_eve1_a_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_eve1_a_submit"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_cancel" />
+
+    </RelativeLayout>
+</ScrollView>

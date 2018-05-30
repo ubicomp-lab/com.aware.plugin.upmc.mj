@@ -98,5 +98,5 @@ dependencies {
     api "com.github.denzilferreira:com.aware.plugin.device_usage:$aware_libs"
     api "com.github.denzilferreira:com.aware.plugin.google.fused_location:$aware_libs"
     api "com.github.denzilferreira:com.aware.plugin.fitbit:$aware_libs"
-    api "com.github.denzilferreira:com.aware.plugin.studentlife.audio_final:$aware_libs" //conversations
+//    api "com.github.denzilferreira:com.aware.plugin.studentlife.audio_final:$aware_libs" //conversations
 }

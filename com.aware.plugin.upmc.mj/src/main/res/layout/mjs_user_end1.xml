@@ -22,7 +22,7 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <DatePicker
-            android:id="@+id/ui_end_date_mj"
+            android:id="@+id/mjs_user_end1_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ui_mj_end_header"
@@ -31,10 +31,10 @@
             android:datePickerMode="spinner" />
 
         <TimePicker
-            android:id="@+id/ui_end_time_mj"
+            android:id="@+id/mjs_user_end1_end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_end_date_mj"
+            android:layout_below="@+id/mjs_user_end1_end_date"
             android:layout_centerHorizontal="true"
             android:timePickerMode="spinner" />
 
@@ -44,13 +44,13 @@
             android:id="@+id/ui_textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_end_time_mj"
+            android:layout_below="@+id/mjs_user_end1_end_time"
             android:paddingTop="15dp"
             android:text="@string/how_used"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <CheckBox
-            android:id="@+id/ui_mj_usage_c1"
+            android:id="@+id/mjs_user_end1_joint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -59,41 +59,54 @@
             android:text="@string/joint" />
 
         <CheckBox
-            android:id="@+id/ui_mj_usage_c2"
+            android:id="@+id/mjs_user_end1_bowl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_mj_usage_c1"
-            android:text="@string/pipe" />
+            android:layout_below="@+id/mjs_user_end1_joint"
+            android:text="@string/bowl" />
 
         <CheckBox
-            android:id="@+id/ui_mj_usage_c3"
+            android:id="@+id/mjs_user_end1_bong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_mj_usage_c2"
+            android:layout_below="@+id/mjs_user_end1_bowl"
             android:text="@string/bong" />
+
+
+
         <CheckBox
-            android:id="@+id/ui_mj_usage_c4"
+            android:id="@+id/mjs_user_end1_blunt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_mj_usage_c3"
+            android:layout_below="@+id/mjs_user_end1_bong"
             android:text="@string/blunt" />
+
+
+        <CheckBox
+            android:id="@+id/mjs_user_end1_pen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/mjs_user_end1_blunt"
+            android:text="@string/pen" />
 
 
         <LinearLayout
             android:id="@+id/ui_other_usage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_mj_usage_c4"
+            android:layout_below="@+id/mjs_user_end1_pen"
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/ui_check_other_usage"
+                android:id="@+id/mjs_user_end1_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -120,7 +133,8 @@
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
+
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/ui_textView14"
             android:hint="@string/how_much_hint"
