@@ -29,6 +29,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -47,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by denzilferreira on 05/10/2017.
@@ -337,227 +339,230 @@ public class MJ_Survey extends AppCompatActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
 
+
+            showMorningSurvey();
+
             if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
 
-                Log.d(Constants.TAG, "1 if");
+                Log.d(Constants.TAG, "morning survey");
 
-                //clear notification
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.cancel(Plugin.UPMC_NOTIFICATIONS);
-                morning = new JSONObject();
-                setContentView(R.layout.activity_mj_survey_common_mj_branching);
-                Button no = findViewById(R.id.btn_marijuana_no);
-                no.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            updateMorning("last_24_mj", false);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        setContentView(R.layout.activity_mj_survey_morning);
-                        final EditText last24drinks = findViewById(R.id.last_24_total_drinks);
-                        final EditText last24cigars = findViewById(R.id.last_24_total_cigarettes);
-                        Button initiated_submit_1 = findViewById(R.id.initiated_submit_1);
-                        Button cancel = findViewById(R.id.cancel);
-                        cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                saveMorning(true);
-                            }
-                        });
-                        initiated_submit_1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                try {
-                                    updateMorning("last_24_drinks", last24drinks.getText().toString());
-                                    updateMorning("last_24_cigars", last24cigars.getText().toString());
-                                    setContentView(R.layout.activity_mj_initiated_ratings);
-                                    final SeekBar craving = findViewById(R.id.rate_craving);
-                                    final SeekBar relaxed = findViewById(R.id.rate_relaxed);
-                                    final SeekBar sluggish = findViewById(R.id.rate_sluggish);
-                                    final SeekBar fogging = findViewById(R.id.rate_foggy);
-                                    final SeekBar anxious = findViewById(R.id.rate_anxious);
-                                    final SeekBar sad = findViewById(R.id.rate_sad);
-                                    Button finalSubmit = findViewById(R.id.initiated_submit_1);
-                                    finalSubmit.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            try {
-                                                updateMorning("rate_craving", craving.getProgress());
-                                                updateMorning("rate_relaxed", relaxed.getProgress());
-                                                updateMorning("rate_sluggish", sluggish.getProgress());
-                                                updateMorning("rate_foggy", fogging.getProgress());
-                                                updateMorning("rate_anxious", anxious.getProgress());
-                                                updateMorning("rate_sad", sad.getProgress());
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                            saveMorning(false);
-                                            Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
-                                            startMUSE();
-                                            finish();
-                                        }
-                                    });
-
-                                    Button finalCancel = findViewById(R.id.initiated_cancel_1);
-                                    finalCancel.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            saveMorning(true);
-                                        }
-                                    });
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-
-                    }
-                });
-                Button yes = findViewById(R.id.btn_marijuana_yes);
-                yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            updateMorning("last_24_mj", true);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        setContentView(R.layout.mjs_morn1);
-
-                        final DatePicker lastDay = findViewById(R.id.last_date_mj);
-                        final TimePicker lastTime = findViewById(R.id.last_time_mj);
-
-                        final CheckBox joint = findViewById(R.id.check_joint);
-                        final CheckBox bowl = findViewById(R.id.check_bowl);
-                        final CheckBox bong = findViewById(R.id.check_bong);
-                        final CheckBox blunt = findViewById(R.id.check_blunt);
-                        final CheckBox pen = findViewById(R.id.check_pen);
-                        final CheckBox other = findViewById(R.id.check_other);
-                        final EditText other_desc = findViewById(R.id.check_other_input);
-                        other_desc.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                if (s.length() == 0) other.setChecked(false);
-                                else other.setChecked(true);
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                            }
-                        });
-
-                        final EditText mj_amount = findViewById(R.id.how_much_mj);
-
-                        Button initiated_submit_3 = findViewById(R.id.initiated_submit_3);
-
-                        Button cancel = findViewById(R.id.initiated_cancel_3);
-                        cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                saveMorning(true);
-                                finish();
-                            }
-                        });
-
-                        initiated_submit_3.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                try {
-                                    updateMorning("last_day_mj", lastDay.getDayOfMonth() + "-" + lastDay.getMonth() + "-" + lastDay.getYear());
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                                        updateMorning("last_time_mj", lastTime.getHour() + ":" + lastTime.getMinute());
-                                    else
-                                        updateMorning("last_time_mj", lastTime.getCurrentHour() + ":" + lastTime.getCurrentMinute());
-                                    updateMorning("used_joint", joint.isChecked());
-                                    updateMorning("used_bowl", bowl.isChecked());
-                                    updateMorning("used_bong", bong.isChecked());
-                                    updateMorning("used_blunt", blunt.isChecked());
-                                    updateMorning("used_pen", pen.isChecked());
-                                    updateMorning("used_other", other.isChecked());
-                                    updateMorning("other_desc", other_desc.getText().toString());
-                                    updateMorning("used_amount", mj_amount.getText().toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                setContentView(R.layout.activity_mj_survey_morning);
-                                final EditText last24drinks = findViewById(R.id.last_24_total_drinks);
-                                final EditText last24cigars = findViewById(R.id.last_24_total_cigarettes);
-                                Button initiated_submit_1 = findViewById(R.id.initiated_submit_1);
-                                Button cancel = findViewById(R.id.cancel);
-                                cancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        saveMorning(true);
-                                    }
-                                });
-                                initiated_submit_1.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        try {
-                                            updateMorning("last_24_drinks", last24drinks.getText().toString());
-                                            updateMorning("last_24_cigars", last24cigars.getText().toString());
-
-                                            setContentView(R.layout.activity_mj_initiated_ratings);
-
-                                            final SeekBar craving = findViewById(R.id.rate_craving);
-                                            final SeekBar relaxed = findViewById(R.id.rate_relaxed);
-                                            final SeekBar sluggish = findViewById(R.id.rate_sluggish);
-                                            final SeekBar fogging = findViewById(R.id.rate_foggy);
-                                            final SeekBar anxious = findViewById(R.id.rate_anxious);
-                                            final SeekBar sad = findViewById(R.id.rate_sad);
-                                            Button finalSubmit = findViewById(R.id.initiated_submit_1);
-                                            finalSubmit.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-
-                                                    try {
-                                                        updateMorning("rate_craving", craving.getProgress());
-                                                        updateMorning("rate_relaxed", relaxed.getProgress());
-                                                        updateMorning("rate_sluggish", sluggish.getProgress());
-                                                        updateMorning("rate_foggy", fogging.getProgress());
-                                                        updateMorning("rate_anxious", anxious.getProgress());
-                                                        updateMorning("rate_sad", sad.getProgress());
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                    saveMorning(false);
-                                                    Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
-                                                    startMUSE();
-                                                    finish();
-                                                }
-                                            });
-
-                                            Button cancel = findViewById(R.id.initiated_cancel_1);
-                                            cancel.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    saveMorning(true);
-                                                    finish();
-                                                }
-                                            });
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-
-
-                            }
-                        });
-
-                    }
-                });
+//                //clear notification
+//                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//                notificationManager.cancel(Plugin.UPMC_NOTIFICATIONS);
+//                morning = new JSONObject();
+//                setContentView(R.layout.activity_mj_survey_common_mj_branching);
+//                Button no = findViewById(R.id.btn_marijuana_no);
+//                no.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        try {
+//                            updateMorning("last_24_mj", false);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        setContentView(R.layout.activity_mj_survey_morning);
+//                        final EditText last24drinks = findViewById(R.id.last_24_total_drinks);
+//                        final EditText last24cigars = findViewById(R.id.last_24_total_cigarettes);
+//                        Button initiated_submit_1 = findViewById(R.id.initiated_submit_1);
+//                        Button cancel = findViewById(R.id.cancel);
+//                        cancel.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                saveMorning(true);
+//                            }
+//                        });
+//                        initiated_submit_1.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                try {
+//                                    updateMorning("last_24_drinks", last24drinks.getText().toString());
+//                                    updateMorning("last_24_cigars", last24cigars.getText().toString());
+//                                    setContentView(R.layout.activity_mj_initiated_ratings);
+//                                    final SeekBar craving = findViewById(R.id.rate_craving);
+//                                    final SeekBar relaxed = findViewById(R.id.rate_relaxed);
+//                                    final SeekBar sluggish = findViewById(R.id.rate_sluggish);
+//                                    final SeekBar fogging = findViewById(R.id.rate_foggy);
+//                                    final SeekBar anxious = findViewById(R.id.rate_anxious);
+//                                    final SeekBar sad = findViewById(R.id.rate_sad);
+//                                    Button finalSubmit = findViewById(R.id.initiated_submit_1);
+//                                    finalSubmit.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//
+//                                            try {
+//                                                updateMorning("rate_craving", craving.getProgress());
+//                                                updateMorning("rate_relaxed", relaxed.getProgress());
+//                                                updateMorning("rate_sluggish", sluggish.getProgress());
+//                                                updateMorning("rate_foggy", fogging.getProgress());
+//                                                updateMorning("rate_anxious", anxious.getProgress());
+//                                                updateMorning("rate_sad", sad.getProgress());
+//                                            } catch (JSONException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                            saveMorning(false);
+//                                            Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+//                                            startMUSE();
+//                                            finish();
+//                                        }
+//                                    });
+//
+//                                    Button finalCancel = findViewById(R.id.initiated_cancel_1);
+//                                    finalCancel.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            saveMorning(true);
+//                                        }
+//                                    });
+//
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        });
+//
+//                    }
+//                });
+//                Button yes = findViewById(R.id.btn_marijuana_yes);
+//                yes.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        try {
+//                            updateMorning("last_24_mj", true);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        setContentView(R.layout.mjs_morn1);
+//
+//                        final DatePicker lastDay = findViewById(R.id.last_date_mj);
+//                        final TimePicker lastTime = findViewById(R.id.last_time_mj);
+//
+//                        final CheckBox joint = findViewById(R.id.check_joint);
+//                        final CheckBox bowl = findViewById(R.id.check_bowl);
+//                        final CheckBox bong = findViewById(R.id.check_bong);
+//                        final CheckBox blunt = findViewById(R.id.check_blunt);
+//                        final CheckBox pen = findViewById(R.id.check_pen);
+//                        final CheckBox other = findViewById(R.id.check_other);
+//                        final EditText other_desc = findViewById(R.id.check_other_input);
+//                        other_desc.addTextChangedListener(new TextWatcher() {
+//                            @Override
+//                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                            }
+//
+//                            @Override
+//                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                                if (s.length() == 0) other.setChecked(false);
+//                                else other.setChecked(true);
+//                            }
+//
+//                            @Override
+//                            public void afterTextChanged(Editable s) {
+//                            }
+//                        });
+//
+//                        final EditText mj_amount = findViewById(R.id.how_much_mj);
+//
+//                        Button initiated_submit_3 = findViewById(R.id.initiated_submit_3);
+//
+//                        Button cancel = findViewById(R.id.initiated_cancel_3);
+//                        cancel.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                saveMorning(true);
+//                                finish();
+//                            }
+//                        });
+//
+//                        initiated_submit_3.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//
+//                                try {
+//                                    updateMorning("last_day_mj", lastDay.getDayOfMonth() + "-" + lastDay.getMonth() + "-" + lastDay.getYear());
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                                        updateMorning("last_time_mj", lastTime.getHour() + ":" + lastTime.getMinute());
+//                                    else
+//                                        updateMorning("last_time_mj", lastTime.getCurrentHour() + ":" + lastTime.getCurrentMinute());
+//                                    updateMorning("used_joint", joint.isChecked());
+//                                    updateMorning("used_bowl", bowl.isChecked());
+//                                    updateMorning("used_bong", bong.isChecked());
+//                                    updateMorning("used_blunt", blunt.isChecked());
+//                                    updateMorning("used_pen", pen.isChecked());
+//                                    updateMorning("used_other", other.isChecked());
+//                                    updateMorning("other_desc", other_desc.getText().toString());
+//                                    updateMorning("used_amount", mj_amount.getText().toString());
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                setContentView(R.layout.activity_mj_survey_morning);
+//                                final EditText last24drinks = findViewById(R.id.last_24_total_drinks);
+//                                final EditText last24cigars = findViewById(R.id.last_24_total_cigarettes);
+//                                Button initiated_submit_1 = findViewById(R.id.initiated_submit_1);
+//                                Button cancel = findViewById(R.id.cancel);
+//                                cancel.setOnClickListener(new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        saveMorning(true);
+//                                    }
+//                                });
+//                                initiated_submit_1.setOnClickListener(new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        try {
+//                                            updateMorning("last_24_drinks", last24drinks.getText().toString());
+//                                            updateMorning("last_24_cigars", last24cigars.getText().toString());
+//
+//                                            setContentView(R.layout.activity_mj_initiated_ratings);
+//
+//                                            final SeekBar craving = findViewById(R.id.rate_craving);
+//                                            final SeekBar relaxed = findViewById(R.id.rate_relaxed);
+//                                            final SeekBar sluggish = findViewById(R.id.rate_sluggish);
+//                                            final SeekBar fogging = findViewById(R.id.rate_foggy);
+//                                            final SeekBar anxious = findViewById(R.id.rate_anxious);
+//                                            final SeekBar sad = findViewById(R.id.rate_sad);
+//                                            Button finalSubmit = findViewById(R.id.initiated_submit_1);
+//                                            finalSubmit.setOnClickListener(new View.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(View v) {
+//
+//                                                    try {
+//                                                        updateMorning("rate_craving", craving.getProgress());
+//                                                        updateMorning("rate_relaxed", relaxed.getProgress());
+//                                                        updateMorning("rate_sluggish", sluggish.getProgress());
+//                                                        updateMorning("rate_foggy", fogging.getProgress());
+//                                                        updateMorning("rate_anxious", anxious.getProgress());
+//                                                        updateMorning("rate_sad", sad.getProgress());
+//                                                    } catch (JSONException e) {
+//                                                        e.printStackTrace();
+//                                                    }
+//                                                    saveMorning(false);
+//                                                    Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+//                                                    startMUSE();
+//                                                    finish();
+//                                                }
+//                                            });
+//
+//                                            Button cancel = findViewById(R.id.initiated_cancel_1);
+//                                            cancel.setOnClickListener(new View.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(View v) {
+//                                                    saveMorning(true);
+//                                                    finish();
+//                                                }
+//                                            });
+//
+//                                        } catch (JSONException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//                                });
+//
+//
+//                            }
+//                        });
+//
+//                    }
+//                });
             }
         }
 
@@ -995,6 +1000,93 @@ public class MJ_Survey extends AppCompatActivity {
     }
 
 
+
+
+    private void showMorningSurvey() {
+        //clear notification
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(Plugin.UPMC_NOTIFICATIONS);
+        setContentView(R.layout.mjs_morn1);
+        morning = new JSONObject();
+        final Button submit = findViewById(R.id.mjs_morn1_submit);
+        Button cancel = findViewById(R.id.mjs_morn1_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveMorning(true);
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePicker last_date = findViewById(R.id.mjs_morn1_last_date_mj);
+                TimePicker last_time = findViewById(R.id.mjs_morn1_last_time_mj);
+                CheckBox joint = findViewById(R.id.mjs_morn1_check_joint);
+                CheckBox bowl = findViewById(R.id.mjs_morn1_check_bowl);
+                CheckBox bong = findViewById(R.id.mjs_morn1_check_bong);
+                CheckBox blunt = findViewById(R.id.mjs_morn1_check_blunt);
+                CheckBox pen = findViewById(R.id.mjs_morn1_check_pen);
+                CheckBox check_other = findViewById(R.id.mjs_morn1_check_other);
+                EditText other = findViewById(R.id.mjs_morn1_check_other_input);
+                EditText qnty = findViewById(R.id.mjs_morn1_how_much_mj);
+                RadioGroup units = findViewById(R.id.mjs_morn1_smoke_units);
+                if(units.getCheckedRadioButtonId()==-1) {
+                    Toast.makeText(getApplicationContext(),"Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked()&& !pen.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(check_other.isChecked() && qnty.getText().length()==0) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                try {
+                    updateMorning(Constants.last_date, "" + (last_date.getMonth() + 1) + "-"
+                            + last_date.getDayOfMonth() + "-" + last_date.getYear());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        updateMorning(Constants.last_time, last_time.getHour() + ":" + last_time.getMinute());
+                    else
+                        updateMorning(Constants.last_time, last_time.getCurrentHour() + ":" + last_time.getCurrentMinute());
+                    updateMorning(Constants.used_joint, "" + joint.isChecked());
+                    updateMorning(Constants.used_bowl, "" + bowl.isChecked());
+                    updateMorning(Constants.used_bong, "" + bong.isChecked());
+                    updateMorning(Constants.used_blunt, "" + blunt.isChecked());
+                    updateMorning(Constants.used_pen, "" + pen.isChecked());
+                    if(check_other.isChecked())
+                        updateMorning(Constants.used_other, "" + other.getText());
+                    updateMorning(Constants.used_qnty, qnty.getText());
+                    String smoke_units = "none";
+                    switch (units.getCheckedRadioButtonId()) {
+                        case R.id.mjs_morn1_hits:
+                            smoke_units = Constants.hits;
+                            break;
+                        case R.id.mjs_morn1_grams:
+                            smoke_units = Constants.grams;
+                            break;
+                    }
+                    updateMorning(Constants.units, smoke_units);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.d(Constants.TAG, "Morning " + morning.toString());
+
+
+            }
+        });
+
+
+
+
+
+    }
+
+
     private void start3HrAlarm() {
         Log.d(Constants.TAG, "MJ_survey:start3HrAlarm");
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -1005,196 +1097,198 @@ public class MJ_Survey extends AppCompatActivity {
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, alarmPendingIntent_3hr);
     }
 
-    public void showUISurvey1(final long ema_asked_timestamp) {
-        setContentView(R.layout.mjs_user_end1);
-        fingerprint = new JSONObject();
-        final DatePicker mj_end_date = findViewById(R.id.ui_end_date_mj);
-        final TimePicker mj_end_time = findViewById(R.id.ui_end_time_mj);
-        final CheckBox used_joint = findViewById(R.id.ui_mj_usage_c1);
-        final CheckBox used_pipe = findViewById(R.id.ui_mj_usage_c2);
-        final CheckBox used_bong = findViewById(R.id.ui_mj_usage_c3);
-        final CheckBox used_blunt = findViewById(R.id.ui_mj_usage_c4);
-        final CheckBox used_other_way = findViewById(R.id.ui_check_other_usage);
-        final EditText other_way_input = findViewById(R.id.ui_check_other_usage_input);
-        used_other_way.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                used_other_way.setChecked(true);
-            }
-        });
 
-        final EditText how_much_usage_e1 = findViewById(R.id.ui_rate_mj_quantity);
-        final CheckBox used_alcohol_e1  = findViewById(R.id.ui_end_checkBox1);
-        final CheckBox used_tobacco_e1 = findViewById(R.id.ui_end_checkBox2);
-        final CheckBox used_caffeine = findViewById(R.id.ui_end_checkBox3);
-        final CheckBox used_other_e1 = findViewById(R.id.ui_end_check_other);
-        final EditText used_other_dec_e1 = findViewById(R.id.ui_end_check_other_input);
-        used_other_dec_e1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                used_other_e1.setChecked(true);
-            }
-        });
-
-        final Button end1_submit_button = findViewById(R.id.ui_initiated_submit_3);
-        end1_submit_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                try {
-                    Log.d(Constants.TAG,  mj_end_date.getDayOfMonth() + "-" + mj_end_date.getMonth() + "-" + mj_end_date.getYear());
-                    updateFingerprint("mj_end_date", mj_end_date.getDayOfMonth() + "-" + mj_end_date.getMonth() + "-" + mj_end_date.getYear());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        updateFingerprint("mj_end_time", mj_end_time.getHour() + ":" + mj_end_time.getMinute());
-                    else
-                        updateFingerprint("mj_end_time", mj_end_time.getCurrentHour() + ":" + mj_end_time.getCurrentMinute());
-                    updateFingerprint("ema_sent_timestamp", ema_asked_timestamp);
-                    updateFingerprint("used_joint",used_joint.isChecked());
-                    updateFingerprint("used_pipe",used_pipe.isChecked());
-                    updateFingerprint("used_bong",used_bong.isChecked());
-                    updateFingerprint("used_blunt", used_blunt.isChecked());
-                    if(used_other_way.isChecked()) {
-                        updateFingerprint("used_other_way", other_way_input.getText());
-
-                    }
-                    updateFingerprint("usage_quantity",how_much_usage_e1.getText());
-                    updateFingerprint("used_alcohol", used_alcohol_e1.isChecked());
-                    updateFingerprint("used_tobacco", used_tobacco_e1.isChecked());
-                    updateFingerprint("used_caffeine", used_caffeine.isChecked());
-                    if(used_other_e1.isChecked()) {
-                        updateFingerprint("used_other_substance", used_other_dec_e1.getText());
-                    }
-
-
-                    showUiSurvey2();
-
-                }
-                catch (JSONException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-
-
-        final Button end1_cancel_button = findViewById(R.id.ui_initiated_cancel_3);
-        end1_cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveFingerprint(false);
-                finish();
-            }
-        });
-
-    }
-
-
-
-    public void showUiSurvey2() {
-        setContentView(R.layout.mjs_user_end2);
-        final CheckBox used_to_cope = findViewById(R.id.ui_mj_usage_r1);
-        final CheckBox used_to_social = findViewById(R.id.ui_mj_usage_r2);
-        final CheckBox used_for_other_reason = findViewById(R.id.ui_check_other_usage_r);
-        final EditText used_for_other_reason_input = findViewById(R.id.ui_check_other_input_usage_r);
-        used_for_other_reason.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                used_for_other_reason.setChecked(true);
-            }
-        });
-
-        final CheckBox loc_home = findViewById(R.id.ui_mj_usage_p1);
-        final CheckBox loc_other_home = findViewById(R.id.ui_mj_usage_p2);
-        final CheckBox loc_school_work = findViewById(R.id.ui_mj_usage_p3);
-        final EditText loc_other = findViewById(R.id.ui_check_other_input_usage_p);
-        final CheckBox used_other_loc = findViewById(R.id.ui_check_other_usage_p);
-        used_other_loc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                used_other_loc.setChecked(true);
-            }
-        });
-
-        Button submitbutton = findViewById(R.id.ui_initiated_submit_2r);
-        submitbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    updateFingerprint("used_to_cope", used_to_cope.isChecked());
-                    updateFingerprint("used_to_be_social", used_to_social.isChecked());
-                    if(used_for_other_reason.isChecked()) {
-                        updateFingerprint("used_other_reason", used_for_other_reason_input.getText());
-                    }
-                    updateFingerprint("loc_home",  loc_home.isChecked());
-                    updateFingerprint("loc_other_home", loc_other_home.isChecked());
-                    updateFingerprint("loc_work_school",  loc_school_work.isChecked());
-                    if(used_other_loc.isChecked())
-                        updateFingerprint("loc_other",  loc_other.getText());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                showUISurvey3();
-
-            }
-        });
-
-        Button cancelButton = findViewById(R.id.ui_initiated_cancel_2r);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveFingerprint(false);
-                finish();
-
-            }
-        });
-
-    }
-
-
-    public void showUISurvey3() {
-        setContentView(R.layout.mjs_user_end3);
-        final SeekBar craving = findViewById(R.id.mjs_user_end3_rate_craving);
-        final SeekBar relaxed = findViewById(R.id.rate_relaxed_ef);
-        final SeekBar sluggish = findViewById(R.id.rate_sluggish_ef);
-        final SeekBar fogging = findViewById(R.id.rate_foggy_ef);
-        final SeekBar anxious = findViewById(R.id.rate_anxious_ef);
-        final SeekBar sad = findViewById(R.id.rate_sad_ef);
-
-        Button finalSubmit = findViewById(R.id.initiated_submit_1_ef);
-        finalSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                try {
-                    updateFingerprint("rate_craving", craving.getProgress());
-                    updateFingerprint("rate_relaxed", relaxed.getProgress());
-                    updateFingerprint("rate_sluggish", sluggish.getProgress());
-                    updateFingerprint("rate_foggy", fogging.getProgress());
-                    updateFingerprint("rate_anxious", anxious.getProgress());
-                    updateFingerprint("rate_sad", sad.getProgress());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
-                Log.d(Constants.TAG, "" + fingerprint.toString());
-                saveFingerprint(false);
-                finish();
-            }
-        });
-
-        Button cancelSubmit = findViewById(R.id.initiated_cancel_1_ef);
-        cancelSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveFingerprint(true);
-                finish();
-            }
-        });
-
-
-    }
+//
+//    public void showUISurvey1(final long ema_asked_timestamp) {
+//        setContentView(R.layout.mjs_user_end1);
+//        fingerprint = new JSONObject();
+//        final DatePicker mj_end_date = findViewById(R.id.ui_end_date_mj);
+//        final TimePicker mj_end_time = findViewById(R.id.ui_end_time_mj);
+//        final CheckBox used_joint = findViewById(R.id.ui_mj_usage_c1);
+//        final CheckBox used_pipe = findViewById(R.id.ui_mj_usage_c2);
+//        final CheckBox used_bong = findViewById(R.id.ui_mj_usage_c3);
+//        final CheckBox used_blunt = findViewById(R.id.ui_mj_usage_c4);
+//        final CheckBox used_other_way = findViewById(R.id.ui_check_other_usage);
+//        final EditText other_way_input = findViewById(R.id.ui_check_other_usage_input);
+//        used_other_way.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                used_other_way.setChecked(true);
+//            }
+//        });
+//
+//        final EditText how_much_usage_e1 = findViewById(R.id.ui_rate_mj_quantity);
+//        final CheckBox used_alcohol_e1  = findViewById(R.id.ui_end_checkBox1);
+//        final CheckBox used_tobacco_e1 = findViewById(R.id.ui_end_checkBox2);
+//        final CheckBox used_caffeine = findViewById(R.id.ui_end_checkBox3);
+//        final CheckBox used_other_e1 = findViewById(R.id.ui_end_check_other);
+//        final EditText used_other_dec_e1 = findViewById(R.id.ui_end_check_other_input);
+//        used_other_dec_e1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                used_other_e1.setChecked(true);
+//            }
+//        });
+//
+//        final Button end1_submit_button = findViewById(R.id.ui_initiated_submit_3);
+//        end1_submit_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                try {
+//                    Log.d(Constants.TAG,  mj_end_date.getDayOfMonth() + "-" + mj_end_date.getMonth() + "-" + mj_end_date.getYear());
+//                    updateFingerprint("mj_end_date", mj_end_date.getDayOfMonth() + "-" + mj_end_date.getMonth() + "-" + mj_end_date.getYear());
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                        updateFingerprint("mj_end_time", mj_end_time.getHour() + ":" + mj_end_time.getMinute());
+//                    else
+//                        updateFingerprint("mj_end_time", mj_end_time.getCurrentHour() + ":" + mj_end_time.getCurrentMinute());
+//                    updateFingerprint("ema_sent_timestamp", ema_asked_timestamp);
+//                    updateFingerprint("used_joint",used_joint.isChecked());
+//                    updateFingerprint("used_pipe",used_pipe.isChecked());
+//                    updateFingerprint("used_bong",used_bong.isChecked());
+//                    updateFingerprint("used_blunt", used_blunt.isChecked());
+//                    if(used_other_way.isChecked()) {
+//                        updateFingerprint("used_other_way", other_way_input.getText());
+//
+//                    }
+//                    updateFingerprint("usage_quantity",how_much_usage_e1.getText());
+//                    updateFingerprint("used_alcohol", used_alcohol_e1.isChecked());
+//                    updateFingerprint("used_tobacco", used_tobacco_e1.isChecked());
+//                    updateFingerprint("used_caffeine", used_caffeine.isChecked());
+//                    if(used_other_e1.isChecked()) {
+//                        updateFingerprint("used_other_substance", used_other_dec_e1.getText());
+//                    }
+//
+//
+//                    showUiSurvey2();
+//
+//                }
+//                catch (JSONException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        });
+//
+//
+//        final Button end1_cancel_button = findViewById(R.id.ui_initiated_cancel_3);
+//        end1_cancel_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                saveFingerprint(false);
+//                finish();
+//            }
+//        });
+//
+//    }
+//
+//
+//
+//    public void showUiSurvey2() {
+//        setContentView(R.layout.mjs_user_end2);
+//        final CheckBox used_to_cope = findViewById(R.id.ui_mj_usage_r1);
+//        final CheckBox used_to_social = findViewById(R.id.ui_mj_usage_r2);
+//        final CheckBox used_for_other_reason = findViewById(R.id.ui_check_other_usage_r);
+//        final EditText used_for_other_reason_input = findViewById(R.id.ui_check_other_input_usage_r);
+//        used_for_other_reason.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                used_for_other_reason.setChecked(true);
+//            }
+//        });
+//
+//        final CheckBox loc_home = findViewById(R.id.ui_mj_usage_p1);
+//        final CheckBox loc_other_home = findViewById(R.id.ui_mj_usage_p2);
+//        final CheckBox loc_school_work = findViewById(R.id.ui_mj_usage_p3);
+//        final EditText loc_other = findViewById(R.id.ui_check_other_input_usage_p);
+//        final CheckBox used_other_loc = findViewById(R.id.ui_check_other_usage_p);
+//        used_other_loc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                used_other_loc.setChecked(true);
+//            }
+//        });
+//
+//        Button submitbutton = findViewById(R.id.ui_initiated_submit_2r);
+//        submitbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    updateFingerprint("used_to_cope", used_to_cope.isChecked());
+//                    updateFingerprint("used_to_be_social", used_to_social.isChecked());
+//                    if(used_for_other_reason.isChecked()) {
+//                        updateFingerprint("used_other_reason", used_for_other_reason_input.getText());
+//                    }
+//                    updateFingerprint("loc_home",  loc_home.isChecked());
+//                    updateFingerprint("loc_other_home", loc_other_home.isChecked());
+//                    updateFingerprint("loc_work_school",  loc_school_work.isChecked());
+//                    if(used_other_loc.isChecked())
+//                        updateFingerprint("loc_other",  loc_other.getText());
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                showUISurvey3();
+//
+//            }
+//        });
+//
+//        Button cancelButton = findViewById(R.id.ui_initiated_cancel_2r);
+//        cancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                saveFingerprint(false);
+//                finish();
+//
+//            }
+//        });
+//
+//    }
+//
+//
+//    public void showUISurvey3() {
+//        setContentView(R.layout.mjs_user_end3);
+//        final SeekBar craving = findViewById(R.id.mjs_user_end3_rate_craving);
+//        final SeekBar relaxed = findViewById(R.id.rate_relaxed_ef);
+//        final SeekBar sluggish = findViewById(R.id.rate_sluggish_ef);
+//        final SeekBar fogging = findViewById(R.id.rate_foggy_ef);
+//        final SeekBar anxious = findViewById(R.id.rate_anxious_ef);
+//        final SeekBar sad = findViewById(R.id.rate_sad_ef);
+//
+//        Button finalSubmit = findViewById(R.id.initiated_submit_1_ef);
+//        finalSubmit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                try {
+//                    updateFingerprint("rate_craving", craving.getProgress());
+//                    updateFingerprint("rate_relaxed", relaxed.getProgress());
+//                    updateFingerprint("rate_sluggish", sluggish.getProgress());
+//                    updateFingerprint("rate_foggy", fogging.getProgress());
+//                    updateFingerprint("rate_anxious", anxious.getProgress());
+//                    updateFingerprint("rate_sad", sad.getProgress());
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+//                Log.d(Constants.TAG, "" + fingerprint.toString());
+//                saveFingerprint(false);
+//                finish();
+//            }
+//        });
+//
+//        Button cancelSubmit = findViewById(R.id.initiated_cancel_1_ef);
+//        cancelSubmit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                saveFingerprint(true);
+//                finish();
+//            }
+//        });
+//
+//
+//    }
 
     //Launches the muse integration
     private void startMUSE() {

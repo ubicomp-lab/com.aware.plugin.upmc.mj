@@ -136,25 +136,27 @@
             android:ems="10"
             android:inputType="numberDecimal" />
 
-        <CheckBox
-            android:id="@+id/mjs_morn1_grams"
-            android:text="@string/grams"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_morn1_how_much_mj"
-            android:layout_alignStart="@+id/mjs_morn1_how_much_mj"
-            android:layout_below="@+id/mjs_morn1_how_much_mj"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <CheckBox
-            android:id="@+id/mjs_morn1_hits"
-            android:text="@string/hits"
+        <RadioGroup
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_morn1_how_much_mj"
-            android:layout_alignStart="@+id/mjs_morn1_how_much_mj"
-            android:layout_below="@+id/mjs_morn1_grams"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:orientation="horizontal"
+            android:id="@+id/mjs_morn1_smoke_units"
+            android:layout_below="@+id/mjs_morn1_how_much_mj"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/mjs_morn1_grams"
+                android:text="@string/grams"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <RadioButton
+                android:id="@+id/mjs_morn1_hits"
+                android:text="@string/hits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </RadioGroup>
 
 
 
@@ -164,7 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_morn1_hits"
+            android:layout_below="@+id/mjs_morn1_smoke_units"
             android:layout_marginTop="16dp"
             android:background="@color/primary"
             android:text="@string/btn_submit" />
