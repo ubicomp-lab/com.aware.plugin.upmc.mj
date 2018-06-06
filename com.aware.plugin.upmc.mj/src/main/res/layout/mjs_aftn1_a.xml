@@ -136,38 +136,34 @@
             android:ems="10"
             android:inputType="numberDecimal" />
 
-        <CheckBox
-            android:id="@+id/mjs_aftn1_a_grams"
-            android:text="@string/grams"
+        <RadioGroup
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_a_how_much_mj"
-            android:layout_alignStart="@+id/mjs_aftn1_a_how_much_mj"
+            android:orientation="horizontal"
+            android:id="@+id/mjs_aftn1_a_units"
             android:layout_below="@+id/mjs_aftn1_a_how_much_mj"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-        <CheckBox
-            android:id="@+id/mjs_aftn1_a_hits"
-            android:text="@string/hits"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_a_how_much_mj"
-            android:layout_alignStart="@+id/mjs_aftn1_a_how_much_mj"
-            android:layout_below="@+id/mjs_aftn1_a_grams"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/mjs_aftn1_a_grams"
+                android:text="@string/grams"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            <RadioButton
+                android:id="@+id/mjs_aftn1_a_hits"
+                android:text="@string/hits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </RadioGroup>
 
         <TextView
             android:id="@+id/mjs_aftn1_a_tv4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mjs_aftn1_a_hits"
+            android:layout_below="@+id/mjs_aftn1_a_units"
             android:paddingTop="15dp"
             android:text="@string/other_usage"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-
-
-
 
         <CheckBox
             android:id="@+id/mjs_aftn1_a_tobacco"
