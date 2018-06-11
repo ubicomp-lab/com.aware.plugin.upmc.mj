@@ -77,6 +77,50 @@ public class Constants {
     }
 
 
+    public static class Evening {
+
+
+        public static final String have_used = "evening_0_quick";
+
+
+        public static final String last_datetime = "flow_0_afternoon_0_quick_datetime";
+        public static final String used_checkbox = "flow_1_afternoon_0_quick_checkbox";
+        public static final String used_qnty = "flow_2_afternoon_0_quick_number";
+        public static final String units = "flow_2_afternoon_0_quick_number_units";
+        public static final String hits = "hits";
+        public static final String grams = "grams";
+
+
+        public static final String usage_while_mj = "flow_3_afternoon_0_quick_checkbox";
+        public static final String tobacco = "tobacco";
+        public static final String alcohol = "drank alcohol";
+        public static final String none = "none";
+
+
+
+
+        public static final String rate_craving = "evening_1_slider";
+        public static final String rate_relaxed = "evening_2_slider";
+        public static final String rate_sluggish = "evening_3_slider";
+        public static final String rate_foggy = "evening_4_slider";
+        public static final String rate_anxious = "evening_5_slider";
+        public static final String rate_sad = "evening_6_slider";
+
+
+        public static final String rate_problems = "evening_7_slider";
+        public static final String rate_remembering = "evening_8_slider";
+        public static final String rate_attention = "evening_9_slider";
+        public static final String rate_concentration = "evening_10_slider";
+
+
+
+
+
+
+
+    }
+
+
 
 
 

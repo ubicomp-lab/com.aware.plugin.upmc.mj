@@ -8,18 +8,16 @@
         android:id="@+id/mjs_aftn1_tv1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/last_checkin_marijuana"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
     <Button
-        android:id="@+id/mjs_aftn1_yes_btn"
+        android:id="@+id/mjs_eve1_yes_btn"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/mjs_aftn1_tv1"
         android:layout_alignStart="@+id/mjs_aftn1_tv1"
         android:layout_below="@+id/mjs_aftn1_tv1"
         android:layout_marginTop="28dp"
@@ -27,13 +25,12 @@
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/mjs_aftn1_no_btn"
+        android:id="@+id/mjs_eve1_no_btn"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/mjs_aftn1_yes_btn"
+        android:layout_alignBottom="@+id/mjs_eve1_yes_btn"
         android:layout_alignEnd="@+id/mjs_aftn1_tv1"
-        android:layout_alignRight="@+id/mjs_aftn1_tv1"
         android:text="@string/btn_no"
         android:textSize="30sp" />
 </RelativeLayout>

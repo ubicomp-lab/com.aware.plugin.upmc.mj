@@ -9,7 +9,7 @@
         android:padding="15dp">
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv1"
+            android:id="@+id/mjs_eve1_b_tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -20,243 +20,243 @@
 
 
         <SeekBar
-            android:id="@+id/mjs_aftn1_b_rate_craving"
+            android:id="@+id/mjs_eve1_b_rate_craving"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_aftn1_b_tv1"
+            android:layout_below="@+id/mjs_eve1_b_tv1"
             android:max="10"
             android:progress="-1" />
 
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv2"
+            android:id="@+id/mjs_eve1_b_tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mjs_aftn1_b_rate_craving"
+            android:layout_below="@+id/mjs_eve1_b_rate_craving"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="15dp"
             android:text="@string/how_are_you_feeling"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_relaxed"
+            android:id="@+id/mjs_eve1_b_relaxed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_aftn1_b_tv2"
+            android:layout_below="@+id/mjs_eve1_b_tv2"
             android:text="@string/relaxed"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:textStyle="bold" />
 
         <SeekBar
-            android:id="@+id/mjs_aftn1_b_rate_relaxed"
+            android:id="@+id/mjs_eve1_b_rate_relaxed"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_relaxed"
-            android:layout_alignStart="@+id/mjs_aftn1_b_relaxed"
-            android:layout_below="@+id/mjs_aftn1_b_relaxed"
+            android:layout_alignLeft="@+id/mjs_eve1_b_relaxed"
+            android:layout_alignStart="@+id/mjs_eve1_b_relaxed"
+            android:layout_below="@+id/mjs_eve1_b_relaxed"
             android:max="10"
             android:progress="-1" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv7"
+            android:id="@+id/mjs_eve1_b_tv7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_tv2"
-            android:layout_alignStart="@+id/mjs_aftn1_b_tv2"
-            android:layout_below="@+id/mjs_aftn1_b_rate_relaxed"
+            android:layout_alignLeft="@+id/mjs_eve1_b_tv2"
+            android:layout_alignStart="@+id/mjs_eve1_b_tv2"
+            android:layout_below="@+id/mjs_eve1_b_rate_relaxed"
             android:text="@string/lbl_none"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv8"
+            android:id="@+id/mjs_eve1_b_tv8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/mjs_aftn1_b_rate_relaxed"
+            android:layout_below="@+id/mjs_eve1_b_rate_relaxed"
             android:text="@string/lbl_alot"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_sluggish"
+            android:id="@+id/mjs_eve1_b_sluggish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_aftn1_b_tv7"
+            android:layout_below="@+id/mjs_eve1_b_tv7"
             android:text="@string/sluggish"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:textStyle="bold" />
 
         <SeekBar
-            android:id="@+id/mjs_aftn1_b_rate_sluggish"
+            android:id="@+id/mjs_eve1_b_rate_sluggish"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_relaxed"
-            android:layout_alignStart="@+id/mjs_aftn1_b_relaxed"
-            android:layout_below="@+id/mjs_aftn1_b_sluggish"
+            android:layout_alignLeft="@+id/mjs_eve1_b_relaxed"
+            android:layout_alignStart="@+id/mjs_eve1_b_relaxed"
+            android:layout_below="@+id/mjs_eve1_b_sluggish"
             android:max="10"
             android:progress="-1" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv9"
+            android:id="@+id/mjs_eve1_b_tv9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_tv6"
-            android:layout_alignStart="@+id/mjs_aftn1_b_tv6"
-            android:layout_below="@+id/mjs_aftn1_b_rate_sluggish"
+            android:layout_alignLeft="@+id/mjs_eve1_b_tv6"
+            android:layout_alignStart="@+id/mjs_eve1_b_tv6"
+            android:layout_below="@+id/mjs_eve1_b_rate_sluggish"
             android:text="@string/lbl_none"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv10"
+            android:id="@+id/mjs_eve1_b_tv10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/mjs_aftn1_b_rate_sluggish"
+            android:layout_below="@+id/mjs_eve1_b_rate_sluggish"
             android:text="@string/lbl_alot"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_foggy"
+            android:id="@+id/mjs_eve1_b_foggy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/mjs_aftn1_b_tv9"
+            android:layout_below="@+id/mjs_eve1_b_tv9"
             android:text="@string/foggy"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:textStyle="bold" />
 
         <SeekBar
-            android:id="@+id/mjs_aftn1_b_rate_foggy"
+            android:id="@+id/mjs_eve1_b_rate_foggy"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_foggy"
-            android:layout_alignStart="@+id/mjs_aftn1_b_foggy"
-            android:layout_below="@+id/mjs_aftn1_b_foggy"
+            android:layout_alignLeft="@+id/mjs_eve1_b_foggy"
+            android:layout_alignStart="@+id/mjs_eve1_b_foggy"
+            android:layout_below="@+id/mjs_eve1_b_foggy"
             android:max="10"
             android:progress="-1" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_textView9"
+            android:id="@+id/mjs_eve1_b_textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_rate_foggy"
-            android:layout_alignStart="@+id/mjs_aftn1_b_rate_foggy"
-            android:layout_below="@+id/mjs_aftn1_b_rate_foggy"
+            android:layout_alignLeft="@+id/mjs_eve1_b_rate_foggy"
+            android:layout_alignStart="@+id/mjs_eve1_b_rate_foggy"
+            android:layout_below="@+id/mjs_eve1_b_rate_foggy"
             android:text="@string/lbl_none"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv11"
+            android:id="@+id/mjs_eve1_b_tv11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/mjs_aftn1_b_rate_foggy"
+            android:layout_below="@+id/mjs_eve1_b_rate_foggy"
             android:text="@string/lbl_alot"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_anxious"
+            android:id="@+id/mjs_eve1_b_anxious"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_aftn1_b_tv11"
+            android:layout_below="@+id/mjs_eve1_b_tv11"
             android:text="@string/anxious"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:textStyle="bold" />
 
         <SeekBar
-            android:id="@+id/mjs_aftn1_b_rate_anxious"
+            android:id="@+id/mjs_eve1_b_rate_anxious"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_anxious"
-            android:layout_alignStart="@+id/mjs_aftn1_b_anxious"
-            android:layout_below="@+id/mjs_aftn1_b_anxious"
+            android:layout_alignLeft="@+id/mjs_eve1_b_anxious"
+            android:layout_alignStart="@+id/mjs_eve1_b_anxious"
+            android:layout_below="@+id/mjs_eve1_b_anxious"
             android:max="10"
             android:progress="-1" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv12"
+            android:id="@+id/mjs_eve1_b_tv12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_rate_anxious"
-            android:layout_alignStart="@+id/mjs_aftn1_b_rate_anxious"
-            android:layout_below="@+id/mjs_aftn1_b_rate_anxious"
+            android:layout_alignLeft="@+id/mjs_eve1_b_rate_anxious"
+            android:layout_alignStart="@+id/mjs_eve1_b_rate_anxious"
+            android:layout_below="@+id/mjs_eve1_b_rate_anxious"
             android:text="@string/lbl_none"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv13"
+            android:id="@+id/mjs_eve1_b_tv13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/mjs_aftn1_b_rate_anxious"
+            android:layout_below="@+id/mjs_eve1_b_rate_anxious"
             android:text="@string/lbl_alot"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_sad"
+            android:id="@+id/mjs_eve1_b_sad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_aftn1_b_tv12"
+            android:layout_below="@+id/mjs_eve1_b_tv12"
             android:text="@string/sad"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:textStyle="bold" />
 
         <SeekBar
-            android:id="@+id/mjs_aftn1_b_rate_sad"
+            android:id="@+id/mjs_eve1_b_rate_sad"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_sad"
-            android:layout_alignStart="@+id/mjs_aftn1_b_sad"
-            android:layout_below="@+id/mjs_aftn1_b_sad"
+            android:layout_alignLeft="@+id/mjs_eve1_b_sad"
+            android:layout_alignStart="@+id/mjs_eve1_b_sad"
+            android:layout_below="@+id/mjs_eve1_b_sad"
             android:max="10"
             android:progress="-1" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv14"
+            android:id="@+id/mjs_eve1_b_tv14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/mjs_aftn1_b_rate_sad"
-            android:layout_alignStart="@+id/mjs_aftn1_b_rate_sad"
-            android:layout_below="@+id/mjs_aftn1_b_rate_sad"
+            android:layout_alignLeft="@+id/mjs_eve1_b_rate_sad"
+            android:layout_alignStart="@+id/mjs_eve1_b_rate_sad"
+            android:layout_below="@+id/mjs_eve1_b_rate_sad"
             android:text="@string/lbl_none"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mjs_aftn1_b_tv15"
+            android:id="@+id/mjs_eve1_b_tv15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/mjs_aftn1_b_rate_sad"
+            android:layout_below="@+id/mjs_eve1_b_rate_sad"
             android:text="@string/lbl_alot"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textStyle="bold" />
@@ -264,7 +264,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:id="@+id/last_section"
-            android:layout_below="@+id/mjs_aftn1_b_tv15"
+            android:layout_below="@+id/mjs_eve1_b_tv15"
             android:layout_height="wrap_content">
 
             <TextView
@@ -455,7 +455,7 @@
 
 
         <Button
-            android:id="@+id/mjs_aftn1_b_submit"
+            android:id="@+id/mjs_eve1_b_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -466,12 +466,12 @@
             android:text="@string/btn_submit" />
 
         <Button
-            android:id="@+id/mjs_aftn1_b_cancel"
+            android:id="@+id/mjs_eve1_b_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_aftn1_b_submit"
+            android:layout_below="@+id/mjs_eve1_b_submit"
             android:layout_marginTop="16dp"
             android:text="@string/btn_cancel" />
 

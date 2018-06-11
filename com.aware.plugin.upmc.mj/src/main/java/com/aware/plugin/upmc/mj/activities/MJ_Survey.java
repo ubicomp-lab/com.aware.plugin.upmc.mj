@@ -351,6 +351,10 @@ public class MJ_Survey extends AppCompatActivity {
                 Log.d(Constants.TAG, "afternoon survey");
                 showAfternoonSurvey();
             }
+            else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_FINGERPRINT)) {
+                Log.d(Constants.TAG, "evening survey");
+                showEveningSurvey();
+            }
             else {
                 showMorningSurvey();
             }
@@ -1062,7 +1066,6 @@ public class MJ_Survey extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
 
@@ -1103,6 +1106,192 @@ public class MJ_Survey extends AppCompatActivity {
             }
         });
     }
+
+
+    public void showEveningSurvey() {
+        setContentView(R.layout.mjs_eve1);
+        Button yes = findViewById(R.id.mjs_eve1_yes_btn);
+        Button no = findViewById(R.id.mjs_eve1_no_btn);
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    updateEvening(Constants.Evening.have_used, true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                showEve1a();
+            }
+        });
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    updateEvening(Constants.Evening.have_used, false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                showEve1b();
+            }
+        });
+
+    }
+
+
+    public void showEve1a() {
+        setContentView(R.layout.mjs_eve1_a);
+        Button submit = findViewById(R.id.mjs_eve1_a_submit);
+        Button cancel = findViewById(R.id.mjs_eve1_a_cancel);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePicker last_date = findViewById(R.id.mjs_eve1_a_last_date_mj);
+                TimePicker last_time = findViewById(R.id.mjs_eve1_a_last_time_mj);
+                CheckBox joint = findViewById(R.id.mjs_eve1_a_check_joint);
+                CheckBox bowl = findViewById(R.id.mjs_eve1_a_check_bowl);
+                CheckBox bong = findViewById(R.id.mjs_eve1_a_check_bong);
+                CheckBox blunt = findViewById(R.id.mjs_eve1_a_check_blunt);
+                CheckBox pen = findViewById(R.id.mjs_eve1_a_check_pen);
+                CheckBox check_other = findViewById(R.id.mjs_eve1_a_check_other);
+                EditText other = findViewById(R.id.mjs_eve1_a_check_other_input);
+                EditText qnty = findViewById(R.id.mjs_eve1_a_how_much_mj);
+                CheckBox used_tobacco = findViewById(R.id.mjs_eve1_a_tobacco);
+                CheckBox used_alcohol = findViewById(R.id.mjs_eve1_a_alcohol);
+                CheckBox used_none = findViewById(R.id.mjs_eve1_a_none);
+                RadioGroup units = findViewById(R.id.mjs_eve1_a_units);
+                if(units.getCheckedRadioButtonId()==-1) {
+                    Toast.makeText(getApplicationContext(),"Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked()&& !pen.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(check_other.isChecked() && qnty.getText().length()==0) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!used_tobacco.isChecked() && !used_alcohol.isChecked() && !used_none.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(check_other.isChecked() && other.getText().length()==0) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                StringBuilder dateTimeStringBuilder = new StringBuilder();
+                dateTimeStringBuilder.append(last_date.getMonth()+1)
+                        .append("-")
+                        .append(last_date.getDayOfMonth())
+                        .append("-")
+                        .append(last_date.getYear())
+                        .append(" ");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    dateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
+                else
+                    dateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
+                try {
+                    updateEvening(Constants.Evening.last_datetime, dateTimeStringBuilder.toString());
+                    ArrayList<String> used_array = new ArrayList<>();
+                    if(joint.isChecked())
+                        used_array.add(Constants.joint);
+                    if(bowl.isChecked())
+                        used_array.add(Constants.bowl);
+                    if(bong.isChecked())
+                        used_array.add(Constants.bong);
+                    if(blunt.isChecked())
+                        used_array.add(Constants.blunt);
+                    if(pen.isChecked())
+                        used_array.add(Constants.pen);
+                    if(check_other.isChecked())
+                        used_array.add(other.getText().toString());
+                    updateEvening(Constants.Evening.used_checkbox, used_array.toString());
+                    updateEvening(Constants.Evening.used_qnty, qnty.getText());
+                    String smoke_units = "none";
+                    switch (units.getCheckedRadioButtonId()) {
+                        case R.id.mjs_eve1_a_hits:
+                            smoke_units = Constants.Evening.hits;
+                            break;
+                        case R.id.mjs_eve1_a_grams:
+                            smoke_units = Constants.Evening.grams;
+                            break;
+                    }
+                    updateEvening(Constants.Evening.units, smoke_units);
+                    ArrayList<String> used_with_array = new ArrayList<>();
+                    if(used_tobacco.isChecked())
+                        used_with_array.add(Constants.Evening.tobacco);
+                    if(used_alcohol.isChecked())
+                        used_with_array.add(Constants.Evening.alcohol);
+                    if(used_none.isChecked())
+                        used_with_array.add(Constants.Evening.none);
+                    updateEvening(Constants.Evening.usage_while_mj, used_with_array.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                saveEvening(false);
+                Log.d(Constants.TAG, "Evening " + evening.toString());
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveEvening(true);
+                finish();
+            }
+        });
+    }
+
+    public void showEve1b() {
+        setContentView(R.layout.mjs_eve1_b);
+        Button submit = findViewById(R.id.mjs_eve1_b_submit);
+        Button cancel = findViewById(R.id.mjs_eve1_b_cancel);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SeekBar rate_craving = findViewById(R.id.mjs_eve1_b_rate_craving);
+                SeekBar rate_relaxed = findViewById(R.id.mjs_eve1_b_rate_relaxed);
+                SeekBar rate_sluggish = findViewById(R.id.mjs_eve1_b_rate_sluggish);
+                SeekBar rate_foggy = findViewById(R.id.mjs_eve1_b_rate_foggy);
+                SeekBar rate_anxious = findViewById(R.id.mjs_eve1_b_rate_anxious);
+                SeekBar rate_sad = findViewById(R.id.mjs_eve1_b_rate_sad);
+                SeekBar rate_problems = findViewById(R.id.rate_solving_problems);
+                SeekBar rate_remembering = findViewById(R.id.rate_remembering);
+                SeekBar rate_attention = findViewById(R.id.rate_attention);
+                SeekBar rate_concentration = findViewById(R.id.rate_concentrating);
+
+                try {
+                    updateEvening(Constants.Evening.rate_craving, rate_craving.getProgress());
+                    updateEvening(Constants.Evening.rate_relaxed, rate_relaxed.getProgress());
+                    updateEvening(Constants.Evening.rate_sluggish, rate_sluggish.getProgress());
+                    updateEvening(Constants.Evening.rate_foggy, rate_foggy.getProgress());
+                    updateEvening(Constants.Evening.rate_anxious, rate_anxious.getProgress());
+                    updateEvening(Constants.Evening.rate_sad, rate_sad.getProgress());
+                    updateEvening(Constants.Evening.rate_problems, rate_problems.getProgress());
+                    updateEvening(Constants.Evening.rate_remembering, rate_remembering.getProgress());
+                    updateEvening(Constants.Evening.rate_attention, rate_attention.getProgress());
+                    updateEvening(Constants.Evening.rate_concentration, rate_concentration.getProgress());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                Log.d(Constants.TAG, "Evening " + evening.toString());
+                saveEvening(false);
+                finish();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveEvening(true);
+                finish();
+            }
+        });
+    }
+
+
 
 
 
