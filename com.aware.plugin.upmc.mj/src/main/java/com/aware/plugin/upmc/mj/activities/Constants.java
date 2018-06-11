@@ -16,6 +16,9 @@ public class Constants {
     public static final String blunt = "blunt";
     public static final String pen = "pen";
 
+    public static final String CONVERSION_MULITIPLIER = "60 * 60 * 1000";
+
+
 
 
 

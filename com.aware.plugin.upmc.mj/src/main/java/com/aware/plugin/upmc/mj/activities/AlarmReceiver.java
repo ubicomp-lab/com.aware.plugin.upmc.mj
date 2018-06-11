@@ -77,21 +77,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-
-    private void showNotification(Context context, String title, String description, PendingIntent onClick) {
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-        mBuilder.setSmallIcon(R.drawable.ic_action_esm)
-                .setContentTitle(title)
-                .setContentText(description)
-                .setOnlyAlertOnce(true)
-                .setAutoCancel(true)
-                .setContentIntent(onClick);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            mBuilder.setChannelId(UPMC_CHANNEL_ID);
-
-        mNotificationManager.notify(UPMC_NOTIFICATIONS, mBuilder.build());
-
-    }
 }
