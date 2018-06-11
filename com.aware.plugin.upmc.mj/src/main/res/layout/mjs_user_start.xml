@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/ui_check_other_input"
+                android:id="@+id/mjs_user_start_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/other" />

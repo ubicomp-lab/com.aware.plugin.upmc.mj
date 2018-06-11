@@ -26,12 +26,13 @@ import org.json.JSONException;
 public class Plugin extends Aware_Plugin {
 
     public static final String SCHEDULE_MORNING_MJ = "schedule_mj_morning";
+    public static final String SCHEDULE_AFTENOON_MJ = "schedule_mj_afternoon";
     public static final String SCHEDULE_EVENING_MJ = "schedule_mj_evening";
-    public static final String SCHEDULE_FINGERPRING_MJ = "schedule_mj_fingerprint";
 
     public static final String ACTION_MJ_MORNING = "ACTION_MJ_MORNING";
+    public static final String ACTION_MJ_AFTERNOON = "ACTION_MJ_AFTEROON";
     public static final String ACTION_MJ_EVENING = "ACTION_MJ_EVENING";
-    public static final String ACTION_MJ_FINGERPRINT = "ACTION_MJ_FINGERPRINT";
+    public static final String ACTION_MJ_SELF = "ACTION_MJ_SELF";
     public static final String UPMC_CHANNEL_ID = "UPMC_CHANNEL_ID";
     public static final int UPMC_NOTIFICATIONS = 424242;
 
@@ -72,10 +73,16 @@ public class Plugin extends Aware_Plugin {
         /**
          * Create persistent notification to do self-reports
          */
-        Intent selfReport = new Intent(this, MJ_Survey.class).setAction(Plugin.ACTION_MJ_MORNING);
+        Intent selfReport = new Intent(this, MJ_Survey.class).setAction(Plugin.ACTION_MJ_SELF);
         PendingIntent onTapSelf = PendingIntent.getActivity(this, 0, selfReport, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+        }
+        else {
+
+        }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
         builder.setSmallIcon(R.drawable.ic_action_esm)
                 .setContentTitle("UPMC MJ - Self-Report")
@@ -141,13 +148,13 @@ public class Plugin extends Aware_Plugin {
                 }
             }
 
-            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_FINGERPRING_MJ) == null) {
+            if (Scheduler.getSchedule(this, Plugin.SCHEDULE_AFTENOON_MJ) == null) {
                 try {
-                    Scheduler.Schedule afternoon = new Scheduler.Schedule(Plugin.SCHEDULE_FINGERPRING_MJ)
+                    Scheduler.Schedule afternoon = new Scheduler.Schedule(Plugin.SCHEDULE_AFTENOON_MJ)
                             .addHour(15)
                             .addMinute(0)
                             .setActionType(Scheduler.ACTION_TYPE_SERVICE)
-                            .setActionIntentAction(Plugin.ACTION_MJ_FINGERPRINT)
+                            .setActionIntentAction(Plugin.ACTION_MJ_AFTERNOON)
                             .setActionClass(getPackageName() + "/" + Plugin.class.getName());
 
                     Scheduler.saveSchedule(getApplicationContext(), afternoon);
@@ -179,7 +186,17 @@ public class Plugin extends Aware_Plugin {
                 Intent mj_survey = new Intent(this, MJ_Survey.class);
                 mj_survey.setAction(Plugin.ACTION_MJ_MORNING);
                 PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-                showNotification("UPMC MJ - Morning", "Good morning! Tap to answer survey.", onClick, 5);
+                showNotification("UPMC MJ - Morning", "Good morning! We're checking in to see how you're doing.", onClick, 5, Constants.Morning.TYPE);
+            }
+
+            /**
+             * Survey in the afternoon. Called from the Scheduler
+             */
+            if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_AFTERNOON)) {
+                Intent mj_survey = new Intent(this, MJ_Survey.class);
+                mj_survey.setAction(Plugin.ACTION_MJ_AFTERNOON);
+                PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
+                showNotification("UPMC MJ - Afternoon", "Good afternoon! We're checking in to see how you're doing.", onClick, 0, Constants.Afternoon.TYPE);
             }
 
             /**
@@ -189,18 +206,23 @@ public class Plugin extends Aware_Plugin {
                 Intent mj_survey = new Intent(this, MJ_Survey.class);
                 mj_survey.setAction(Plugin.ACTION_MJ_EVENING);
                 PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-                showNotification("UPMC MJ - Evening", "Good evening! Tap to answer survey.", onClick, 6);
+                showNotification("UPMC MJ - Evening", "Evening check-in to see how you're doing.", onClick, 6, Constants.Evening.TYPE);
             }
 
-            /**
-             * From lock-screen, on demand. Called from the Scheduler
-             */
-            if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_FINGERPRINT)) {
-                Intent mj_survey = new Intent(this, MJ_Survey.class);
-                mj_survey.setAction(Plugin.ACTION_MJ_FINGERPRINT);
-                PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
-                showNotification("UPMC MJ - Check up", "Just checking how you are doing. Tap to answer survey.", onClick, 0);
-            }
+
+
+//            /**
+//             * From lock-screen, on demand. Called from the Scheduler
+//             */
+//            if (intent != null && intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_MJ_SELF)) {
+//                Intent mj_survey = new Intent(this, MJ_Survey.class);
+//                mj_survey.setAction(Plugin.ACTION_MJ_SELF);
+//                PendingIntent onClick = PendingIntent.getActivity(getApplicationContext(), 0, mj_survey, PendingIntent.FLAG_UPDATE_CURRENT);
+//                showNotification("UPMC MJ - Check up", "Just checking how you are doing. Tap to answer survey.", onClick, 0);
+//            }
+
+
+
 
             //Initialise AWARE instance in plugin
             Aware.startAWARE(this);
@@ -215,7 +237,7 @@ public class Plugin extends Aware_Plugin {
      * @param description
      * @param onClick
      */
-    private void showNotification(String title, String description, PendingIntent onClick, int expires_hours) {
+    private void showNotification(String title, String description, PendingIntent onClick, int expires_hours, String type) {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
         mBuilder.setSmallIcon(R.drawable.ic_action_esm)
@@ -234,7 +256,7 @@ public class Plugin extends Aware_Plugin {
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
             Intent expiredBroadcast = new Intent(this, MJNotificationObserver.class);
             expiredBroadcast.setAction(ACTION_MJ_NOTIFICATION_EXPIRED);
-            expiredBroadcast.putExtra("type", (expires_hours == 5) ? "morning" : "evening");
+            expiredBroadcast.putExtra("type",type);
             PendingIntent alarmPending = PendingIntent.getBroadcast(this, 0, expiredBroadcast, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (expires_hours * 60 * 60 * 1000), alarmPending); //expire the notification after x hours.
         }

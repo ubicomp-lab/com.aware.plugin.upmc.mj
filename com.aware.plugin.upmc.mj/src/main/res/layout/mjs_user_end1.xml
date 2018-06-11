@@ -50,7 +50,7 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <CheckBox
-            android:id="@+id/mjs_user_end1_joint"
+            android:id="@+id/mjs_user_end1_check_joint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -59,42 +59,42 @@
             android:text="@string/joint" />
 
         <CheckBox
-            android:id="@+id/mjs_user_end1_bowl"
+            android:id="@+id/mjs_user_end1_check_bowl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_user_end1_joint"
+            android:layout_below="@+id/mjs_user_end1_check_joint"
             android:text="@string/bowl" />
 
         <CheckBox
-            android:id="@+id/mjs_user_end1_bong"
+            android:id="@+id/mjs_user_end1_check_bong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_user_end1_bowl"
+            android:layout_below="@+id/mjs_user_end1_check_bowl"
             android:text="@string/bong" />
 
 
 
         <CheckBox
-            android:id="@+id/mjs_user_end1_blunt"
+            android:id="@+id/mjs_user_end1_check_blunt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_user_end1_bong"
+            android:layout_below="@+id/mjs_user_end1_check_bong"
             android:text="@string/blunt" />
 
 
         <CheckBox
-            android:id="@+id/mjs_user_end1_pen"
+            android:id="@+id/mjs_user_end1_check_pen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mjs_user_end1_blunt"
+            android:layout_below="@+id/mjs_user_end1_check_blunt"
             android:text="@string/pen" />
 
 
@@ -102,16 +102,16 @@
             android:id="@+id/ui_other_usage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mjs_user_end1_pen"
+            android:layout_below="@+id/mjs_user_end1_check_pen"
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/mjs_user_end1_other"
+                android:id="@+id/mjs_user_end1_check_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/ui_check_other_usage_input"
+                android:id="@+id/mjs_user_end1_check_other_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/other" />
@@ -129,7 +129,7 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <EditText
-            android:id="@+id/ui_rate_mj_quantity"
+            android:id="@+id/mjs_user_end1_how_much_mj"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,22 +137,41 @@
 
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/ui_textView14"
-            android:hint="@string/how_much_hint"
-             />
+            android:hint="@string/how_much_hint"/>
 
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/mjs_user_end1_smoke_units"
+            android:layout_below="@+id/mjs_user_end1_how_much_mj"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/mjs_user_end1_grams"
+                android:text="@string/grams"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <RadioButton
+                android:id="@+id/mjs_user_end1_hits"
+                android:text="@string/hits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </RadioGroup>
 
 
         <TextView
             android:id="@+id/ui_end_textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_rate_mj_quantity"
+            android:layout_below="@+id/mjs_user_end1_smoke_units"
             android:paddingTop="15dp"
             android:text="@string/what_else_used"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <CheckBox
-            android:id="@+id/ui_end_checkBox1"
+            android:id="@+id/mjs_user_end1_tobacco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -161,32 +180,32 @@
             android:text="@string/alcohol" />
 
         <CheckBox
-            android:id="@+id/ui_end_checkBox2"
+            android:id="@+id/mjs_user_end1_alcohol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_end_checkBox1"
+            android:layout_below="@+id/mjs_user_end1_tobacco"
             android:text="@string/tobacco" />
 
         <CheckBox
-            android:id="@+id/ui_end_checkBox3"
+            android:id="@+id/mjs_user_end1_caffeine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_end_checkBox2"
+            android:layout_below="@+id/mjs_user_end1_alcohol"
             android:text="@string/caffeine" />
 
         <LinearLayout
             android:id="@+id/ui_end_other_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ui_end_checkBox3"
+            android:layout_below="@+id/mjs_user_end1_caffeine"
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/ui_end_check_other"
+                android:id="@+id/mjs_user_end1_none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -200,7 +219,7 @@
 
 
         <Button
-            android:id="@+id/ui_initiated_submit_3"
+            android:id="@+id/mjs_user_end1_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -211,12 +230,12 @@
             android:text="@string/btn_next" />
 
         <Button
-            android:id="@+id/ui_initiated_cancel_3"
+            android:id="@+id/mjs_user_end1_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ui_initiated_submit_3"
+            android:layout_below="@+id/mjs_user_end1_next"
             android:layout_marginTop="16dp"
             android:text="@string/btn_cancel" />
 
