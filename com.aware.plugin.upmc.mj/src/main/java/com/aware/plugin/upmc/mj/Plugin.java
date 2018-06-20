@@ -84,16 +84,6 @@ public class Plugin extends Aware_Plugin {
 
         showSelfReportNotif();
 
-
-        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CALL_LOG);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_CONTACTS);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_SMS);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.READ_PHONE_STATE);
-        REQUIRED_PERMISSIONS.add(Manifest.permission.RECORD_AUDIO);
-
         //Super class Aware_Plugin will handle check for permissions and set PERMISSIONS_OK to true inside onStartCommand. If we don't it keeps asking the permissions.
     }
 

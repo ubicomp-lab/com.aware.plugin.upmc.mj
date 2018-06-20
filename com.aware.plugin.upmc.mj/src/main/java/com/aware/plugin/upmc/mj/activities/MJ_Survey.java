@@ -65,10 +65,9 @@ public class MJ_Survey extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Log.d(Constants.TAG, "onCreate()");
-
     }
 
-    private class AsyncJoin extends AsyncTask<Void, Void, Void> {
+    /*private class AsyncJoin extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
 
@@ -135,7 +134,7 @@ public class MJ_Survey extends AppCompatActivity {
                 finish();
             }
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -191,8 +190,9 @@ public class MJ_Survey extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            isRegistered = false;
             unregisterReceiver(joinedObserver);
+            isRegistered = false;
+
             Aware.setSetting(getApplicationContext(), Aware_Preferences.DEBUG_FLAG, false); //enable logcat debug messages
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
@@ -213,6 +213,9 @@ public class MJ_Survey extends AppCompatActivity {
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_WEBSERVICE, 30);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_CLEAN_OLD_DATA, 1);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_SILENT, true);
+
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.FOREGROUND_PRIORITY, true); //makes the app run with foreground priority
+
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.STATUS_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, true);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.FREQUENCY_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, 300);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.device_usage.Settings.STATUS_PLUGIN_DEVICE_USAGE, true);
@@ -254,15 +257,16 @@ public class MJ_Survey extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(isRegistered)
-            unregisterReceiver(joinedObserver);
         super.onDestroy();
+
+        if(isRegistered) unregisterReceiver(joinedObserver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(Constants.TAG, "onResume");
+
         ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
         REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -281,84 +285,85 @@ public class MJ_Survey extends AppCompatActivity {
         }
 
         if (!permissions_ok) {
+
             Intent permissions = new Intent(this, PermissionsHandler.class);
             permissions.putExtra(PermissionsHandler.EXTRA_REQUIRED_PERMISSIONS, REQUIRED_PERMISSIONS);
             permissions.putExtra(PermissionsHandler.EXTRA_REDIRECT_ACTIVITY, getPackageName() + "/" + getClass().getName());
             permissions.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(permissions);
             finish();
-        } else {
+
+        } else { //all ok, continue loading AWARE etc.
+
             if (!Aware.IS_CORE_RUNNING) {
                 //This initialises the core framework, assigns Device ID if it doesn't exist yet, etc.
                 Intent aware = new Intent(getApplicationContext(), Aware.class);
                 startService(aware);
-
             }
-        }
 
+            if (!Aware.isStudy(getApplicationContext())) {
 
-        if (!Aware.isStudy(getApplicationContext())) {
-            IntentFilter filter = new IntentFilter(Aware.ACTION_JOINED_STUDY);
-            registerReceiver(joinedObserver, filter);
-            setContentView(R.layout.activity_mj_survey_main);
-            Button submitButton = findViewById(R.id.join_study);
-            final ProgressBar progressBar = findViewById(R.id.joining_study);
-            progressBar.setVisibility(View.INVISIBLE);
-            final EditText editText = findViewById(R.id.participant_label);
-            submitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(editText.getText().length()!=0) {
-                        Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL , editText.getText().toString(),Aware_Preferences.DEVICE_LABEL);
-                        progressBar.setVisibility(View.VISIBLE);
-                        //new AsyncJoin().execute();
-                        Log.d(Constants.TAG, "onResume: trying to join study");
-                        isRegistered = true;
-                        Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
+                IntentFilter filter = new IntentFilter(Aware.ACTION_JOINED_STUDY);
+                registerReceiver(joinedObserver, filter);
 
+                setContentView(R.layout.activity_mj_survey_main);
+                Button submitButton = findViewById(R.id.join_study);
+                final ProgressBar progressBar = findViewById(R.id.joining_study);
+                progressBar.setVisibility(View.INVISIBLE);
+                final EditText editText = findViewById(R.id.participant_label);
+                submitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(editText.getText().length()!=0) {
+                            Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL , editText.getText().toString(),Aware_Preferences.DEVICE_LABEL);
+                            progressBar.setVisibility(View.VISIBLE);
+                            //new AsyncJoin().execute();
+                            Log.d(Constants.TAG, "onResume: trying to join study");
+                            isRegistered = true;
+                            Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Please enter a valid label", Toast.LENGTH_LONG).show();
+                            Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
+                            Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
+                        }
 
                     }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Please enter a valid label", Toast.LENGTH_LONG).show();
-                        Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
-                        Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
-                    }
+                });
 
+
+            } else {
+
+                Applications.isAccessibilityServiceActive(getApplicationContext());
+                Aware.isBatteryOptimizationIgnored(getApplicationContext(), "com.aware.plugin.upmc.mj");
+
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 }
-            });
 
 
-        } else {
-            Applications.isAccessibilityServiceActive(getApplicationContext());
-            Aware.isBatteryOptimizationIgnored(getApplicationContext(), "com.aware.plugin.upmc.mj");
-
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-
-
-            if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
-                Log.d(Constants.TAG, "morning survey");
-                showMorningSurvey();
-            }
-            else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_AFTERNOON)) {
-                Log.d(Constants.TAG, "afternoon survey");
-                showAfternoonSurvey();
-            }
-            else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
-                Log.d(Constants.TAG, "evening survey");
-                showEveningSurvey();
-            }
-            else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_START)) {
-                Log.d(Constants.TAG, "self-report start survey");
-                showSelfReportStartSurvey();
-            }
-            else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_END)) {
-                Log.d(Constants.TAG, "self-report end survey");
-                showSelfReportEndSurvey();
+                if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
+                    Log.d(Constants.TAG, "morning survey");
+                    showMorningSurvey();
+                }
+                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_AFTERNOON)) {
+                    Log.d(Constants.TAG, "afternoon survey");
+                    showAfternoonSurvey();
+                }
+                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
+                    Log.d(Constants.TAG, "evening survey");
+                    showEveningSurvey();
+                }
+                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_START)) {
+                    Log.d(Constants.TAG, "self-report start survey");
+                    showSelfReportStartSurvey();
+                }
+                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_END)) {
+                    Log.d(Constants.TAG, "self-report end survey");
+                    showSelfReportEndSurvey();
+                }
             }
         }
-
     }
 
 
