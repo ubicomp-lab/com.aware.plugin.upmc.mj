@@ -82,6 +82,7 @@ public class Plugin extends Aware_Plugin {
             mNotificationManager.createNotificationChannel(mChannel);
         }
 
+
         showSelfReportNotif();
 
         //Super class Aware_Plugin will handle check for permissions and set PERMISSIONS_OK to true inside onStartCommand. If we don't it keeps asking the permissions.
@@ -127,6 +128,7 @@ public class Plugin extends Aware_Plugin {
 
 
     public void showStartNotif() {
+        Aware.setSetting(getApplicationContext(), Settings.ACTION_MJ_SELF, Plugin.ACTION_MJ_SELF_START);
         Intent selfReport = new Intent(this, MJ_Survey.class).setAction(Plugin.ACTION_MJ_SELF_START);
         PendingIntent onTapSelf = PendingIntent.getActivity(this, 0, selfReport, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -145,9 +147,11 @@ public class Plugin extends Aware_Plugin {
 
 
     public void showEndNotif() {
+        Aware.setSetting(getApplicationContext(), Settings.ACTION_MJ_SELF, Plugin.ACTION_MJ_SELF_END);
         Intent selfReport = new Intent(this, MJ_Survey.class).setAction(Plugin.ACTION_MJ_SELF_END);
         PendingIntent onTapSelf = PendingIntent.getActivity(this, 0, selfReport, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             srNotifBuilder.setContentIntent(onTapSelf);
             assert notificationManager != null;
             notificationManager.notify(UPMC_PERSISTENT_NOTIFICATION, srNotifBuilder.build());

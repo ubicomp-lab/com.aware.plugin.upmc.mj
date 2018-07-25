@@ -13,6 +13,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
 
     //Plugin settings in XML @xml/preferences
     public static final String STATUS_PLUGIN_TEMPLATE = "status_plugin_template";
+    public static final String ACTION_MJ_SELF = "ACTION_MJ_SELF";
 
     //Plugin settings UI elements
     private static CheckBoxPreference status;

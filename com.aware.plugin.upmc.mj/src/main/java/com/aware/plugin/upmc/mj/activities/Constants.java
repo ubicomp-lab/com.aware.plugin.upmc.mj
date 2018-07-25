@@ -17,6 +17,10 @@ public class Constants {
     public static final String pen = "pen";
 
     public static final String CONVERSION_MULITIPLIER = "60 * 60 * 1000";
+    public static final String STATUS_USER_INITIATED_START = "STATUS_USER_INITIATED_START";
+    public static final String STATUS_USER_INITIATED_END = "STATUS_USER_INITIATED_END";
+    public static final String ACTION_MJ_DEFAULT = "ACTION_MJ_SELF";
+
 
 
 

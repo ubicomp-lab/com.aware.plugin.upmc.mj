@@ -40,6 +40,7 @@ import com.aware.ESM;
 import com.aware.plugin.upmc.mj.Plugin;
 import com.aware.plugin.upmc.mj.Provider;
 import com.aware.plugin.upmc.mj.R;
+import com.aware.plugin.upmc.mj.Settings;
 import com.aware.ui.PermissionsHandler;
 
 import org.json.JSONException;
@@ -334,12 +335,19 @@ public class MJ_Survey extends AppCompatActivity {
 
             } else {
 
+                Log.d(Constants.TAG, "Settings:" + Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF));
+
                 Applications.isAccessibilityServiceActive(getApplicationContext());
                 Aware.isBatteryOptimizationIgnored(getApplicationContext(), "com.aware.plugin.upmc.mj");
 
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 }
+
+
+
+                if(Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).length()==0)
+                    Aware.setSetting(getApplicationContext(), Settings.ACTION_MJ_SELF, Plugin.ACTION_MJ_SELF_START);
 
 
                 if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
@@ -362,6 +370,18 @@ public class MJ_Survey extends AppCompatActivity {
                     Log.d(Constants.TAG, "self-report end survey");
                     showSelfReportEndSurvey();
                 }
+                else {
+                    Log.d(Constants.TAG, "self-report intent");
+                    if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_START)) {
+                        Log.d(Constants.TAG, "self-report start survey");
+                        showSelfReportStartSurvey();
+                    }
+                    else if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_END)) {
+                        Log.d(Constants.TAG, "self-report end survey");
+                        showSelfReportEndSurvey();
+                    }
+
+                }
             }
         }
     }
@@ -376,6 +396,7 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveSelfReport(true, true);
+                finish();
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
