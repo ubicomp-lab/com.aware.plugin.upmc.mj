@@ -30,7 +30,8 @@ public class Constants {
 
     public static class Morning {
         public static final String TYPE = "morning";
-        public static final String last_datetime = "last_datetime";
+        public static final String last_datetime = "morning_0_datetime";
+        public static final String stop_datetime = "morning_stop_datetime";
         public static final String used_checkbox = "morning_1_checkbox";
         public static final String used_qnty = "morning_2_checkbox";
         public static final String units = "morning_2_number_unit";
@@ -59,6 +60,7 @@ public class Constants {
 
 
         public static final String last_datetime = "flow_0_afternoon_0_quick_datetime";
+        public static final String stop_datetime = "afternoon_stop_datetime";
         public static final String used_checkbox = "flow_1_afternoon_0_quick_checkbox";
         public static final String used_qnty = "flow_2_afternoon_0_quick_number";
         public static final String units = "flow_2_afternoon_0_quick_number_units";
@@ -96,6 +98,7 @@ public class Constants {
 
 
         public static final String last_datetime = "flow_0_afternoon_0_quick_datetime";
+        public static final String stop_datetime = "evening_stop_datetime";
         public static final String used_checkbox = "flow_1_afternoon_0_quick_checkbox";
         public static final String used_qnty = "flow_2_afternoon_0_quick_number";
         public static final String units = "flow_2_afternoon_0_quick_number_units";

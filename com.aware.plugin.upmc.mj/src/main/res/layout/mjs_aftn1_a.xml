@@ -36,11 +36,39 @@
             android:layout_centerHorizontal="true"
             android:timePickerMode="spinner" />
 
+
+        <TextView
+            android:id="@+id/mjs_aftn1_a_tv1a"
+            android:layout_below="@+id/mjs_aftn1_a_last_time_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/when_stop_high"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <DatePicker
+            android:id="@+id/mjs_aftn1_a_last_high_date_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_aftn1_a_tv1a"
+            android:layout_centerHorizontal="true"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <TimePicker
+            android:id="@+id/mjs_aftn1_a_last_high_time_mj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mjs_aftn1_a_last_high_date_mj"
+            android:layout_centerHorizontal="true"
+            android:timePickerMode="spinner" />
+
+
         <TextView
             android:id="@+id/mjs_aftn1_a_tv2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mjs_aftn1_a_last_time_mj"
+            android:layout_below="@+id/mjs_aftn1_a_last_high_time_mj"
             android:text="@string/what_did_mj_use"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 

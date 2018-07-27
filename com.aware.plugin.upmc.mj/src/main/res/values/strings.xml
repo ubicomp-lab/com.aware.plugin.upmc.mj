@@ -7,7 +7,8 @@
     <string name="last_24_marijuana">Have you used marijuana today?</string>
     <string name="last_checkin_marijuana">Have you used marijuana since the last check-in?</string>
     <string name="hint_total_number">Total Number</string>
-    <string name="when_last_time">When was the last time you used marijuana?</string>
+    <string name="when_last_time">When was the last time you started smoking marijuana?</string>
+    <string name="when_stop_high">When did you stop feeling high? (that last time)</string>
     <string name="what_did_mj_use">How did you smoke it?</string>
     <string name="how_much">How much did you smoke at that time?</string>
     <string name="rate_craving">Rate your craving to smoke right now</string>

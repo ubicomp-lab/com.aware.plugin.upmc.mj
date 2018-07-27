@@ -321,7 +321,7 @@ public class MJ_Survey extends AppCompatActivity {
                             //new AsyncJoin().execute();
                             Log.d(Constants.TAG, "onResume: trying to join study");
                             isRegistered = true;
-                            Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/108/z4Q4nINGkqq8");
+                            Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/119/yGAPruoGKztQ");
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Please enter a valid label", Toast.LENGTH_LONG).show();
@@ -464,6 +464,7 @@ public class MJ_Survey extends AppCompatActivity {
                     saveSelfReport(true, false);
                     start2HrAlarm();
                     Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                    startMUSE();
                     finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -717,6 +718,8 @@ public class MJ_Survey extends AppCompatActivity {
             public void onClick(View view) {
                 DatePicker last_date = findViewById(R.id.mjs_morn1_last_date_mj);
                 TimePicker last_time = findViewById(R.id.mjs_morn1_last_time_mj);
+                DatePicker stop_date = findViewById(R.id.mjs_morn1_stop_date_mj);
+                TimePicker stop_time = findViewById(R.id.mjs_morn1_stop_time_mj);
                 CheckBox joint = findViewById(R.id.mjs_morn1_check_joint);
                 CheckBox bowl = findViewById(R.id.mjs_morn1_check_bowl);
                 CheckBox bong = findViewById(R.id.mjs_morn1_check_bong);
@@ -748,11 +751,23 @@ public class MJ_Survey extends AppCompatActivity {
                             .append("-")
                             .append(last_date.getYear())
                             .append(" ");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    StringBuilder stopTimeStringBuilder = new StringBuilder();
+                    dateTimeStringBuilder.append(stop_date.getMonth()+1)
+                            .append("-")
+                            .append(stop_date.getDayOfMonth())
+                            .append("-")
+                            .append(stop_date.getYear())
+                            .append(" ");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         dateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
-                    else
+                        stopTimeStringBuilder.append(stop_time.getHour()).append(":").append(stop_time.getMinute());
+                    }
+                    else {
                         dateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
+                        stopTimeStringBuilder.append(stop_time.getCurrentHour()).append(":").append(stop_time.getCurrentMinute());
+                    }
                     updateMorning(Constants.Morning.last_datetime, dateTimeStringBuilder.toString());
+                    updateMorning(Constants.Morning.stop_datetime, stopTimeStringBuilder.toString());
                     ArrayList<String> used_array = new ArrayList<>();
                     if(joint.isChecked())
                         used_array.add(Constants.joint);
@@ -827,6 +842,7 @@ public class MJ_Survey extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 Log.d(Constants.TAG, "Morning " + morning.toString());
                 saveMorning(false);
+                startMUSE();
                 finish();
             }
 
@@ -874,6 +890,8 @@ public class MJ_Survey extends AppCompatActivity {
             public void onClick(View v) {
                 DatePicker last_date = findViewById(R.id.mjs_aftn1_a_last_date_mj);
                 TimePicker last_time = findViewById(R.id.mjs_aftn1_a_last_time_mj);
+                DatePicker stop_date = findViewById(R.id.mjs_aftn1_a_last_high_date_mj);
+                TimePicker stop_time = findViewById(R.id.mjs_aftn1_a_last_high_time_mj);
                 CheckBox joint = findViewById(R.id.mjs_aftn1_a_check_joint);
                 CheckBox bowl = findViewById(R.id.mjs_aftn1_a_check_bowl);
                 CheckBox bong = findViewById(R.id.mjs_aftn1_a_check_bong);
@@ -907,19 +925,33 @@ public class MJ_Survey extends AppCompatActivity {
                     return;
                 }
 
-                StringBuilder dateTimeStringBuilder = new StringBuilder();
-                dateTimeStringBuilder.append(last_date.getMonth()+1)
+                StringBuilder lastDateTimeStringBuilder = new StringBuilder();
+                lastDateTimeStringBuilder.append(last_date.getMonth()+1)
                         .append("-")
                         .append(last_date.getDayOfMonth())
                         .append("-")
                         .append(last_date.getYear())
                         .append(" ");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    dateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
-                else
-                    dateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
+
+                StringBuilder stopDateTimeStringBuilder = new StringBuilder();
+                lastDateTimeStringBuilder.append(stop_date.getMonth()+1)
+                        .append("-")
+                        .append(stop_date.getDayOfMonth())
+                        .append("-")
+                        .append(stop_date.getYear())
+                        .append(" ");
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    lastDateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
+                    stopDateTimeStringBuilder.append(stop_time.getHour()).append(":").append(stop_time.getMinute());
+                }
+                else {
+                    lastDateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
+                    stopDateTimeStringBuilder.append(stop_time.getCurrentHour()).append(":").append(stop_time.getCurrentMinute());
+                }
                 try {
-                    updateAfternoon(Constants.Afternoon.last_datetime, dateTimeStringBuilder.toString());
+                    updateAfternoon(Constants.Afternoon.last_datetime, lastDateTimeStringBuilder.toString());
+                    updateAfternoon(Constants.Afternoon.stop_datetime, stopDateTimeStringBuilder.toString());
                     ArrayList<String> used_array = new ArrayList<>();
                     if(joint.isChecked())
                         used_array.add(Constants.joint);
@@ -959,6 +991,7 @@ public class MJ_Survey extends AppCompatActivity {
                 saveAfternoon(false);
                 Log.d(Constants.TAG, "Afternoon " + afternoon.toString());
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                startMUSE();
                 finish();
                 }
         });
@@ -998,6 +1031,7 @@ public class MJ_Survey extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 Log.d(Constants.TAG, "Afternoon " + afternoon.toString());
                 saveAfternoon(false);
+                startMUSE();
                 finish();
             }
         });
@@ -1053,6 +1087,8 @@ public class MJ_Survey extends AppCompatActivity {
             public void onClick(View v) {
                 DatePicker last_date = findViewById(R.id.mjs_eve1_a_last_date_mj);
                 TimePicker last_time = findViewById(R.id.mjs_eve1_a_last_time_mj);
+                DatePicker stop_date = findViewById(R.id.mjs_eve1_a_stop_date_mj);
+                TimePicker stop_time = findViewById(R.id.mjs_eve1_a_stop_time_mj);
                 CheckBox joint = findViewById(R.id.mjs_eve1_a_check_joint);
                 CheckBox bowl = findViewById(R.id.mjs_eve1_a_check_bowl);
                 CheckBox bong = findViewById(R.id.mjs_eve1_a_check_bong);
@@ -1093,12 +1129,25 @@ public class MJ_Survey extends AppCompatActivity {
                         .append("-")
                         .append(last_date.getYear())
                         .append(" ");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+
+                StringBuilder stopTimeStringBuilder = new StringBuilder();
+                dateTimeStringBuilder.append(stop_date.getMonth()+1)
+                        .append("-")
+                        .append(stop_date.getDayOfMonth())
+                        .append("-")
+                        .append(stop_date.getYear())
+                        .append(" ");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     dateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
-                else
+                    stopTimeStringBuilder.append(last_time.getHour()).append(":").append(stop_time.getMinute());
+                }
+                else {
                     dateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
+                    stopTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(stop_time.getCurrentMinute());
+                }
                 try {
                     updateEvening(Constants.Evening.last_datetime, dateTimeStringBuilder.toString());
+                    updateEvening(Constants.Evening.stop_datetime, stopTimeStringBuilder.toString());
                     ArrayList<String> used_array = new ArrayList<>();
                     if(joint.isChecked())
                         used_array.add(Constants.joint);
@@ -1138,6 +1187,7 @@ public class MJ_Survey extends AppCompatActivity {
                 saveEvening(false);
                 Log.d(Constants.TAG, "Evening " + evening.toString());
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                startMUSE();
                 finish();
             }
         });
@@ -1185,6 +1235,7 @@ public class MJ_Survey extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 Log.d(Constants.TAG, "Evening " + evening.toString());
                 saveEvening(false);
+                startMUSE();
                 finish();
             }
         });
