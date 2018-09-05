@@ -44,6 +44,7 @@ android {
         resValue "string", "provider_timezones", android.defaultConfig.applicationId + ".provider.timezone"
         resValue "string", "provider_traffic", android.defaultConfig.applicationId + ".provider.traffic"
         resValue "string", "provider_wifi", android.defaultConfig.applicationId + ".provider.wifi"
+        resValue "string", "provider_upmc_mj", android.defaultConfig.applicationId + ".provider.mj"
     }
 
     signingConfigs {

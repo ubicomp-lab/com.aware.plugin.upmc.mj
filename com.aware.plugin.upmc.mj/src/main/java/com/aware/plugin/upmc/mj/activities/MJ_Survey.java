@@ -12,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -140,7 +139,7 @@ public class MJ_Survey extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_mj, menu);
-        for(int i = 0; i < menu.size(); i++) {
+        for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             if (item.getTitle().toString().equalsIgnoreCase("Sync") && !Aware.isStudy(getApplicationContext())) {
                 item.setVisible(false);
@@ -187,6 +186,7 @@ public class MJ_Survey extends AppCompatActivity {
 
 
     private JoinedStudy joinedObserver = new JoinedStudy();
+
     private class JoinedStudy extends BroadcastReceiver {
 
         @Override
@@ -209,6 +209,10 @@ public class MJ_Survey extends AppCompatActivity {
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_MESSAGES, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SCREEN, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_NETWORK_EVENTS, true);
+
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_WIFI, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_WIFI, 5 * 60);
+
             Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_WIFI_ONLY, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.WEBSERVICE_FALLBACK_NETWORK, 6);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_WEBSERVICE, 30);
@@ -217,10 +221,10 @@ public class MJ_Survey extends AppCompatActivity {
 
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FOREGROUND_PRIORITY, true); //makes the app run with foreground priority
 
-            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.STATUS_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, true);
+            //Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.STATUS_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, true);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.activity_recognition.Settings.FREQUENCY_PLUGIN_GOOGLE_ACTIVITY_RECOGNITION, 300);
-            Aware.setSetting(getApplicationContext(), com.aware.plugin.device_usage.Settings.STATUS_PLUGIN_DEVICE_USAGE, true);
-            Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.STATUS_GOOGLE_FUSED_LOCATION, true);
+            //Aware.setSetting(getApplicationContext(), com.aware.plugin.device_usage.Settings.STATUS_PLUGIN_DEVICE_USAGE, true);
+            //Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.STATUS_GOOGLE_FUSED_LOCATION, true);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.FREQUENCY_GOOGLE_FUSED_LOCATION, 300);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.MAX_FREQUENCY_GOOGLE_FUSED_LOCATION, 300);
             Aware.setSetting(getApplicationContext(), com.aware.plugin.google.fused_location.Settings.ACCURACY_GOOGLE_FUSED_LOCATION, 102);
@@ -243,7 +247,7 @@ public class MJ_Survey extends AppCompatActivity {
 
             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
-            if(!Aware.isStudy(getApplicationContext()))
+            if (!Aware.isStudy(getApplicationContext()))
                 Toast.makeText(getApplicationContext(), "Join failed, please try again!", Toast.LENGTH_LONG).show();
 
             else {
@@ -260,7 +264,7 @@ public class MJ_Survey extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if(isRegistered) unregisterReceiver(joinedObserver);
+        if (isRegistered) unregisterReceiver(joinedObserver);
     }
 
     @Override
@@ -277,6 +281,11 @@ public class MJ_Survey extends AppCompatActivity {
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_SMS);
         REQUIRED_PERMISSIONS.add(Manifest.permission.READ_PHONE_STATE);
         REQUIRED_PERMISSIONS.add(Manifest.permission.RECORD_AUDIO);
+        REQUIRED_PERMISSIONS.add(Manifest.permission.CHANGE_WIFI_STATE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            REQUIRED_PERMISSIONS.add(Manifest.permission.FOREGROUND_SERVICE);
+        }
 
         for (String p : REQUIRED_PERMISSIONS) {
             if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
@@ -315,15 +324,14 @@ public class MJ_Survey extends AppCompatActivity {
                 submitButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(editText.getText().length()!=0) {
-                            Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL , editText.getText().toString(),Aware_Preferences.DEVICE_LABEL);
+                        if (editText.getText().length() != 0) {
+                            Aware.setSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL, editText.getText().toString(), Aware_Preferences.DEVICE_LABEL);
                             progressBar.setVisibility(View.VISIBLE);
                             //new AsyncJoin().execute();
                             Log.d(Constants.TAG, "onResume: trying to join study");
                             isRegistered = true;
                             Aware.joinStudy(getApplicationContext(), "https://r2d2.hcii.cs.cmu.edu/aware/dashboard/index.php/webservice/index/119/yGAPruoGKztQ");
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getApplicationContext(), "Please enter a valid label", Toast.LENGTH_LONG).show();
                             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
                             Log.d(Constants.TAG, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_LABEL));
@@ -345,38 +353,31 @@ public class MJ_Survey extends AppCompatActivity {
                 }
 
 
-
-                if(Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).length()==0)
+                if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).length() == 0)
                     Aware.setSetting(getApplicationContext(), Settings.ACTION_MJ_SELF, Plugin.ACTION_MJ_SELF_START);
 
 
-                if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
+                if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_MORNING)) {
                     Log.d(Constants.TAG, "morning survey");
                     showMorningSurvey();
-                }
-                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_AFTERNOON)) {
+                } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_AFTERNOON)) {
                     Log.d(Constants.TAG, "afternoon survey");
                     showAfternoonSurvey();
-                }
-                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
+                } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_EVENING)) {
                     Log.d(Constants.TAG, "evening survey");
                     showEveningSurvey();
-                }
-                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_START)) {
+                } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_START)) {
                     Log.d(Constants.TAG, "self-report start survey");
                     showSelfReportStartSurvey();
-                }
-                else if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_END)) {
+                } else if (getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equalsIgnoreCase(Plugin.ACTION_MJ_SELF_END)) {
                     Log.d(Constants.TAG, "self-report end survey");
                     showSelfReportEndSurvey();
-                }
-                else {
+                } else {
                     Log.d(Constants.TAG, "self-report intent");
                     if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_START)) {
                         Log.d(Constants.TAG, "self-report start survey");
                         showSelfReportStartSurvey();
-                    }
-                    else if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_END)) {
+                    } else if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_END)) {
                         Log.d(Constants.TAG, "self-report end survey");
                         showSelfReportEndSurvey();
                     }
@@ -413,20 +414,20 @@ public class MJ_Survey extends AppCompatActivity {
                 CheckBox used_caffeine = findViewById(R.id.mjs_user_start_caffeine);
                 CheckBox used_none = findViewById(R.id.mjs_user_start_none);
                 RadioGroup social_context = findViewById(R.id.mjs_user_start_social_context);
-                if(social_context.getCheckedRadioButtonId()==-1) {
+                if (social_context.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!used_alcohol.isChecked() && !used_tobacco.isChecked() && !used_caffeine.isChecked() && !used_none.isChecked()) {
+                if (!used_alcohol.isChecked() && !used_tobacco.isChecked() && !used_caffeine.isChecked() && !used_none.isChecked()) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(used_none.isChecked() && other.getText().length()==0) {
+                if (used_none.isChecked() && other.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 StringBuilder dateTimeStringBuilder = new StringBuilder();
-                dateTimeStringBuilder.append(start_date.getMonth()+1)
+                dateTimeStringBuilder.append(start_date.getMonth() + 1)
                         .append("-")
                         .append(start_date.getDayOfMonth())
                         .append("-")
@@ -439,13 +440,13 @@ public class MJ_Survey extends AppCompatActivity {
                 try {
                     updateSelfReport(Constants.SelfReport.start_datetime, dateTimeStringBuilder.toString());
                     ArrayList<String> used_with_array = new ArrayList<>();
-                    if(used_tobacco.isChecked())
+                    if (used_tobacco.isChecked())
                         used_with_array.add(Constants.SelfReport.tobacco);
-                    if(used_alcohol.isChecked())
+                    if (used_alcohol.isChecked())
                         used_with_array.add(Constants.SelfReport.alcohol);
-                    if(used_caffeine.isChecked())
+                    if (used_caffeine.isChecked())
                         used_with_array.add(Constants.SelfReport.caffeine);
-                    if(used_none.isChecked())
+                    if (used_none.isChecked())
                         used_with_array.add(other.getText().toString());
                     updateSelfReport(Constants.SelfReport.usage_while_mj_start, used_with_array.toString());
                     updateSelfReport(Constants.SelfReport.rate_craving, rate_craving.getProgress());
@@ -484,7 +485,7 @@ public class MJ_Survey extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveSelfReport(false,true);
+                saveSelfReport(false, true);
             }
         });
 
@@ -506,24 +507,24 @@ public class MJ_Survey extends AppCompatActivity {
                 CheckBox used_alcohol = findViewById(R.id.mjs_user_end1_alcohol);
                 CheckBox used_caffeine = findViewById(R.id.mjs_user_end1_caffeine);
                 CheckBox used_none = findViewById(R.id.mjs_user_end1_none);
-                if(units.getCheckedRadioButtonId()==-1) {
-                    Toast.makeText(getApplicationContext(),"Please complete the survey", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked()&& !pen.isChecked()) {
+                if (units.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(check_other.isChecked() && qnty.getText().length()==0) {
+                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (check_other.isChecked() && qnty.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(!used_alcohol.isChecked() && !used_tobacco.isChecked() && !used_caffeine.isChecked() && !used_none.isChecked()) {
+                if (!used_alcohol.isChecked() && !used_tobacco.isChecked() && !used_caffeine.isChecked() && !used_none.isChecked()) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(used_none.isChecked() && other.getText().length()==0) {
+                if (used_none.isChecked() && other.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -531,7 +532,7 @@ public class MJ_Survey extends AppCompatActivity {
 
                 try {
                     StringBuilder dateTimeStringBuilder = new StringBuilder();
-                    dateTimeStringBuilder.append(end_date.getMonth()+1)
+                    dateTimeStringBuilder.append(end_date.getMonth() + 1)
                             .append("-")
                             .append(end_date.getDayOfMonth())
                             .append("-")
@@ -543,17 +544,17 @@ public class MJ_Survey extends AppCompatActivity {
                         dateTimeStringBuilder.append(end_time.getCurrentHour()).append(":").append(end_time.getCurrentMinute());
                     updateSelfReport(Constants.SelfReport.end_datetime, dateTimeStringBuilder.toString());
                     ArrayList<String> used_array = new ArrayList<>();
-                    if(joint.isChecked())
+                    if (joint.isChecked())
                         used_array.add(Constants.joint);
-                    if(bowl.isChecked())
+                    if (bowl.isChecked())
                         used_array.add(Constants.bowl);
-                    if(bong.isChecked())
+                    if (bong.isChecked())
                         used_array.add(Constants.bong);
-                    if(blunt.isChecked())
+                    if (blunt.isChecked())
                         used_array.add(Constants.blunt);
-                    if(pen.isChecked())
+                    if (pen.isChecked())
                         used_array.add(Constants.pen);
-                    if(check_other.isChecked())
+                    if (check_other.isChecked())
                         used_array.add(other.getText().toString());
                     updateSelfReport(Constants.SelfReport.used_checkbox, used_array.toString());
                     updateSelfReport(Constants.SelfReport.used_qnty, qnty.getText());
@@ -568,13 +569,13 @@ public class MJ_Survey extends AppCompatActivity {
                     }
                     updateSelfReport(Constants.SelfReport.units, smoke_units);
                     ArrayList<String> used_with_array = new ArrayList<>();
-                    if(used_tobacco.isChecked())
+                    if (used_tobacco.isChecked())
                         used_with_array.add(Constants.SelfReport.tobacco);
-                    if(used_alcohol.isChecked())
+                    if (used_alcohol.isChecked())
                         used_with_array.add(Constants.SelfReport.alcohol);
-                    if(used_caffeine.isChecked())
+                    if (used_caffeine.isChecked())
                         used_with_array.add(Constants.SelfReport.caffeine);
-                    if(used_none.isChecked())
+                    if (used_none.isChecked())
                         used_with_array.add(other.getText().toString());
                     updateSelfReport(Constants.SelfReport.usage_while_mj_end, used_with_array.toString());
                 } catch (JSONException e) {
@@ -607,17 +608,17 @@ public class MJ_Survey extends AppCompatActivity {
                 CheckBox home = findViewById(R.id.mjs_user_end2_home);
                 CheckBox other_home = findViewById(R.id.mjs_user_end2_other_home);
                 CheckBox work = findViewById(R.id.mjs_user_end2_school);
-                CheckBox other_location =  findViewById(R.id.mjs_user_end2_other_location);
-                EditText other_location_input =  findViewById(R.id.mjs_user_end2_other_location_input);
-                if(!to_cope.isChecked() && !to_social.isChecked() && !other.isChecked()) {
-                    if(other_reason.getText().length()==0) {
+                CheckBox other_location = findViewById(R.id.mjs_user_end2_other_location);
+                EditText other_location_input = findViewById(R.id.mjs_user_end2_other_location_input);
+                if (!to_cope.isChecked() && !to_social.isChecked() && !other.isChecked()) {
+                    if (other_reason.getText().length() == 0) {
                         Toast.makeText(getApplicationContext(), "Please complete the survey!", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
-                if(!home.isChecked() && !other_home.isChecked() && !work.isChecked() &&
+                if (!home.isChecked() && !other_home.isChecked() && !work.isChecked() &&
                         !other_location.isChecked() && !to_cope.isChecked()) {
-                    if(other_location_input.getText().length()==0) {
+                    if (other_location_input.getText().length() == 0) {
                         Toast.makeText(getApplicationContext(), "Please complete the survey!", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -625,19 +626,19 @@ public class MJ_Survey extends AppCompatActivity {
 
                 try {
                     ArrayList<String> reason_array_list = new ArrayList<>();
-                    if(to_cope.isChecked())
+                    if (to_cope.isChecked())
                         reason_array_list.add(Constants.SelfReport.to_cope);
-                    if(to_social.isChecked())
+                    if (to_social.isChecked())
                         reason_array_list.add(Constants.SelfReport.to_social);
-                    if(other.isChecked())
+                    if (other.isChecked())
                         reason_array_list.add(other_reason.getText().toString());
                     updateSelfReport(Constants.SelfReport.reason, reason_array_list.toString());
                     ArrayList<String> location_array_list = new ArrayList<>();
-                    if(home.isChecked())
+                    if (home.isChecked())
                         location_array_list.add(Constants.SelfReport.home);
-                    if(other_home.isChecked())
+                    if (other_home.isChecked())
                         location_array_list.add(Constants.SelfReport.other_home);
-                    if(work.isChecked())
+                    if (work.isChecked())
                         location_array_list.add(other_location_input.getText().toString());
                     updateSelfReport(Constants.SelfReport.location, location_array_list.toString());
                 } catch (JSONException e) {
@@ -680,7 +681,7 @@ public class MJ_Survey extends AppCompatActivity {
                 }
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 Log.d(Constants.TAG, "SelfReport " + self.toString());
-                saveSelfReport(false,false);
+                saveSelfReport(false, false);
                 finish();
             }
         });
@@ -692,9 +693,6 @@ public class MJ_Survey extends AppCompatActivity {
             }
         });
     }
-
-
-
 
 
     private void showMorningSurvey() {
@@ -729,15 +727,15 @@ public class MJ_Survey extends AppCompatActivity {
                 EditText other = findViewById(R.id.mjs_morn1_check_other_input);
                 EditText qnty = findViewById(R.id.mjs_morn1_how_much_mj);
                 RadioGroup units = findViewById(R.id.mjs_morn1_smoke_units);
-                if(units.getCheckedRadioButtonId()==-1) {
-                    Toast.makeText(getApplicationContext(),"Please complete the survey", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked()&& !pen.isChecked()) {
+                if (units.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(check_other.isChecked() && qnty.getText().length()==0) {
+                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (check_other.isChecked() && qnty.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -745,14 +743,14 @@ public class MJ_Survey extends AppCompatActivity {
 
                 try {
                     StringBuilder dateTimeStringBuilder = new StringBuilder();
-                    dateTimeStringBuilder.append(last_date.getMonth()+1)
+                    dateTimeStringBuilder.append(last_date.getMonth() + 1)
                             .append("-")
                             .append(last_date.getDayOfMonth())
                             .append("-")
                             .append(last_date.getYear())
                             .append(" ");
                     StringBuilder stopTimeStringBuilder = new StringBuilder();
-                    dateTimeStringBuilder.append(stop_date.getMonth()+1)
+                    dateTimeStringBuilder.append(stop_date.getMonth() + 1)
                             .append("-")
                             .append(stop_date.getDayOfMonth())
                             .append("-")
@@ -761,25 +759,24 @@ public class MJ_Survey extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         dateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
                         stopTimeStringBuilder.append(stop_time.getHour()).append(":").append(stop_time.getMinute());
-                    }
-                    else {
+                    } else {
                         dateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
                         stopTimeStringBuilder.append(stop_time.getCurrentHour()).append(":").append(stop_time.getCurrentMinute());
                     }
                     updateMorning(Constants.Morning.last_datetime, dateTimeStringBuilder.toString());
                     updateMorning(Constants.Morning.stop_datetime, stopTimeStringBuilder.toString());
                     ArrayList<String> used_array = new ArrayList<>();
-                    if(joint.isChecked())
+                    if (joint.isChecked())
                         used_array.add(Constants.joint);
-                    if(bowl.isChecked())
+                    if (bowl.isChecked())
                         used_array.add(Constants.bowl);
-                    if(bong.isChecked())
+                    if (bong.isChecked())
                         used_array.add(Constants.bong);
-                    if(blunt.isChecked())
+                    if (blunt.isChecked())
                         used_array.add(Constants.blunt);
-                    if(pen.isChecked())
+                    if (pen.isChecked())
                         used_array.add(Constants.pen);
-                    if(check_other.isChecked())
+                    if (check_other.isChecked())
                         used_array.add(other.getText().toString());
                     updateMorning(Constants.Morning.used_checkbox, used_array.toString());
                     updateMorning(Constants.Morning.used_qnty, qnty.getText());
@@ -823,7 +820,7 @@ public class MJ_Survey extends AppCompatActivity {
                 SeekBar rate_foggy = findViewById(R.id.mjs_morn2_rate_foggy);
                 SeekBar rate_anxious = findViewById(R.id.mjs_morn2_rate_anxious);
                 SeekBar rate_sad = findViewById(R.id.mjs_morn2_rate_sad);
-                if(last24_cigs.getText().length() ==0 || last24_drinks.getText().length()==0) {
+                if (last24_cigs.getText().length() == 0 || last24_drinks.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -904,29 +901,29 @@ public class MJ_Survey extends AppCompatActivity {
                 CheckBox used_alcohol = findViewById(R.id.mjs_aftn1_a_alcohol);
                 CheckBox used_none = findViewById(R.id.mjs_aftn1_a_none);
                 RadioGroup units = findViewById(R.id.mjs_aftn1_a_units);
-                if(units.getCheckedRadioButtonId()==-1) {
-                    Toast.makeText(getApplicationContext(),"Please complete the survey", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked()&& !pen.isChecked()) {
+                if (units.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(check_other.isChecked() && qnty.getText().length()==0) {
+                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked()) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!used_tobacco.isChecked() && !used_alcohol.isChecked() && !used_none.isChecked()) {
+                if (check_other.isChecked() && qnty.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(check_other.isChecked() && other.getText().length()==0) {
+                if (!used_tobacco.isChecked() && !used_alcohol.isChecked() && !used_none.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (check_other.isChecked() && other.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 StringBuilder lastDateTimeStringBuilder = new StringBuilder();
-                lastDateTimeStringBuilder.append(last_date.getMonth()+1)
+                lastDateTimeStringBuilder.append(last_date.getMonth() + 1)
                         .append("-")
                         .append(last_date.getDayOfMonth())
                         .append("-")
@@ -934,7 +931,7 @@ public class MJ_Survey extends AppCompatActivity {
                         .append(" ");
 
                 StringBuilder stopDateTimeStringBuilder = new StringBuilder();
-                lastDateTimeStringBuilder.append(stop_date.getMonth()+1)
+                lastDateTimeStringBuilder.append(stop_date.getMonth() + 1)
                         .append("-")
                         .append(stop_date.getDayOfMonth())
                         .append("-")
@@ -944,8 +941,7 @@ public class MJ_Survey extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     lastDateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
                     stopDateTimeStringBuilder.append(stop_time.getHour()).append(":").append(stop_time.getMinute());
-                }
-                else {
+                } else {
                     lastDateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
                     stopDateTimeStringBuilder.append(stop_time.getCurrentHour()).append(":").append(stop_time.getCurrentMinute());
                 }
@@ -953,17 +949,17 @@ public class MJ_Survey extends AppCompatActivity {
                     updateAfternoon(Constants.Afternoon.last_datetime, lastDateTimeStringBuilder.toString());
                     updateAfternoon(Constants.Afternoon.stop_datetime, stopDateTimeStringBuilder.toString());
                     ArrayList<String> used_array = new ArrayList<>();
-                    if(joint.isChecked())
+                    if (joint.isChecked())
                         used_array.add(Constants.joint);
-                    if(bowl.isChecked())
+                    if (bowl.isChecked())
                         used_array.add(Constants.bowl);
-                    if(bong.isChecked())
+                    if (bong.isChecked())
                         used_array.add(Constants.bong);
-                    if(blunt.isChecked())
+                    if (blunt.isChecked())
                         used_array.add(Constants.blunt);
-                    if(pen.isChecked())
+                    if (pen.isChecked())
                         used_array.add(Constants.pen);
-                    if(check_other.isChecked())
+                    if (check_other.isChecked())
                         used_array.add(other.getText().toString());
                     updateAfternoon(Constants.Afternoon.used_checkbox, used_array.toString());
                     updateAfternoon(Constants.Afternoon.used_qnty, qnty.getText());
@@ -978,11 +974,11 @@ public class MJ_Survey extends AppCompatActivity {
                     }
                     updateAfternoon(Constants.Afternoon.units, smoke_units);
                     ArrayList<String> used_with_array = new ArrayList<>();
-                    if(used_tobacco.isChecked())
+                    if (used_tobacco.isChecked())
                         used_with_array.add(Constants.Afternoon.tobacco);
-                    if(used_alcohol.isChecked())
+                    if (used_alcohol.isChecked())
                         used_with_array.add(Constants.Afternoon.alcohol);
-                    if(used_none.isChecked())
+                    if (used_none.isChecked())
                         used_with_array.add(Constants.Afternoon.none);
                     updateAfternoon(Constants.Afternoon.usage_while_mj, used_with_array.toString());
                 } catch (JSONException e) {
@@ -993,7 +989,7 @@ public class MJ_Survey extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 startMUSE();
                 finish();
-                }
+            }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1101,29 +1097,29 @@ public class MJ_Survey extends AppCompatActivity {
                 CheckBox used_alcohol = findViewById(R.id.mjs_eve1_a_alcohol);
                 CheckBox used_none = findViewById(R.id.mjs_eve1_a_none);
                 RadioGroup units = findViewById(R.id.mjs_eve1_a_units);
-                if(units.getCheckedRadioButtonId()==-1) {
-                    Toast.makeText(getApplicationContext(),"Please complete the survey", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked()&& !pen.isChecked()) {
+                if (units.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(check_other.isChecked() && qnty.getText().length()==0) {
+                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked()) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!used_tobacco.isChecked() && !used_alcohol.isChecked() && !used_none.isChecked()) {
+                if (check_other.isChecked() && qnty.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(check_other.isChecked() && other.getText().length()==0) {
+                if (!used_tobacco.isChecked() && !used_alcohol.isChecked() && !used_none.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (check_other.isChecked() && other.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 StringBuilder dateTimeStringBuilder = new StringBuilder();
-                dateTimeStringBuilder.append(last_date.getMonth()+1)
+                dateTimeStringBuilder.append(last_date.getMonth() + 1)
                         .append("-")
                         .append(last_date.getDayOfMonth())
                         .append("-")
@@ -1131,7 +1127,7 @@ public class MJ_Survey extends AppCompatActivity {
                         .append(" ");
 
                 StringBuilder stopTimeStringBuilder = new StringBuilder();
-                dateTimeStringBuilder.append(stop_date.getMonth()+1)
+                dateTimeStringBuilder.append(stop_date.getMonth() + 1)
                         .append("-")
                         .append(stop_date.getDayOfMonth())
                         .append("-")
@@ -1140,8 +1136,7 @@ public class MJ_Survey extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     dateTimeStringBuilder.append(last_time.getHour()).append(":").append(last_time.getMinute());
                     stopTimeStringBuilder.append(last_time.getHour()).append(":").append(stop_time.getMinute());
-                }
-                else {
+                } else {
                     dateTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(last_time.getCurrentMinute());
                     stopTimeStringBuilder.append(last_time.getCurrentHour()).append(":").append(stop_time.getCurrentMinute());
                 }
@@ -1149,17 +1144,17 @@ public class MJ_Survey extends AppCompatActivity {
                     updateEvening(Constants.Evening.last_datetime, dateTimeStringBuilder.toString());
                     updateEvening(Constants.Evening.stop_datetime, stopTimeStringBuilder.toString());
                     ArrayList<String> used_array = new ArrayList<>();
-                    if(joint.isChecked())
+                    if (joint.isChecked())
                         used_array.add(Constants.joint);
-                    if(bowl.isChecked())
+                    if (bowl.isChecked())
                         used_array.add(Constants.bowl);
-                    if(bong.isChecked())
+                    if (bong.isChecked())
                         used_array.add(Constants.bong);
-                    if(blunt.isChecked())
+                    if (blunt.isChecked())
                         used_array.add(Constants.blunt);
-                    if(pen.isChecked())
+                    if (pen.isChecked())
                         used_array.add(Constants.pen);
-                    if(check_other.isChecked())
+                    if (check_other.isChecked())
                         used_array.add(other.getText().toString());
                     updateEvening(Constants.Evening.used_checkbox, used_array.toString());
                     updateEvening(Constants.Evening.used_qnty, qnty.getText());
@@ -1174,11 +1169,11 @@ public class MJ_Survey extends AppCompatActivity {
                     }
                     updateEvening(Constants.Evening.units, smoke_units);
                     ArrayList<String> used_with_array = new ArrayList<>();
-                    if(used_tobacco.isChecked())
+                    if (used_tobacco.isChecked())
                         used_with_array.add(Constants.Evening.tobacco);
-                    if(used_alcohol.isChecked())
+                    if (used_alcohol.isChecked())
                         used_with_array.add(Constants.Evening.alcohol);
-                    if(used_none.isChecked())
+                    if (used_none.isChecked())
                         used_with_array.add(Constants.Evening.none);
                     updateEvening(Constants.Evening.usage_while_mj, used_with_array.toString());
                 } catch (JSONException e) {
@@ -1304,8 +1299,8 @@ public class MJ_Survey extends AppCompatActivity {
      * @param canceled
      */
     private void saveSelfReport(boolean is_start, boolean canceled) {
-        if(!canceled) {
-            if(is_start)
+        if (!canceled) {
+            if (is_start)
                 sendMessageToPlugin(Plugin.ACTION_MJ_SELF_START_COMPLETED);
             else {
                 sendMessageToPlugin(Plugin.ACTION_MJ_SELF_END_COMPLETED);
@@ -1316,15 +1311,11 @@ public class MJ_Survey extends AppCompatActivity {
         ContentValues data = new ContentValues();
         data.put(Provider.UPMC_MJ_Data.TIMESTAMP, System.currentTimeMillis());
         data.put(Provider.UPMC_MJ_Data.DEVICE_ID, Aware.getSetting(this, Aware_Preferences.DEVICE_ID));
-        data.put(Provider.UPMC_MJ_Data.QUESTION_TYPE, "self-report" + ((is_start)? "(start)" : "(end)")  + ((canceled) ? "-canceled" : ""));
+        data.put(Provider.UPMC_MJ_Data.QUESTION_TYPE, "self-report" + ((is_start) ? "(start)" : "(end)") + ((canceled) ? "-canceled" : ""));
         data.put(Provider.UPMC_MJ_Data.QUESTION_ANSWERS, self.toString());
         getContentResolver().insert(Provider.UPMC_MJ_Data.CONTENT_URI, data);
         if (!canceled) sendBroadcast(new Intent(ESM.ACTION_AWARE_ESM_QUEUE_COMPLETE));
     }
-
-
-
-
 
 
     /**
