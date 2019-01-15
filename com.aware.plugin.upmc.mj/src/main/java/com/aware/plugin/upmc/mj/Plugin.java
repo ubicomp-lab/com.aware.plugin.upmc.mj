@@ -272,8 +272,8 @@ public class Plugin extends Aware_Plugin {
 
             if(intent!=null && intent.getAction()!=null && intent.getAction().equalsIgnoreCase(ACTION_2HR_ALARM)) {
                 PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                assert pm != null;
-                PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP, "Wake Up");
+                if (pm == null) throw new AssertionError();
+                PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP, "upmcmj:wakelock");
                 wl.acquire(6000);
                 final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 assert vibrator != null;

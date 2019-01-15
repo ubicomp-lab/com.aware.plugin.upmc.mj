@@ -57,7 +57,7 @@ public class MJ_Survey extends AppCompatActivity {
     private JSONObject evening;
     private JSONObject afternoon;
     private JSONObject self;
-    private boolean isRegistered = false;
+    private boolean isRegistered = true;
     private boolean permissions_ok = true;
 
     @Override
@@ -196,6 +196,8 @@ public class MJ_Survey extends AppCompatActivity {
 
             Aware.setSetting(getApplicationContext(), Aware_Preferences.DEBUG_FLAG, false); //enable logcat debug messages
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_KEYBOARD, true);
+            Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_APPLICATIONS, true);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_SIGNIFICANT_MOTION, true); //to make accelerometer logging less verbose.
             Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_BATTERY, true);
@@ -308,7 +310,7 @@ public class MJ_Survey extends AppCompatActivity {
             if (!Aware.IS_CORE_RUNNING) {
                 //This initialises the core framework, assigns Device ID if it doesn't exist yet, etc.
                 Intent aware = new Intent(getApplicationContext(), Aware.class);
-                startService(aware);
+                  startService(aware);
             }
 
             if (!Aware.isStudy(getApplicationContext())) {
@@ -342,6 +344,8 @@ public class MJ_Survey extends AppCompatActivity {
 
 
             } else {
+
+                isRegistered = false;
 
                 Log.d(Constants.TAG, "Settings:" + Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF));
 
