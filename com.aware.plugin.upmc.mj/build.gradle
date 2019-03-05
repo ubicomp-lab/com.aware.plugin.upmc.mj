@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'io.fabric'
 android {
     compileSdkVersion compile_sdk
     buildToolsVersion '28.0.3'
@@ -112,6 +112,8 @@ dependencies {
 //    api "com.github.denzilferreira:com.aware.plugin.studentlife:4.0.810"
     api "com.android.support:design:$support_libs"
     api "com.android.support:support-v4:$support_libs"
+    api 'com.google.firebase:firebase-core:16.0.7'
+    api 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
 
 
@@ -122,3 +124,5 @@ dependencies {
 //    api "com.github.denzilferreira:com.aware.plugin.fitbit:$aware_libs"
 //    api "com.github.denzilferreira:com.aware.plugin.studentlife.audio_final:$aware_libs" //conversations
 }
+apply plugin: 'com.google.gms.google-services'
+

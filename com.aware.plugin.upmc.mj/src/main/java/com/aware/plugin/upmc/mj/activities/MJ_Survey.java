@@ -266,8 +266,7 @@ public class MJ_Survey extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(!Aware.isStudy(getApplicationContext()))
-            if (isRegistered) unregisterReceiver(joinedObserver);
+        if (isRegistered) unregisterReceiver(joinedObserver);
     }
 
     @Override
@@ -298,7 +297,7 @@ public class MJ_Survey extends AppCompatActivity {
         }
 
         if (!permissions_ok) {
-
+            isRegistered = false;
             Intent permissions = new Intent(this, PermissionsHandler.class);
             permissions.putExtra(PermissionsHandler.EXTRA_REQUIRED_PERMISSIONS, REQUIRED_PERMISSIONS);
             permissions.putExtra(PermissionsHandler.EXTRA_REDIRECT_ACTIVITY, getPackageName() + "/" + getClass().getName());
@@ -381,8 +380,7 @@ public class MJ_Survey extends AppCompatActivity {
                     Log.d(Constants.TAG, "self-report intent");
                     if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_START)) {
                         Log.d(Constants.TAG, "self-report start survey");
-                        showMorningSurvey();
-//                        showSelfReportStartSurvey();
+                        showSelfReportStartSurvey();
                     } else if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_END)) {
                         Log.d(Constants.TAG, "self-report end survey");
                         showSelfReportEndSurvey();
