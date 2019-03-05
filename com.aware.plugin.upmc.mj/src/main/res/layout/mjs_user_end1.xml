@@ -210,7 +210,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/ui_end_check_other_input"
+                android:id="@+id/mjs_user_end1_used_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/other" />

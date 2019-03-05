@@ -1,6 +1,7 @@
 package com.aware.plugin.upmc.mj.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
@@ -16,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.PermissionChecker;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -265,8 +266,8 @@ public class MJ_Survey extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (isRegistered) unregisterReceiver(joinedObserver);
+        if(!Aware.isStudy(getApplicationContext()))
+            if (isRegistered) unregisterReceiver(joinedObserver);
     }
 
     @Override
@@ -380,7 +381,8 @@ public class MJ_Survey extends AppCompatActivity {
                     Log.d(Constants.TAG, "self-report intent");
                     if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_START)) {
                         Log.d(Constants.TAG, "self-report start survey");
-                        showSelfReportStartSurvey();
+                        showMorningSurvey();
+//                        showSelfReportStartSurvey();
                     } else if (Aware.getSetting(getApplicationContext(), Settings.ACTION_MJ_SELF).equals(Plugin.ACTION_MJ_SELF_END)) {
                         Log.d(Constants.TAG, "self-report end survey");
                         showSelfReportEndSurvey();
@@ -400,6 +402,7 @@ public class MJ_Survey extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 saveSelfReport(true, true);
                 finish();
             }
@@ -490,6 +493,8 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveSelfReport(false, true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
@@ -511,14 +516,16 @@ public class MJ_Survey extends AppCompatActivity {
                 CheckBox used_alcohol = findViewById(R.id.mjs_user_end1_alcohol);
                 CheckBox used_caffeine = findViewById(R.id.mjs_user_end1_caffeine);
                 CheckBox used_none = findViewById(R.id.mjs_user_end1_none);
+                EditText used_other = findViewById(R.id.mjs_user_end1_used_other);
                 if (units.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked()) {
+                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked() && !check_other.isChecked()) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 if (check_other.isChecked() && qnty.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
@@ -528,7 +535,7 @@ public class MJ_Survey extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (used_none.isChecked() && other.getText().length() == 0) {
+                if (used_none.isChecked() && used_other.getText().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -600,6 +607,8 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveSelfReport(false, true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
         next.setOnClickListener(new View.OnClickListener() {
@@ -651,12 +660,6 @@ public class MJ_Survey extends AppCompatActivity {
                 showEnd3();
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveSelfReport(false, true);
-            }
-        });
     }
 
 
@@ -693,6 +696,7 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveSelfReport(false, true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -712,6 +716,8 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveMorning(true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
 
@@ -735,11 +741,15 @@ public class MJ_Survey extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked()) {
+                if (!joint.isChecked() && !bowl.isChecked() && !bong.isChecked() && !blunt.isChecked() && !pen.isChecked() && !check_other.isChecked()) {
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (check_other.isChecked() && qnty.getText().length() == 0) {
+                if (check_other.isChecked() && other.getText().length() == 0) {
+                    Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (qnty.getText().length() == 0){
                     Toast.makeText(getApplicationContext(), "Please complete the survey", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -811,6 +821,8 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveMorning(true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
@@ -999,6 +1011,7 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveAfternoon(true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -1039,6 +1052,7 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveAfternoon(true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -1194,6 +1208,7 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveEvening(true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -1242,6 +1257,7 @@ public class MJ_Survey extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveEvening(true);
+                Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

@@ -10,6 +10,7 @@ android {
         targetSdkVersion target_sdk
         versionCode version_code
         versionName version_readable
+        multiDexEnabled true
 
         //AWARE core sensors provider authority overrides
         resValue "string", "provider_accelerometer", android.defaultConfig.applicationId + ".provider.accelerometer"
@@ -52,7 +53,14 @@ android {
     }
 
     packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
 
@@ -97,12 +105,20 @@ configurations.all {
 
 dependencies {
     //AWARE core library
-    api "com.github.denzilferreira:aware-client:$aware_libs"
+    api "com.github.denzilferreira:aware-client:4.0.810"
+//    api "com.github.denzilferreira:com.aware.plugin.google.fused_location:4.0.810"
+//    api "com.github.denzilferreira:com.aware.plugin.device_usage:4.0.810"
+//    api "com.github.denzilferreira:com.aware.plugin.fitbit:4.0.810"
+//    api "com.github.denzilferreira:com.aware.plugin.studentlife:4.0.810"
+    api "com.android.support:design:$support_libs"
+    api "com.android.support:support-v4:$support_libs"
+
+
 
     //bundled plugins
-    api "com.github.denzilferreira:com.aware.plugin.google.activity_recognition:$aware_libs"
-    api "com.github.denzilferreira:com.aware.plugin.device_usage:$aware_libs"
-    api "com.github.denzilferreira:com.aware.plugin.google.fused_location:$aware_libs"
-    api "com.github.denzilferreira:com.aware.plugin.fitbit:$aware_libs"
-    api "com.github.denzilferreira:com.aware.plugin.studentlife.audio_final:$aware_libs" //conversations
+//    api "com.github.denz ilferreira:com.aware.plugin.google.activity_recognition:$aware_libs"
+//    api "com.github.denzilferreira:com.aware.plugin.device_usage:$aware_libs"
+//    api "com.github.denzilferreira:com.aware.plugin.google.fused_location:$aware_libs"
+//    api "com.github.denzilferreira:com.aware.plugin.fitbit:$aware_libs"
+//    api "com.github.denzilferreira:com.aware.plugin.studentlife.audio_final:$aware_libs" //conversations
 }
